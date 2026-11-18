@@ -29,9 +29,9 @@ export function BrandMark({ showTagline = true }: { showTagline?: boolean }) {
 export function MonogramBadge({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 120 120" fill="none" className={cn("size-28", className)} aria-hidden="true">
-      <path d="M60 0v34M60 86v34M0 60h34M86 60h34" strokeWidth="14" className="stroke-[#1b2129]" />
+      <path d="M60 0v34M60 86v34M0 60h34M86 60h34" strokeWidth="14" className="stroke-volt/40" />
       <path d="M60 2v30M60 88v30M2 60h30M88 60h30" strokeDasharray="4 5" className="stroke-star/30" />
-      <circle cx="60" cy="60" r="30" strokeWidth="14" className="stroke-[#1b2129]" />
+      <circle cx="60" cy="60" r="30" strokeWidth="14" className="stroke-volt/40" />
       <circle cx="60" cy="60" r="30" strokeDasharray="4 5" className="stroke-star/30" />
       <circle cx="60" cy="60" r="20" className="fill-void stroke-cyan" strokeWidth="1.2" />
       <text x="60" y="65" textAnchor="middle" className="fill-star font-display" fontSize="14" fontWeight="700" letterSpacing="1.5">

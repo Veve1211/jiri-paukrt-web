@@ -14,7 +14,7 @@ import appCss from "../styles.css?url";
 import { Toaster } from "@/components/ui/sonner";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
-import { NightBackdrop } from "@/components/site/NightBackdrop";
+import { BlueprintBackdrop } from "@/components/site/BlueprintBackdrop";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -139,7 +139,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <NightBackdrop />
+      <BlueprintBackdrop />
       <div className="relative flex min-h-screen flex-col">
         <SiteHeader />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}

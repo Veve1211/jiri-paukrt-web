@@ -122,7 +122,7 @@ function Readout({
       <div className="telemetry mt-1 text-[9.5px] text-dim">{label}</div>
       <div className="mt-2 flex items-center justify-between font-mono text-[9.5px]">
         <span className="text-dim/70">BASE {base}</span>
-        <span className={cn(good === null ? "text-dim" : good ? "text-cyan" : "text-alert")}>
+        <span className={cn(good === null ? "text-dim" : good ? "text-go" : "text-alert")}>
           {flat ? "±0%" : `${delta > 0 ? "+" : ""}${delta.toFixed(1)}%`}
         </span>
       </div>

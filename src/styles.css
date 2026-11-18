@@ -12,13 +12,14 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * "Night Drive" design system — a road network at night.
- * Asphalt backgrounds, sodium-lamp amber accent, headlight-white text,
- * tail-light red used sparingly. Token names are historical:
- *   void = page (asphalt) · ink = card · star = main text (headlight white)
- *   dim = muted text · cyan = primary accent (sodium amber)
- *   volt = secondary line colour (dusk steel) · starblue = soft secondary text
- *   alert = tail-light red
+ * "Traffic Model" design system — a blueprint-blue engineering drawing.
+ * Deep drawing-blue backgrounds, sky-blue primary accent, white linework,
+ * traffic-signal green / amber / red used sparingly for flow states.
+ * Token names are historical:
+ *   void = page · ink = card · star = main text · dim = muted text
+ *   cyan = primary accent (sky blue) · volt = secondary linework
+ *   starblue = soft secondary text · alert = signal red
+ *   go / amber = signal green / signal amber
  */
 
 @theme inline {
@@ -42,6 +43,8 @@
   --color-dim: var(--dim);
   --color-starblue: var(--starblue);
   --color-alert: var(--alert);
+  --color-go: var(--go);
+  --color-amber: var(--amber);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -85,15 +88,17 @@
 :root {
   --radius: 10px;
 
-  /* Brand palette — night drive */
-  --void: #0c0f13; /* asphalt at night */
-  --ink: #141920; /* card surface */
-  --cyan: #f2a93b; /* sodium street-lamp amber (primary accent) */
-  --volt: #5f7a96; /* dusk steel — secondary lines */
-  --star: #eeece6; /* headlight white — main text */
-  --dim: #9aa3ad; /* muted text */
-  --starblue: #c7d3df; /* soft secondary text */
-  --alert: #e5484d; /* tail-light red */
+  /* Brand palette — traffic model blueprint */
+  --void: #0a1a31; /* drawing blue — page */
+  --ink: #0f2443; /* card surface */
+  --cyan: #5aaeff; /* sky blue — primary accent */
+  --volt: #3a6ea8; /* secondary linework */
+  --star: #eaf2fc; /* main text */
+  --dim: #9db3d0; /* muted text */
+  --starblue: #c4d8f2; /* soft secondary text */
+  --alert: #ef5350; /* signal red */
+  --go: #3fcf8e; /* signal green */
+  --amber: #f5b942; /* signal amber */
 
   /* shadcn semantic mapping */
   --background: var(--void);
@@ -160,12 +165,18 @@
   }
 }
 
-/* Faint lane markings for the page background. */
+/* Blueprint drawing grid for the page background. */
 @utility road-lines {
   background-image:
-    linear-gradient(to right, color-mix(in oklab, var(--star) 3.5%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in oklab, var(--star) 3.5%, transparent) 1px, transparent 1px);
-  background-size: 96px 96px;
+    linear-gradient(to right, color-mix(in oklab, var(--cyan) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--cyan) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(to right, color-mix(in oklab, var(--cyan) 3%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--cyan) 3%, transparent) 1px, transparent 1px);
+  background-size:
+    120px 120px,
+    120px 120px,
+    24px 24px,
+    24px 24px;
 }
 
 @utility glass {

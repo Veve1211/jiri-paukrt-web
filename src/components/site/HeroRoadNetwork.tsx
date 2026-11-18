@@ -7,8 +7,9 @@ import { usePrefersReducedMotion } from "@/hooks/use-telemetry";
 import { cn } from "@/lib/utils";
 
 /**
- * Hero graphic: a schematic road network at night. Each junction is a project;
- * headlights (white) and tail-lights (red) travel along the roads.
+ * Hero graphic: a schematic traffic-model flow plot. Each junction is a project;
+ * road bandwidth shows (illustrative) traffic flow and colour shows volume/capacity,
+ * the way strategic models such as SATURN present assignment results.
  */
 
 interface Junction {
@@ -39,24 +40,32 @@ const JUNCTIONS: Junction[] = [
   { id: "safety", x: 290, y: 480, slug: "road-safety-traffic-conflicts", label: "BRNO · ROAD SAFETY", sub: "TRAFFIC CONFLICTS", major: false },
 ];
 
-/** Roads between project junctions. */
-const ROADS: [string, string][] = [
-  ["ireland", "cwg"],
-  ["cwg", "sydney"],
-  ["cwg", "uk"],
-  ["ireland", "uk"],
-  ["ireland", "glasgow"],
-  ["glasgow", "safety"],
-  ["safety", "cwg"],
-  ["uk", "melbourne"],
-  ["melbourne", "sydney"],
-  ["cwg", "melbourne"],
+/** Roads between project junctions, with illustrative two-way flow (veh/h) and volume/capacity. */
+const ROADS: { a: string; b: string; flow: number; vc: number }[] = [
+  { a: "ireland", b: "cwg", flow: 3400, vc: 0.94 },
+  { a: "cwg", b: "sydney", flow: 2900, vc: 0.86 },
+  { a: "cwg", b: "uk", flow: 2200, vc: 0.72 },
+  { a: "ireland", b: "uk", flow: 1500, vc: 0.55 },
+  { a: "ireland", b: "glasgow", flow: 2600, vc: 0.81 },
+  { a: "glasgow", b: "safety", flow: 1200, vc: 0.48 },
+  { a: "safety", b: "cwg", flow: 1900, vc: 0.66 },
+  { a: "uk", b: "melbourne", flow: 1100, vc: 0.42 },
+  { a: "melbourne", b: "sydney", flow: 1700, vc: 0.61 },
+  { a: "cwg", b: "melbourne", flow: 2400, vc: 0.92 },
 ];
+
+function vcClass(vc: number): { stroke: string; label: string } {
+  if (vc > 0.9) return { stroke: "stroke-alert", label: "fill-alert" };
+  if (vc >= 0.7) return { stroke: "stroke-amber", label: "fill-amber" };
+  return { stroke: "stroke-go", label: "fill-go" };
+}
+
+const bandWidth = (flow: number) => 3 + flow / 380;
 
 /** Roads that leave the frame — the network continues beyond the picture. */
 const EXITS: [string, Pt][] = [
   ["ireland", { x: -30, y: 110 }],
-  ["uk", { x: 730, y: 80 }],
+  ["uk", { x: 470, y: -30 }],
   ["glasgow", { x: -30, y: 440 }],
   ["safety", { x: 250, y: 640 }],
   ["sydney", { x: 730, y: 520 }],
@@ -67,8 +76,8 @@ const EXITS: [string, Pt][] = [
 const byId = (id: string) => JUNCTIONS.find((j) => j.id === id)!;
 
 const LABEL_POS: Record<string, { x: number; y: number; anchor?: "end" }> = {
-  ireland: { x: 232, y: 152 },
-  cwg: { x: 402, y: 326 },
+  ireland: { x: 188, y: 140, anchor: "end" },
+  cwg: { x: 348, y: 344, anchor: "end" },
   sydney: { x: 538, y: 488, anchor: "end" },
   uk: { x: 520, y: 124 },
   melbourne: { x: 590, y: 326, anchor: "end" },
@@ -76,47 +85,64 @@ const LABEL_POS: Record<string, { x: number; y: number; anchor?: "end" }> = {
   safety: { x: 312, y: 512 },
 };
 
-/** Parallel carriageway offset: shifts a segment sideways by `d` pixels. */
-function offset(a: Pt, b: Pt, d: number): [Pt, Pt] {
-  const dx = b.x - a.x;
-  const dy = b.y - a.y;
-  const len = Math.hypot(dx, dy) || 1;
-  const nx = (-dy / len) * d;
-  const ny = (dx / len) * d;
-  return [
-    { x: a.x + nx, y: a.y + ny },
-    { x: b.x + nx, y: b.y + ny },
-  ];
-}
-
-function Road({ a, b, lit, dimmed, animate, seed }: { a: Pt; b: Pt; lit: boolean; dimmed: boolean; animate: boolean; seed: number }) {
-  const [h1, h2] = offset(a, b, -3.5);
-  const [t1, t2] = offset(a, b, 3.5);
-  const headPath = `M${h1.x} ${h1.y} L${h2.x} ${h2.y}`;
-  const tailPath = `M${t2.x} ${t2.y} L${t1.x} ${t1.y}`;
+function FlowLink({
+  a,
+  b,
+  flow,
+  vc,
+  lit,
+  dimmed,
+  animate,
+  seed,
+}: {
+  a: Pt;
+  b: Pt;
+  flow: number;
+  vc: number;
+  lit: boolean;
+  dimmed: boolean;
+  animate: boolean;
+  seed: number;
+}) {
+  const path = `M${a.x} ${a.y} L${b.x} ${b.y}`;
+  const back = `M${b.x} ${b.y} L${a.x} ${a.y}`;
   const len = Math.hypot(b.x - a.x, b.y - a.y);
-  const dur = Math.max(3, len / 55) + (seed % 3) * 0.6;
+  const dur = Math.max(4, len / 45) + (seed % 3) * 0.7;
+  const c = vcClass(vc);
+  const mx = (a.x + b.x) / 2;
+  const my = (a.y + b.y) / 2;
   return (
-    <g className={cn("transition-opacity duration-300", dimmed && "opacity-40")}>
-      {/* carriageway */}
-      <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} strokeWidth="16" strokeLinecap="round" className="stroke-[#1b2129]" />
-      <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} strokeWidth="1" strokeDasharray="7 9" className="stroke-star/25" />
-      {/* light trails */}
-      <path d={headPath} strokeWidth={lit ? 1.6 : 1} className={lit ? "stroke-star/80" : "stroke-star/25"} />
-      <path d={tailPath} strokeWidth={lit ? 1.6 : 1} className={lit ? "stroke-alert/90" : "stroke-alert/35"} />
-      {animate && (
-        <>
-          {[0, 0.5].map((phase) => (
-            <circle key={`h${phase}`} r="2" className="fill-star">
-              <animateMotion dur={`${dur}s`} begin={`${-phase * dur}s`} repeatCount="indefinite" path={headPath} />
-            </circle>
-          ))}
-          {[0.25, 0.75].map((phase) => (
-            <circle key={`t${phase}`} r="1.8" className="fill-alert">
-              <animateMotion dur={`${dur * 1.15}s`} begin={`${-phase * dur}s`} repeatCount="indefinite" path={tailPath} />
-            </circle>
-          ))}
-        </>
+    <g className={cn("transition-opacity duration-300", dimmed && "opacity-30")}>
+      {/* flow bandwidth, coloured by volume / capacity */}
+      <line
+        x1={a.x}
+        y1={a.y}
+        x2={b.x}
+        y2={b.y}
+        strokeWidth={bandWidth(flow) + (lit ? 2 : 0)}
+        strokeLinecap="butt"
+        className={cn(c.stroke, "transition-all", lit ? "opacity-100" : "opacity-75")}
+      />
+      {/* link centreline */}
+      <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} strokeWidth="0.8" className="stroke-void/70" />
+      {animate &&
+        [0, 0.5].map((phase, i) => (
+          <circle key={phase} r="1.6" className="fill-star">
+            <animateMotion
+              dur={`${dur}s`}
+              begin={`${-phase * dur}s`}
+              repeatCount="indefinite"
+              path={i === 0 ? path : back}
+            />
+          </circle>
+        ))}
+      {lit && (
+        <g className="font-mono" fontSize="9.5" letterSpacing="0.8">
+          <rect x={mx - 40} y={my - 9} width="80" height="18" rx="3" className="fill-void stroke-star/20" />
+          <text x={mx} y={my + 3.5} textAnchor="middle" className={c.label}>
+            {flow.toLocaleString("en-IE")} veh/h
+          </text>
+        </g>
       )}
     </g>
   );
@@ -161,33 +187,42 @@ export function HeroRoadNetwork() {
           className="absolute inset-0 h-full w-full"
           fill="none"
           role="group"
-          aria-label="Road network of selected projects — each junction opens a project"
+          aria-label="Traffic-model style network of selected projects — each junction opens a project"
           onClick={(e) => {
             if (e.target === e.currentTarget) setSelected(null);
           }}
         >
           <defs>
-            <radialGradient id="lamp" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="var(--cyan)" stopOpacity="0.32" />
-              <stop offset="60%" stopColor="var(--cyan)" stopOpacity="0.06" />
-              <stop offset="100%" stopColor="var(--cyan)" stopOpacity="0" />
-            </radialGradient>
             <clipPath id="frame">
               <rect x="0" y="0" width={W} height={H} rx="18" />
             </clipPath>
           </defs>
 
           <g clipPath="url(#frame)">
-            {EXITS.map(([id, p], i) => (
-              <Road key={`exit-${id}-${i}`} a={byId(id)} b={p} lit={false} dimmed={active !== null} animate={false} seed={i} />
-            ))}
-            {ROADS.map(([a, b], i) => {
-              const lit = active !== null && (a === active || b === active);
+            {EXITS.map(([id, p], i) => {
+              const j = byId(id);
               return (
-                <Road
-                  key={`${a}-${b}`}
-                  a={byId(a)}
-                  b={byId(b)}
+                <line
+                  key={`exit-${id}-${i}`}
+                  x1={j.x}
+                  y1={j.y}
+                  x2={p.x}
+                  y2={p.y}
+                  strokeWidth="1.2"
+                  strokeDasharray="5 5"
+                  className={cn("stroke-volt transition-opacity", active !== null && "opacity-40")}
+                />
+              );
+            })}
+            {ROADS.map((r, i) => {
+              const lit = active !== null && (r.a === active || r.b === active);
+              return (
+                <FlowLink
+                  key={`${r.a}-${r.b}`}
+                  a={byId(r.a)}
+                  b={byId(r.b)}
+                  flow={r.flow}
+                  vc={r.vc}
                   lit={lit}
                   dimmed={active !== null && !lit}
                   animate={!reducedMotion && (i < 6 || lit)}
@@ -217,22 +252,34 @@ export function HeroRoadNetwork() {
                 onFocus={() => setHovered(j.id)}
                 onBlur={() => setHovered(null)}
               >
-                {/* street-lamp pool of light */}
-                <circle cx={j.x} cy={j.y} r={isActive ? 54 : j.major ? 42 : 30} fill="url(#lamp)" className="transition-all duration-300" />
                 <circle cx={j.x} cy={j.y} r="24" className="fill-transparent" />
                 <circle cx={j.x} cy={j.y} r="20" className="focus-ring stroke-cyan opacity-0 transition-opacity" strokeDasharray="3 3" />
-                {/* junction: roundabout ring + central island */}
-                <circle cx={j.x} cy={j.y} r={j.major ? 11 : 8} strokeWidth="5" className="fill-void stroke-[#262e38]" />
+                {/* junction drawn as a technical node symbol: ring, crosshair ticks, centre point */}
+                {(isActive || j.major) && (
+                  <circle
+                    cx={j.x}
+                    cy={j.y}
+                    r={j.major ? 17 : 14}
+                    strokeWidth="0.8"
+                    strokeDasharray="2 3"
+                    className={isActive ? "stroke-cyan" : "stroke-star/40"}
+                  />
+                )}
+                <path
+                  d={`M${j.x - 14} ${j.y}h-5M${j.x + 14} ${j.y}h5M${j.x} ${j.y - 14}v-5M${j.x} ${j.y + 14}v5`}
+                  strokeWidth="1"
+                  className={isActive ? "stroke-cyan" : "stroke-star/50"}
+                />
                 <circle
                   cx={j.x}
                   cy={j.y}
-                  r={j.major ? 11 : 8}
-                  strokeWidth="1"
-                  className={cn("transition-colors", isActive ? "stroke-cyan" : "stroke-star/40")}
+                  r={j.major ? 9 : 7}
+                  strokeWidth="1.4"
+                  className={cn("fill-void transition-colors", isActive ? "stroke-cyan" : "stroke-star")}
                 />
-                <circle cx={j.x} cy={j.y} r={isActive ? 4.5 : j.major ? 3.5 : 2.5} className="fill-cyan transition-all" />
+                <circle cx={j.x} cy={j.y} r={isActive ? 4 : 2.5} className={cn("transition-all", isActive ? "fill-cyan" : "fill-star")} />
                 {showLabel && (
-                  <g className="font-mono" letterSpacing="1.4" textAnchor={pos.anchor}>
+                  <g className="font-mono" letterSpacing="1.4" textAnchor={pos.anchor} stroke="var(--void)" strokeWidth="4" paintOrder="stroke" strokeLinejoin="round">
                     <text x={pos.x} y={pos.y} fontSize="11" className={isActive ? "fill-cyan" : "fill-star"}>
                       {j.label}
                     </text>
@@ -246,20 +293,24 @@ export function HeroRoadNetwork() {
           })}
 
           <text x="24" y="584" fontSize="9" letterSpacing="1.4" className="fill-dim/80 font-mono">
-            SCHEMATIC · NOT TO SCALE
+            ILLUSTRATIVE FLOWS · NOT PROJECT DATA
           </text>
         </svg>
 
         {/* legend */}
-        <div className="pointer-events-none absolute top-1 right-1 hidden space-y-1 text-right font-mono text-[9.5px] leading-relaxed tracking-[0.14em] text-dim sm:block">
+        <div className="pointer-events-none absolute top-1 right-1 hidden space-y-1 text-right font-mono text-[9.5px] leading-relaxed tracking-[0.12em] text-dim sm:block">
+          <div className="pb-0.5 text-star/80">FLOW BANDWIDTH · V/C</div>
           <div className="flex items-center justify-end gap-2">
-            JUNCTION = PROJECT <span className="size-2 rounded-full bg-cyan" />
+            UNDER 0.70 <span className="h-1.5 w-5 bg-go" />
           </div>
           <div className="flex items-center justify-end gap-2">
-            HEADLIGHTS <span className="h-px w-4 bg-star/80" />
+            0.70 – 0.90 <span className="h-1.5 w-5 bg-amber" />
           </div>
           <div className="flex items-center justify-end gap-2">
-            TAIL-LIGHTS <span className="h-px w-4 bg-alert" />
+            OVER 0.90 <span className="h-1.5 w-5 bg-alert" />
+          </div>
+          <div className="flex items-center justify-end gap-2 pt-1">
+            JUNCTION = PROJECT <span className="size-2.5 rounded-full border border-star bg-void" />
           </div>
           <div className="pt-1 text-dim/70">{selected ? "ESC TO CLOSE" : "CLICK A JUNCTION"}</div>
         </div>
