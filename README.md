@@ -4,6 +4,16 @@
 
 Web-vizitka a online CV pro Ing. Jiřího Paukrta, Principal Transportation Engineer v SYSTRA Dublin (27 let dopravního modelování v Irsku, Velké Británii, Austrálii a ČR).
 
+## Jak to vypadá
+
+![Úvod webu: jméno, Principal Transportation Engineer a interaktivní dopravní síť](docs/screenshots/hero.webp)
+
+| Vybrané projekty | Mapa projektů |
+|---|---|
+| ![Karty projektů s vlastními ilustracemi](docs/screenshots/projekty.webp) | ![Schematická mapa míst, kde modely vznikaly](docs/screenshots/mapa.webp) |
+
+![Odbornost a interaktivní simulátor dopravy v koridoru](docs/screenshots/simulator.webp)
+
 ## Moje role
 
 Projekt jsem vedla celý sama: **Věra Paukrtová** (portfolio: https://verapaukrtova.cz).
