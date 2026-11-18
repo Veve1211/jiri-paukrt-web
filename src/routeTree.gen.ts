@@ -12,8 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CareerRouteImport } from './routes/career'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CvRouteImport } from './routes/cv'
 import { Route as ExpertiseRouteImport } from './routes/expertise'
 import { Route as NetworkRouteImport } from './routes/network'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
 import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
 
@@ -32,6 +34,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CvRoute = CvRouteImport.update({
+  id: '/cv',
+  path: '/cv',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExpertiseRoute = ExpertiseRouteImport.update({
   id: '/expertise',
   path: '/expertise',
@@ -40,6 +47,11 @@ const ExpertiseRoute = ExpertiseRouteImport.update({
 const NetworkRoute = NetworkRouteImport.update({
   id: '/network',
   path: '/network',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
@@ -57,8 +69,10 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/career': typeof CareerRoute
   '/contact': typeof ContactRoute
+  '/cv': typeof CvRoute
   '/expertise': typeof ExpertiseRoute
   '/network': typeof NetworkRoute
+  '/privacy': typeof PrivacyRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/projects/': typeof ProjectsIndexRoute
 }
@@ -66,8 +80,10 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/career': typeof CareerRoute
   '/contact': typeof ContactRoute
+  '/cv': typeof CvRoute
   '/expertise': typeof ExpertiseRoute
   '/network': typeof NetworkRoute
+  '/privacy': typeof PrivacyRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/projects': typeof ProjectsIndexRoute
 }
@@ -76,8 +92,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/career': typeof CareerRoute
   '/contact': typeof ContactRoute
+  '/cv': typeof CvRoute
   '/expertise': typeof ExpertiseRoute
   '/network': typeof NetworkRoute
+  '/privacy': typeof PrivacyRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/projects/': typeof ProjectsIndexRoute
 }
@@ -87,8 +105,10 @@ export interface FileRouteTypes {
     | '/'
     | '/career'
     | '/contact'
+    | '/cv'
     | '/expertise'
     | '/network'
+    | '/privacy'
     | '/projects/$slug'
     | '/projects/'
   fileRoutesByTo: FileRoutesByTo
@@ -96,8 +116,10 @@ export interface FileRouteTypes {
     | '/'
     | '/career'
     | '/contact'
+    | '/cv'
     | '/expertise'
     | '/network'
+    | '/privacy'
     | '/projects/$slug'
     | '/projects'
   id:
@@ -105,8 +127,10 @@ export interface FileRouteTypes {
     | '/'
     | '/career'
     | '/contact'
+    | '/cv'
     | '/expertise'
     | '/network'
+    | '/privacy'
     | '/projects/$slug'
     | '/projects/'
   fileRoutesById: FileRoutesById
@@ -115,8 +139,10 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CareerRoute: typeof CareerRoute
   ContactRoute: typeof ContactRoute
+  CvRoute: typeof CvRoute
   ExpertiseRoute: typeof ExpertiseRoute
   NetworkRoute: typeof NetworkRoute
+  PrivacyRoute: typeof PrivacyRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
 }
@@ -144,6 +170,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cv': {
+      id: '/cv'
+      path: '/cv'
+      fullPath: '/cv'
+      preLoaderRoute: typeof CvRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/expertise': {
       id: '/expertise'
       path: '/expertise'
@@ -156,6 +189,13 @@ declare module '@tanstack/react-router' {
       path: '/network'
       fullPath: '/network'
       preLoaderRoute: typeof NetworkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects/': {
@@ -179,8 +219,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CareerRoute: CareerRoute,
   ContactRoute: ContactRoute,
+  CvRoute: CvRoute,
   ExpertiseRoute: ExpertiseRoute,
   NetworkRoute: NetworkRoute,
+  PrivacyRoute: PrivacyRoute,
   ProjectsSlugRoute: ProjectsSlugRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
 }

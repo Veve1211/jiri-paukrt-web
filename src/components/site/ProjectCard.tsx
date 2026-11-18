@@ -18,7 +18,16 @@ export function ProjectCard({ project }: { project: Project }) {
         
       </div>
       <h3 className="mt-4 text-xl leading-snug font-medium">{project.title}</h3>
-      <p className="mt-1 text-xs text-dim">{project.client}</p>
+      <p className="mt-1 text-xs text-dim">
+        {project.client}
+        {project.years && <> · {project.years}</>}
+      </p>
+      {project.role && (
+        <p className="mt-3 text-xs leading-snug text-starblue">
+          <span className="telemetry mr-1.5 text-[9px] text-cyan">Role</span>
+          {project.role}
+        </p>
+      )}
       <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-dim">{project.summary}</p>
       <div className="mt-auto pt-5">
         <div className="flex items-end justify-between gap-3 border-t border-star/10 pt-4">

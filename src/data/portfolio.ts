@@ -10,6 +10,18 @@ export const PERSON = {
   yearsLabel: "27+",
   careerStartYear: 1999,
   linkedin: "https://www.linkedin.com/in/jiri-paukrt",
+  summary:
+    "Principal Transportation Engineer with 27 years of experience in travel demand forecasting, traffic microsimulation and scheme evaluation across Ireland, the UK, Australia and Central Europe. Leads the development and calibration of strategic multi-modal models for national and regional transport authorities, and builds the data and automation tools behind them.",
+  languages: [
+    { name: "Czech", level: "Native" },
+    { name: "English", level: "Professional working proficiency" },
+  ],
+  waysOfWorking: [
+    "Technical leadership of model development, calibration and validation workstreams",
+    "Long-term client work with national authorities such as the NTA and Transport Scotland",
+    "Presenting methods and results at international conferences (ETC, STAR, ICTTE)",
+    "Reproducible modelling: automated data pipelines and checks in Python, SQL and VBA",
+  ],
 } as const;
 
 export type DomainKey = "national" | "microsim" | "mega-events" | "gis-safety";
@@ -50,6 +62,10 @@ export interface Project {
   summary: string;
   highlights: string[];
   metrics: Metric[];
+  /** Jiri's own part in the project. */
+  role?: string;
+  /** When the work took place, where known. */
+  years?: string;
   publication?: Publication;
   tools?: string[];
   locationIds: string[];
@@ -58,6 +74,7 @@ export interface Project {
 export const PROJECTS: Project[] = [
   {
     slug: "nta-national-demand-model",
+    role: "Calibration and ongoing enhancement of the NDFM and NTEM; technical work on the regional models",
     code: "IE-01",
     title: "National Demand Forecasting Model",
     client: "National Transport Authority (NTA), Ireland",
@@ -87,6 +104,8 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "nta-long-distance-model",
+    role: "Long Distance Model development; co-presenter at ETC 2019",
+    years: "2019",
     code: "IE-02",
     title: "NTA Long Distance Model",
     client: "National Transport Authority (NTA) · SYSTRA",
@@ -115,6 +134,8 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "glasgow-m74-evaluation",
+    role: "Co-author of the five-year post-opening evaluation",
+    years: "2016–2017",
     code: "UK-01",
     title: "M74 Completion Scheme — 5 Years After",
     client: "Transport Scotland · SYSTRA",
@@ -143,6 +164,8 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "road-safety-traffic-conflicts",
+    role: "Microsimulation of traffic conflicts in S-Paramics; co-author",
+    years: "2014",
     code: "RS-01",
     title: "Road Safety via Traffic Conflicts",
     client: "With the Transport Research Centre (CDV)",
@@ -173,6 +196,8 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "commonwealth-games",
+    role: "Spectator travel demand modelling",
+    years: "2014 · 2022",
     code: "EV-01",
     title: "Commonwealth Games Spectator Demand",
     client: "Glasgow 2014 · Birmingham 2022",
@@ -194,6 +219,8 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "sydney-lane-cove-tunnel",
+    role: "Lead simulation modeller",
+    years: "2006–2007",
     code: "AU-01",
     title: "Lane Cove Tunnel Microsimulation",
     client: "Hyder Consulting",
@@ -216,6 +243,8 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "melbourne-dandenong",
+    role: "Microsimulation model development",
+    years: "2006–2007",
     code: "AU-02",
     title: "Dandenong Revitalisation Microsimulation",
     client: "Hyder Consulting",
@@ -229,6 +258,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "uk-microsimulation-models",
+    role: "Model development, calibration and traffic-management testing",
     code: "UK-02",
     title: "UK Town Microsimulation Models",
     client: "UK portfolio",
@@ -347,6 +377,8 @@ export interface CareerEntry {
   location: string;
   locationId: string;
   current?: boolean;
+  /** What the role involved — from the brief; confirm wording with Jiri. */
+  duties: string[];
   related: string[];
 }
 
@@ -358,6 +390,14 @@ export const CAREER: CareerEntry[] = [
     location: "Dublin, Ireland",
     locationId: "dublin",
     current: true,
+    duties: [
+      "Leads the development, calibration and validation of strategic multi-modal travel demand models for national, regional and local transport authorities.",
+      "Manages the calibration and ongoing enhancement of Ireland's National Demand Forecasting Model and National Trip End Model for the National Transport Authority.",
+      "Technical work on the NTA's five regional multi-modal models and on the Long Distance Model for Ireland and Northern Ireland.",
+      "Post-COVID trip rate estimation for the NTA Regional Modelling System, using negative binomial regression on the 2022 National Household Travel Survey.",
+      "Spectator travel demand modelling for the Glasgow 2014 and Birmingham 2022 Commonwealth Games; five-year evaluation of the M74 Completion for Transport Scotland.",
+      "Builds Python, SQL and VBA tools for data cleaning, matrix manipulation, assignment convergence checks and GIS visualisation.",
+    ],
     related: [
       "nta-national-demand-model",
       "nta-long-distance-model",
@@ -371,6 +411,11 @@ export const CAREER: CareerEntry[] = [
     company: "Hyder Consulting",
     location: "Melbourne, Australia",
     locationId: "melbourne",
+    duties: [
+      "Lead simulation modeller for the Lane Cove Tunnel in Sydney: tunnel portal operations, incident scenarios and the connecting road network.",
+      "Microsimulation models for the City of Greater Dandenong in Melbourne.",
+      "Variable demand modelling, transport impact assessments and scheme feasibility studies.",
+    ],
     related: ["sydney-lane-cove-tunnel", "melbourne-dandenong"],
   },
   {
@@ -379,6 +424,11 @@ export const CAREER: CareerEntry[] = [
     company: "Jacobs Babtie",
     location: "Leeds, UK",
     locationId: "leeds",
+    duties: [
+      "Built, calibrated and validated SATURN highway assignment models in Scotland and northern England.",
+      "Economic appraisal of trunk road and motorway schemes using UK Department for Transport methods (COBA, TUBA).",
+      "Traffic impact studies, junction capacity analysis and public transport priority evaluations.",
+    ],
     related: [],
   },
   {
@@ -387,6 +437,11 @@ export const CAREER: CareerEntry[] = [
     company: "CityPlan",
     location: "Prague, Czech Republic",
     locationId: "prague",
+    duties: [
+      "Urban and regional traffic models for the Czech Ministry of Transport and the City of Prague.",
+      "Traffic signal timing plans, junction capacity assessments and corridor feasibility studies.",
+      "Research on traffic conflict techniques, junction safety and transport economics.",
+    ],
     related: [],
   },
 ];
@@ -415,7 +470,6 @@ export const TECH: Tech[] = [
   { name: "Paramics Discovery", quadrant: "Microsimulation", blurb: "Microscopic traffic simulation of junctions, corridors and town networks, vehicle by vehicle." },
   { name: "S-Paramics", quadrant: "Microsimulation", blurb: "Microsimulation platform used for the traffic-conflict road-safety pilot.", projects: ["road-safety-traffic-conflicts"] },
   { name: "Vissim", quadrant: "Microsimulation", blurb: "Microsimulation of signalised junctions, bus priority and multimodal corridors." },
-  { name: "3D Traffic Simulation", quadrant: "Microsimulation", blurb: "Three-dimensional playback of simulated traffic to communicate schemes to stakeholders." },
   { name: "SATURN", quadrant: "Strategic Demand", blurb: "Strategic highway assignment for network-wide route choice and congestion." },
   { name: "CUBE", quadrant: "Strategic Demand", blurb: "Platform of the NTA Regional Modelling System — demand, mode and destination choice, and assignment.", projects: ["nta-national-demand-model"] },
   { name: "Variable Demand Modeling", quadrant: "Strategic Demand", blurb: "Demand that responds to changing travel costs — frequency, mode, destination and time of day." },

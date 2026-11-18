@@ -76,7 +76,9 @@ function Hero() {
             <Link to="/career">View career →</Link>
           </Button>
           <Button asChild variant="glass" size="pill" className="font-normal">
-            <Link to="/projects">Projects &amp; publications</Link>
+            <a href="/Jiri-Paukrt-CV.pdf" download>
+              Download CV (PDF)
+            </a>
           </Button>
         </div>
       </section>
@@ -148,7 +150,7 @@ function Bento() {
 
           <Tile to="/contact" label="Contact" className="bg-cyan/[0.06] md:col-span-2">
             <p className="mt-6 text-xl leading-snug font-medium">
-              Working on a demand model, a junction or transport for a major event?
+              Questions about a project, a paper or a possible collaboration?
             </p>
             <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-cyan">
               Send a message <ArrowRight className="size-4" />

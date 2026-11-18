@@ -41,8 +41,7 @@ function ContactPage() {
               </>
             }
           >
-            Working on a demand model, a town-centre microsimulation or transport for a major event? Send a message
-            or connect on LinkedIn.
+            Questions about a project, a paper or a possible collaboration? Send a message or connect on LinkedIn.
           </PageIntro>
 
           <div className="glass mt-10 flex items-center gap-5 rounded-[20px] p-5">

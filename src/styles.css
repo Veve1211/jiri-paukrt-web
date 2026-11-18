@@ -310,3 +310,29 @@
     scroll-behavior: auto;
   }
 }
+
+/* Print: only the CV sheet, on white A4. */
+@media print {
+  @page {
+    size: A4;
+    margin: 16mm 16mm 14mm;
+  }
+  :root {
+    color-scheme: light;
+  }
+  html,
+  body {
+    background: #fff !important;
+  }
+  header.sticky,
+  footer,
+  .no-print,
+  [aria-hidden="true"].fixed {
+    display: none !important;
+  }
+  .cv-sheet h1,
+  .cv-sheet h2,
+  .cv-sheet h3 {
+    letter-spacing: -0.01em;
+  }
+}

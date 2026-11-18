@@ -36,12 +36,13 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <Link
-          to="/contact"
-          className="hidden items-center gap-2 rounded-full border border-cyan/40 px-3.5 py-1.5 font-mono text-[11px] tracking-wider text-cyan uppercase transition-colors hover:bg-cyan/10 lg:flex"
+        <a
+          href="/Jiri-Paukrt-CV.pdf"
+          download
+          className="hidden items-center gap-2 rounded-full bg-cyan px-4 py-2 font-mono text-[11px] font-semibold tracking-wider text-void uppercase transition-[filter] hover:brightness-105 lg:flex"
         >
-          Get in touch
-        </Link>
+          Download CV
+        </a>
 
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger
@@ -69,9 +70,13 @@ export function SiteHeader() {
                 </Link>
               ))}
             </nav>
-            <div className="absolute inset-x-6 bottom-8 font-mono text-[10px] tracking-wider text-dim uppercase">
-              27+ years in transport modelling
-            </div>
+            <a
+              href="/Jiri-Paukrt-CV.pdf"
+              download
+              className="absolute inset-x-6 bottom-8 flex h-12 items-center justify-center rounded-full bg-cyan font-mono text-[11px] font-semibold tracking-wider text-void uppercase"
+            >
+              Download CV (PDF)
+            </a>
           </SheetContent>
         </Sheet>
       </div>

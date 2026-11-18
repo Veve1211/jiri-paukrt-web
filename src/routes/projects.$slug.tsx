@@ -73,7 +73,14 @@ function ProjectPage() {
           </h1>
           <p className="mt-4 text-sm text-star">
             {p.client} <span className="text-dim">· {p.location}</span>
+            {p.years && <span className="text-dim"> · {p.years}</span>}
           </p>
+          {p.role && (
+            <p className="mt-4 inline-flex max-w-[580px] items-start gap-2 rounded-[14px] border border-cyan/30 bg-cyan/[0.07] px-3.5 py-2.5 text-sm text-star">
+              <span className="telemetry mt-0.5 shrink-0 text-[9.5px] text-cyan">Jiri's role</span>
+              {p.role}
+            </p>
+          )}
           <p className="mt-6 max-w-[580px] text-[15px] leading-relaxed text-dim">{p.summary}</p>
 
           <div className="mt-8 grid max-w-[560px] grid-cols-2 gap-2.5 sm:grid-cols-3">
@@ -99,7 +106,7 @@ function ProjectPage() {
               subject={p.title}
               trigger={
                 <Button variant="glow" size="pill" className="font-medium">
-                  Discuss a similar project →
+                  Ask about this project →
                 </Button>
               }
             />

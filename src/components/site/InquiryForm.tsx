@@ -213,6 +213,12 @@ export function InquiryForm({
           {status.message}
         </p>
       )}
+      <p className="text-xs leading-relaxed text-dim">
+        Your details are used only to reply to your message.{" "}
+        <a href="/privacy" className="text-cyan underline-offset-2 hover:underline">
+          Privacy notice
+        </a>
+      </p>
       <Button type="submit" variant="glow" size="pill" disabled={sending} className="w-full font-medium sm:w-auto">
         {sending ? (
           <>
