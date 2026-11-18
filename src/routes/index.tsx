@@ -41,7 +41,7 @@ export const Route = createFileRoute("/")({
 const FACTS = [
   { value: "27+", label: "Years in transport modelling", cs: "Let v dopravním modelování" },
   { value: "4", label: "Countries of practice", cs: "Země praxe" },
-  { value: "1999", label: "Modelling since", cs: "Modeluje od roku" },
+  { value: "2", label: "Commonwealth Games", cs: "Hry Commonwealthu" },
   { value: "4", label: "Papers & conference talks", cs: "Články a přednášky" },
 ];
 
@@ -66,8 +66,9 @@ function Hero() {
           {t("Dublin · based in the Czech Republic", "Dublin · žije v Česku")}
         </p>
         <h1 className="text-[52px] leading-[0.95] font-semibold tracking-[-0.04em] text-balance sm:text-[76px]">
+          {lang === "cs" && <span className="mr-[0.25em] text-[0.55em] font-light tracking-[-0.02em] text-dim">Ing.</span>}
           <span className="text-gradient">{t("Jiri Paukrt", "Jiří Paukrt")}</span>
-          <span className="text-[0.55em] font-light tracking-[-0.02em] text-dim">, Ing.</span>
+          {lang === "en" && <span className="text-[0.55em] font-light tracking-[-0.02em] text-dim">, Ing.</span>}
           <span className="text-glow mt-4 block text-[26px] leading-tight font-semibold tracking-[-0.02em] sm:text-[38px]">
             Principal Transportation Engineer
           </span>
@@ -193,7 +194,7 @@ function Bento() {
             </p>
             <div className="mt-auto flex gap-6 pt-6">
               <Stat value="5" label={t("Regional models", "Regionální modely")} />
-              <Stat value="~20k" label={t("Diary records (2022)", "Záznamy deníků (2022)")} />
+              <Stat value={t("~20k", "~20 tis.")} label={t("Travel-diary records (2022)", "Záznamů z cestovních deníků (2022)")} />
             </div>
           </Tile>
 
@@ -226,7 +227,7 @@ function Bento() {
               <span className="text-sm text-dim">{t("papers & talks", "články a přednášky")}</span>
             </div>
             <ul className="mt-auto space-y-2 pt-6">
-              {pubs.slice(0, 3).map((p) => (
+              {pubs.map((p) => (
                 <li key={p.slug} className="flex gap-2 text-xs leading-snug text-starblue">
                   <BookOpen className="mt-0.5 size-3.5 shrink-0 text-cyan" />
                   <span className="line-clamp-1">{p.publication!.venue}</span>
@@ -236,7 +237,7 @@ function Bento() {
           </Tile>
 
           <Tile to="/expertise" label={t("Tools", "Nástroje")} className="overflow-hidden md:col-span-2">
-            <h3 className="mt-6 text-2xl font-semibold">{t(`${tools.length} modelling tools`, `${tools.length} nástrojů`)}</h3>
+            <h3 className="mt-6 text-2xl font-semibold">{t(`${tools.length} tools & methods`, `${tools.length} nástrojů a metod`)}</h3>
             <p className="mt-2 text-sm text-dim">{t("Strategic assignment, microsimulation, appraisal, GIS and code.", "Strategické přidělení, mikrosimulace, hodnocení, GIS a programování.")}</p>
             <div className="relative mt-auto -mx-6 overflow-hidden pt-6 [mask-image:linear-gradient(90deg,transparent,black_15%,black_85%,transparent)]">
               <div className="marquee flex w-max gap-2">

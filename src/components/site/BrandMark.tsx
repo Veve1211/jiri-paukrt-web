@@ -18,7 +18,7 @@ export function BrandMark({ showTagline = true }: { showTagline?: boolean }) {
     <span className="flex items-center gap-2.5">
       <JunctionGlyph />
       <span className="flex flex-col leading-none">
-        <span className="font-display text-[15px] font-semibold tracking-wide">Jiri Paukrt</span>
+        <span className="font-display text-[15px] font-semibold tracking-wide">{t("Jiri Paukrt", "Jiří Paukrt")}</span>
         {showTagline && (
           <span className="mt-1 font-mono text-[9px] tracking-wider text-dim uppercase">{t("Transport modelling · Dublin & CZ", "Dopravní modelování · Dublin a ČR")}</span>
         )}
