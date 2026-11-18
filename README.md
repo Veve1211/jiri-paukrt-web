@@ -4,6 +4,16 @@
 
 Web-vizitka a online CV pro Ing. Jiřího Paukrta, Principal Transportation Engineer v SYSTRA Dublin (27 let dopravního modelování v Irsku, Velké Británii, Austrálii a ČR).
 
+## Moje role
+
+Projekt jsem vedla celý sama: **Věra Paukrtová** (portfolio: https://verapaukrtova.cz).
+
+1. zadání a cíl webu, rozhovor s klientem a výběr faktů z jeho LinkedInu
+2. směr designu a obsahová rozhodnutí (viz níže)
+3. vývoj s AI asistenty (Lovable, Codex, Claude Code) podle pravidel v [`CLAUDE.md`](CLAUDE.md)
+4. Git workflow s pull requesty, kontrola typů a testů před každým pushem
+5. bezpečnostní kontrola (klíče, databáze, závislosti), viz [`security_warnings.md`](security_warnings.md)
+
 ## Zadání (4 otázky specifikace)
 
 | | |
