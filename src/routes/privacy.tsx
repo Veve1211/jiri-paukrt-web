@@ -20,7 +20,7 @@ export const Route = createFileRoute("/privacy")({
 const ITEMS: { title: string; body: string }[] = [
   {
     title: "Who is responsible",
-    body: `${PERSON.name}, ${PERSON.city}, Ireland, is responsible for this website and for the messages sent through it. This is a personal website and is not operated by ${PERSON.company}.`,
+    body: `${PERSON.name}, ${PERSON.home}, is responsible for this website and for the messages sent through it. This is a personal website and is not operated by ${PERSON.company}.`,
   },
   {
     title: "What is collected",

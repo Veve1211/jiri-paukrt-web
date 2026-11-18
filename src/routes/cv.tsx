@@ -51,7 +51,7 @@ function CvPage() {
         <header className="border-b-2 border-[#1f5fad] pb-5">
           <h1 className="text-[34px] leading-tight font-semibold tracking-tight text-[#0f2443]">{PERSON.name}, Ing.</h1>
           <p className="mt-1 text-[15px] font-medium text-[#1f5fad]">
-            {PERSON.role} · {PERSON.company}, {PERSON.city}, Ireland
+            {PERSON.role} · {PERSON.company} ({PERSON.city}, Ireland) · based in the {PERSON.home}
           </p>
           <p className="mt-2 text-[12px] text-[#4a5a70]">
             linkedin.com/in/jiri-paukrt · paukrt.lovable.app

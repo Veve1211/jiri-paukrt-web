@@ -9,6 +9,8 @@ export const PERSON = {
   role: "Principal Transportation Engineer",
   company: "SYSTRA",
   city: "Dublin",
+  /** Where Jiri lives — he works for SYSTRA's Dublin office from the Czech Republic. */
+  home: "Czech Republic",
   yearsLabel: "27+",
   careerStartYear: 1999,
   linkedin: "https://www.linkedin.com/in/jiri-paukrt",

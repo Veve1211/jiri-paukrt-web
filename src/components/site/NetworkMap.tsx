@@ -158,7 +158,7 @@ export function NetworkMap({
                   {l.name.toUpperCase()}
                 </text>
                 <text x={p.x + (labelRight ? 18 : -18)} y={p.y + 10} fontSize="8.5" className="fill-dim">
-                  {l.kind === "hq" ? "CURRENT BASE" : l.kind === "base" ? "CAREER BASE" : l.kind === "town" ? "TOWN MODEL" : "PROJECT"}
+                  {l.kind === "hq" ? "SYSTRA DUBLIN" : l.kind === "base" ? "CAREER BASE" : l.kind === "town" ? "TOWN MODEL" : "PROJECT"}
                 </text>
               </g>
             )}

@@ -18,7 +18,7 @@ export function BrandMark({ showTagline = true }: { showTagline?: boolean }) {
       <span className="flex flex-col leading-none">
         <span className="font-display text-[15px] font-semibold tracking-wide">Jiri Paukrt</span>
         {showTagline && (
-          <span className="mt-1 font-mono text-[9px] tracking-wider text-dim uppercase">Transport modelling · Dublin</span>
+          <span className="mt-1 font-mono text-[9px] tracking-wider text-dim uppercase">Transport modelling · Dublin & CZ</span>
         )}
       </span>
     </span>

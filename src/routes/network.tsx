@@ -40,7 +40,7 @@ export const Route = createFileRoute("/network")({
   component: NetworkPage,
 });
 
-const KIND_LABEL = { hq: "Current base", project: "Project", base: "Career base", town: "Town model" } as const;
+const KIND_LABEL = { hq: "Current employer", project: "Project", base: "Career base", town: "Town model" } as const;
 
 function NetworkPage() {
   const { node } = Route.useSearch();
@@ -93,7 +93,7 @@ function NetworkPage() {
             <NetworkMap selected={node} region={region} onSelect={select} />
           </div>
           <div className="flex flex-wrap gap-x-5 gap-y-1 border-t border-star/10 px-4 py-3 font-mono text-[10px] tracking-wider text-dim">
-            <span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-cyan" /> CURRENT BASE</span>
+            <span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-cyan" /> CURRENT EMPLOYER</span>
             <span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-star" /> PROJECT</span>
             <span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-starblue" /> CAREER BASE</span>
             <span className="flex items-center gap-1.5"><span className="size-1.5 rounded-full bg-star/80" /> TOWN MODEL</span>

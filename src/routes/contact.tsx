@@ -19,7 +19,7 @@ export const Route = createFileRoute("/contact")({
       { property: "og:title", content: "Contact — Jiri Paukrt" },
       {
         property: "og:description",
-        content: "Send a message or connect on LinkedIn. Based in Dublin, Ireland.",
+        content: "Send a message or connect on LinkedIn. Works for SYSTRA in Dublin, based in the Czech Republic.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -48,13 +48,13 @@ function ContactPage() {
           <div className="glass mt-10 flex items-center gap-5 rounded-[20px] p-5">
             <MonogramBadge className="size-24 shrink-0" />
             <div>
-              <div className="telemetry text-[10px] text-cyan">Based in Dublin</div>
+              <div className="telemetry text-[10px] text-cyan">Based in the Czech Republic</div>
               <div className="mt-1 text-lg font-medium">{PERSON.name}</div>
               <div className="text-sm text-dim">
                 {PERSON.role} · {PERSON.company}
               </div>
               <div className="mt-3 flex items-center gap-1.5 font-mono text-[10.5px] tracking-wider text-dim uppercase">
-                <MapPin className="size-3 text-cyan" /> Dublin, Ireland
+                <MapPin className="size-3 text-cyan" /> Czech Republic · SYSTRA Dublin
               </div>
             </div>
           </div>

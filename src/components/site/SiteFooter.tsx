@@ -31,7 +31,7 @@ export function SiteFooter() {
           >
             LinkedIn <ArrowUpRight className="size-4" />
           </a>
-          <span className="telemetry text-[10px] text-dim">Based in {PERSON.city}, Ireland</span>
+          <span className="telemetry text-[10px] text-dim">Based in the {PERSON.home} · SYSTRA {PERSON.city}</span>
           <a href="/privacy" className="telemetry text-[10px] text-dim hover:text-star">
             Privacy notice
           </a>

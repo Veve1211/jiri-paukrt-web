@@ -54,7 +54,7 @@ function Hero() {
       <section className="flex flex-col justify-center lg:col-span-5">
         <p className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-cyan/30 bg-cyan/[0.08] py-1.5 pr-4 pl-2 font-mono text-[10.5px] tracking-[0.16em] text-cyan uppercase">
           <span className="rounded-full bg-cyan px-2 py-0.5 font-semibold text-void">SYSTRA</span>
-          Dublin, Ireland
+          Dublin · based in the Czech Republic
         </p>
         <h1 className="text-[52px] leading-[0.95] font-semibold tracking-[-0.04em] text-balance sm:text-[76px]">
           <span className="text-gradient">Jiri Paukrt</span>
@@ -140,7 +140,7 @@ function Bento() {
         <div className="mt-10 grid auto-rows-[minmax(190px,auto)] gap-4 md:grid-cols-6">
           <Tile to="/career" label="Current role" className="md:col-span-4">
             <h3 className="mt-6 text-3xl font-semibold md:text-4xl">Principal Transportation Engineer</h3>
-            <p className="mt-2 text-starblue">SYSTRA · Dublin · since 2008</p>
+            <p className="mt-2 text-starblue">SYSTRA Dublin · since 2008 · based in the Czech Republic</p>
             <div className="mt-auto flex flex-wrap items-center gap-2 pt-6 font-mono text-[10.5px] tracking-wider text-dim uppercase">
               {["Prague 1999", "Leeds 2004", "Melbourne 2006", "Dublin 2008"].map((stop, i) => (
                 <span key={stop} className="flex items-center gap-2">
