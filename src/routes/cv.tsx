@@ -54,7 +54,7 @@ function CvPage() {
             {PERSON.role} · {PERSON.company}, {PERSON.city}, Ireland
           </p>
           <p className="mt-2 text-[12px] text-[#4a5a70]">
-            linkedin.com/in/jiri-paukrt · transport-constellation-atlas.lovable.app
+            paukrt@yahoo.com · linkedin.com/in/jiri-paukrt · transport-constellation-atlas.lovable.app
           </p>
         </header>
 
