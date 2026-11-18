@@ -1,4 +1,6 @@
-import type { ReactNode } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
+
+import { useLang } from "@/lib/i18n";
 
 import { cn } from "@/lib/utils";
 
@@ -93,13 +95,33 @@ const NET_LINKS: [number, number, number][] = [
   [0, 1, 6], [1, 2, 10], [2, 3, 5], [3, 4, 8], [4, 5, 4], [5, 0, 7], [6, 0, 9], [6, 2, 12], [6, 4, 6], [6, 5, 3],
 ];
 
+/** Colour the assignment picture by volume/capacity (toggle on the figure). */
+const VcCtx = createContext(false);
+
+function vcStroke(w: number) {
+  if (w >= 10) return "stroke-alert/80"; // over 0.90
+  if (w >= 7) return "stroke-amber/80"; // 0.70 – 0.90
+  return "stroke-go/75"; // under 0.70
+}
+
 function Bandwidth() {
+  const showVc = useContext(VcCtx);
   return (
     <Base>
       {NET_LINKS.map(([a, b, w], i) => {
         const p = NET[a]!;
         const q = NET[b]!;
-        return <line key={i} x1={p[0]} y1={p[1]} x2={q[0]} y2={q[1]} strokeWidth={w} className="stroke-cyan/60" />;
+        return (
+          <line
+            key={i}
+            x1={p[0]}
+            y1={p[1]}
+            x2={q[0]}
+            y2={q[1]}
+            strokeWidth={w}
+            className={cn("transition-colors duration-500", showVc ? vcStroke(w) : "stroke-cyan/60")}
+          />
+        );
       })}
       {NET.map(([x, y], i) => (
         <circle key={i} cx={x} cy={y} r="5" className="fill-void stroke-star" strokeWidth="1.4" />
@@ -221,9 +243,45 @@ export const METHOD_CAPTION_CS: Record<Method, string> = {
 
 export function MethodIllustration({ method, className }: { method: Method; className?: string }) {
   const Draw = DRAW[method];
-  return (
+  const [showVc, setShowVc] = useState(false);
+  const { t } = useLang();
+  const svg = (
     <svg viewBox={`0 0 ${W} ${H}`} className={cn("block h-auto w-full", className)} fill="none" role="img" aria-label={METHOD_CAPTION[method]}>
-      <Draw />
+      <VcCtx.Provider value={showVc}>
+        <Draw />
+      </VcCtx.Provider>
     </svg>
+  );
+  if (method !== "bandwidth") return svg;
+  return (
+    <div className="relative">
+      {svg}
+      <div className="absolute top-2 right-2 flex flex-col items-end gap-1 font-mono text-[9px] tracking-[0.12em] text-dim">
+        <button
+          type="button"
+          aria-pressed={showVc}
+          onClick={() => setShowVc((v) => !v)}
+          className="inline-flex items-center gap-2 rounded-full border border-star/15 bg-void/70 px-2.5 py-1 text-starblue uppercase transition-colors hover:border-cyan/50 hover:text-cyan"
+        >
+          <span className={cn("flex h-3 w-5 items-center rounded-full p-0.5 transition-colors", showVc ? "bg-cyan" : "bg-star/20")}>
+            <span className={cn("size-2 rounded-full bg-void transition-transform", showVc && "translate-x-2")} />
+          </span>
+          {t("Colour by V/C", "Barvy podle V/C")}
+        </button>
+      </div>
+      {showVc && (
+        <div className="absolute right-2 bottom-2 flex items-center gap-2.5 rounded-md bg-void/70 px-2 py-1 font-mono text-[9px] tracking-[0.1em] text-dim animate-in fade-in-0">
+          <span className="flex items-center gap-1">
+            <span className="h-1 w-3 bg-go" /> {t("<0.70", "<0,70")}
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="h-1 w-3 bg-amber" /> {t("0.70–0.90", "0,70–0,90")}
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="h-1 w-3 bg-alert" /> {t(">0.90", ">0,90")}
+          </span>
+        </div>
+      )}
+    </div>
   );
 }
