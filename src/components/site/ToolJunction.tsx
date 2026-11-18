@@ -2,7 +2,9 @@ import { Link } from "@tanstack/react-router";
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from "lucide-react";
 import { useState, type ComponentType } from "react";
 
-import { getProject, TECH, type Quadrant } from "@/data/portfolio";
+import { type Quadrant } from "@/data/portfolio";
+import { useContent } from "@/data/useContent";
+import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /**
@@ -41,6 +43,8 @@ function Junction({ active }: { active: Quadrant | null }) {
 }
 
 export function ToolJunction() {
+  const { t } = useLang();
+  const { tech: TECH, getProject, quadrantLabel } = useContent();
   const [selected, setSelected] = useState(TECH[0]?.name ?? "");
   const [hoverArm, setHoverArm] = useState<Quadrant | null>(null);
   const tech = TECH.find((t) => t.name === selected) ?? TECH[0]!;
@@ -63,13 +67,13 @@ export function ToolJunction() {
                 activeArm === quadrant ? "border-star" : "border-star/50",
                 area,
               )}
-              aria-label={`${quadrant} tools`}
+              aria-label={quadrantLabel(quadrant)}
             >
               <h3 className="flex items-center gap-2 font-display text-sm font-semibold tracking-wide text-white">
-                <Arrow className="size-4" /> {quadrant}
+                <Arrow className="size-4" /> {quadrantLabel(quadrant)}
               </h3>
               <div className="mt-2 flex flex-wrap gap-1.5">
-                {TECH.filter((t) => t.quadrant === quadrant).map((t) => (
+                {TECH.filter((x) => x.quadrant === quadrant).map((t) => (
                   <button
                     key={t.name}
                     type="button"
@@ -92,12 +96,12 @@ export function ToolJunction() {
       </div>
 
       <div className="glass rounded-[20px] p-5 lg:col-span-4" aria-live="polite">
-        <div className="telemetry text-[10px] text-cyan">{tech.quadrant}</div>
+        <div className="telemetry text-[10px] text-cyan">{quadrantLabel(tech.quadrant)}</div>
         <h3 className="mt-2 text-2xl font-medium">{tech.name}</h3>
         <p className="mt-2 text-sm leading-relaxed text-dim">{tech.blurb}</p>
         {tech.projects && (
           <div className="mt-4">
-            <div className="telemetry text-[9.5px] text-dim">Used on</div>
+            <div className="telemetry text-[9.5px] text-dim">{t("Used on", "Použito u")}</div>
             {tech.projects.map((slug) => {
               const p = getProject(slug)!;
               return (
@@ -109,7 +113,7 @@ export function ToolJunction() {
           </div>
         )}
         <p className="mt-6 border-t border-star/10 pt-4 text-xs leading-relaxed text-dim">
-          Choose a tool on one of the direction signs to read what it is used for.
+          {t("Choose a tool on one of the direction signs to read what it is used for.", "Vyberte nástroj na některé ze směrových cedulí a přečtěte si, k čemu slouží.")}
         </p>
       </div>
     </div>

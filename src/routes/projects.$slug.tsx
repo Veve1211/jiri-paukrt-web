@@ -2,12 +2,14 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, MapPin } from "lucide-react";
 
 import { InquiryDialog } from "@/components/site/InquiryDialog";
-import { METHOD_CAPTION, MethodIllustration, type Method } from "@/components/site/MethodIllustration";
+import { METHOD_CAPTION, METHOD_CAPTION_CS, MethodIllustration, type Method } from "@/components/site/MethodIllustration";
+import { useContent } from "@/data/useContent";
+import { useLang } from "@/lib/i18n";
 import { ProjectCover } from "@/components/site/ProjectCover";
 
 import type { TopicValue } from "@/components/site/InquiryForm";
 import { Button } from "@/components/ui/button";
-import { domainLabel, getProject, PROJECTS, type DomainKey } from "@/data/portfolio";
+import { getProject, type DomainKey } from "@/data/portfolio";
 
 const GALLERY: Record<string, Method[]> = {
   "nta-national-demand-model": ["matrix", "calibration", "bandwidth"],
@@ -52,35 +54,39 @@ export const Route = createFileRoute("/projects/$slug")({
 });
 
 function ProjectNotFound() {
+  const { t } = useLang();
   return (
     <div className="mx-auto max-w-lg px-4 pt-24 text-center">
-      <p className="telemetry text-[11px] text-cyan">Not found</p>
-      <h1 className="mt-4 text-4xl font-light">This project isn't listed</h1>
-      <p className="mt-3 text-dim">It may have been renamed or removed.</p>
+      <p className="telemetry text-[11px] text-cyan">{t("Not found", "Nenalezeno")}</p>
+      <h1 className="mt-4 text-4xl font-light">{t("This project isn't listed", "Tento projekt tu není")}</h1>
+      <p className="mt-3 text-dim">{t("It may have been renamed or removed.", "Mohl být přejmenován nebo odstraněn.")}</p>
       <Button asChild variant="glow" size="pill" className="mt-8">
-        <Link to="/projects">Browse all projects →</Link>
+        <Link to="/projects">{t("Browse all projects →", "Všechny projekty →")}</Link>
       </Button>
     </div>
   );
 }
 
 function ProjectPage() {
-  const { project: p } = Route.useLoaderData();
-  const idx = PROJECTS.findIndex((x) => x.slug === p.slug);
-  const prev = PROJECTS[(idx - 1 + PROJECTS.length) % PROJECTS.length] ?? p;
-  const next = PROJECTS[(idx + 1) % PROJECTS.length] ?? p;
+  const { project: base } = Route.useLoaderData();
+  const { t, lang } = useLang();
+  const { projects, domainLabel, regionLabel } = useContent();
+  const p = projects.find((x) => x.slug === base.slug) ?? base;
+  const idx = projects.findIndex((x) => x.slug === p.slug);
+  const prev = projects[(idx - 1 + projects.length) % projects.length] ?? p;
+  const next = projects[(idx + 1) % projects.length] ?? p;
   const isTownList = p.slug === "uk-microsimulation-models";
 
   return (
     <article className="px-4 pt-10 md:px-8">
       <Link to="/projects" className="inline-flex items-center gap-1.5 font-mono text-[11px] tracking-wider text-dim hover:text-star">
-        <ArrowLeft className="size-3.5" /> ALL PROJECTS
+        <ArrowLeft className="size-3.5" /> {t("ALL PROJECTS", "VŠECHNY PROJEKTY")}
       </Link>
 
       <div className="mt-8 grid gap-10 lg:grid-cols-12">
         <div className="lg:col-span-7">
           <p className="font-mono text-[11px] tracking-[0.25em] text-cyan/80">
-            {p.region.toUpperCase()} · {p.location.toUpperCase()}
+            {regionLabel(p.region).toUpperCase()} · {p.location.toUpperCase()}
           </p>
           <h1 className="mt-5 text-[40px] leading-[1.04] font-light tracking-tight text-balance md:text-[52px]">
             {p.title}
@@ -91,14 +97,14 @@ function ProjectPage() {
           </p>
           {p.role && (
             <p className="mt-4 inline-flex max-w-[580px] items-start gap-2 rounded-[14px] border border-cyan/30 bg-cyan/[0.07] px-3.5 py-2.5 text-sm text-star">
-              <span className="telemetry mt-0.5 shrink-0 text-[9.5px] text-cyan">Jiri's role</span>
+              <span className="telemetry mt-0.5 shrink-0 text-[9.5px] text-cyan">{t("Jiri's role", "Jiřího role")}</span>
               {p.role}
             </p>
           )}
           <p className="mt-6 max-w-[580px] text-[15px] leading-relaxed text-dim">{p.summary}</p>
           {p.usedFor && (
             <p className="mt-4 max-w-[580px] text-[15px] leading-relaxed text-star">
-              <span className="telemetry mr-2 text-[10px] text-cyan">Used for</span>
+              <span className="telemetry mr-2 text-[10px] text-cyan">{t("Used for", "K čemu sloužil")}</span>
               {p.usedFor}
             </p>
           )}
@@ -126,13 +132,13 @@ function ProjectPage() {
               subject={p.title}
               trigger={
                 <Button variant="glow" size="pill" className="font-medium">
-                  Ask about this project →
+                  {t("Ask about this project →", "Zeptat se na projekt →")}
                 </Button>
               }
             />
             <Button asChild variant="glass" size="pill">
               <Link to="/network" search={p.locationIds[0] ? { node: p.locationIds[0] } : {}}>
-                <MapPin /> Show on map
+                <MapPin /> {t("Show on map", "Ukázat na mapě")}
               </Link>
             </Button>
           </div>
@@ -143,7 +149,7 @@ function ProjectPage() {
             <ProjectCover slug={p.slug} />
           </div>
           <div className="glass rounded-[20px] p-5">
-            <div className="telemetry text-[10px] text-cyan">{isTownList ? "Towns modelled" : "Key points"}</div>
+            <div className="telemetry text-[10px] text-cyan">{isTownList ? t("Towns modelled", "Modelovaná města") : t("Key points", "Hlavní body")}</div>
             <ul className={isTownList ? "mt-4 grid grid-cols-2 gap-x-4 gap-y-2" : "mt-4 space-y-3"}>
               {p.highlights.map((h) => (
                 <li key={h} className="flex gap-3 text-sm text-star">
@@ -157,7 +163,7 @@ function ProjectPage() {
           {p.publication && (
             <div className="glass rounded-[20px] p-5">
               <div className="telemetry flex items-center gap-2 text-[10px] text-cyan">
-                <BookOpen className="size-3.5" /> Publication
+                <BookOpen className="size-3.5" /> {t("Publication", "Publikace")}
               </div>
               <p className="mt-3 text-base leading-snug font-medium">"{p.publication.title}"</p>
               <p className="mt-2 text-sm text-dim">{p.publication.venue}</p>
@@ -169,14 +175,14 @@ function ProjectPage() {
                   rel="noreferrer"
                   className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-cyan hover:underline"
                 >
-                  Read the paper <ArrowUpRight className="size-3.5" />
+                  {t("Read the paper", "Číst článek")} <ArrowUpRight className="size-3.5" />
                 </a>
               )}
             </div>
           )}
 
           <div className="glass rounded-[20px] p-5">
-            <div className="telemetry text-[10px] text-dim">Domains</div>
+            <div className="telemetry text-[10px] text-dim">{t("Domains", "Obory")}</div>
             <div className="mt-3 flex flex-wrap gap-1.5">
               {p.domains.map((d) => (
                 <Link
@@ -188,9 +194,9 @@ function ProjectPage() {
                   {domainLabel(d)}
                 </Link>
               ))}
-              {p.tools?.map((t) => (
-                <span key={t} className="rounded-full border border-volt/40 bg-volt/10 px-3 py-1 font-mono text-[10px] tracking-wider text-starblue uppercase">
-                  {t}
+              {p.tools?.map((tool) => (
+                <span key={tool} className="rounded-full border border-volt/40 bg-volt/10 px-3 py-1 font-mono text-[10px] tracking-wider text-starblue uppercase">
+                  {tool}
                 </span>
               ))}
             </div>
@@ -200,32 +206,33 @@ function ProjectPage() {
 
       {GALLERY[p.slug] && (
         <section className="mt-16" aria-labelledby="how">
-          <p className="telemetry text-[11px] text-cyan">How this kind of work is done</p>
+          <p className="telemetry text-[11px] text-cyan">{t("How this kind of work is done", "Jak se taková práce dělá")}</p>
           <h2 id="how" className="mt-3 text-2xl font-light md:text-3xl">
-            The method, <span className="font-semibold">in pictures</span>
+            {t("The method, ", "Metoda ")}
+            <span className="font-semibold">{t("in pictures", "v obrázcích")}</span>
           </h2>
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {GALLERY[p.slug]!.map((m) => (
               <figure key={m} className="glass reveal overflow-hidden rounded-[20px]">
                 <MethodIllustration method={m} />
-                <figcaption className="border-t border-star/10 px-5 py-3 text-sm text-starblue">{METHOD_CAPTION[m]}</figcaption>
+                <figcaption className="border-t border-star/10 px-5 py-3 text-sm text-starblue">{lang === "cs" ? METHOD_CAPTION_CS[m] : METHOD_CAPTION[m]}</figcaption>
               </figure>
             ))}
           </div>
-          <p className="mt-3 text-xs text-dim">Illustrations of the method — not data from this project.</p>
+          <p className="mt-3 text-xs text-dim">{t("Illustrations of the method — not data from this project.", "Ilustrace metody — nejde o data z tohoto projektu.")}</p>
         </section>
       )}
 
-      <nav aria-label="More projects" className="mt-16 grid gap-3 border-t border-star/10 pt-6 sm:grid-cols-2">
+      <nav aria-label={t("More projects", "Další projekty")} className="mt-16 grid gap-3 border-t border-star/10 pt-6 sm:grid-cols-2">
         <Link to="/projects/$slug" params={{ slug: prev.slug }} className="group glass rounded-[20px] p-4 hover:border-cyan/40">
           <span className="telemetry flex items-center gap-1.5 text-[10px] text-dim">
-            <ArrowLeft className="size-3" /> Previous
+            <ArrowLeft className="size-3" /> {t("Previous", "Předchozí")}
           </span>
           <span className="mt-1 block font-medium group-hover:text-cyan">{prev.title}</span>
         </Link>
         <Link to="/projects/$slug" params={{ slug: next.slug }} className="group glass rounded-[20px] p-4 text-right hover:border-cyan/40">
           <span className="telemetry flex items-center justify-end gap-1.5 text-[10px] text-dim">
-            Next <ArrowRight className="size-3" />
+            {t("Next", "Další")} <ArrowRight className="size-3" />
           </span>
           <span className="mt-1 block font-medium group-hover:text-cyan">{next.title}</span>
         </Link>

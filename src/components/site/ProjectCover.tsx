@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { getLocation, UK_MICROSIM_TOWNS } from "@/data/portfolio";
+import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /**
@@ -12,7 +13,19 @@ import { cn } from "@/lib/utils";
 const W = 400;
 const H = 210;
 
+const LABEL_CS: Record<string, string> = {
+  "TRIP ENDS → ZONES · NATIONAL DEMAND": "ZDROJE A CÍLE CEST → ZÓNY · NÁRODNÍ POPTÁVKA",
+  "INTER-URBAN CAR · BUS · RAIL · GOODS": "MEZIMĚSTSKÁ AUTA · AUTOBUSY · VLAKY · NÁKLAD",
+  "M74 COMPLETION · ABOUT 8 KM · OPENED 2011": "DOSTAVBA M74 · ASI 8 KM · OTEVŘENO 2011",
+  "SIMULATED vs OBSERVED CONFLICTS · TTC": "SIMULOVANÉ vs POZOROVANÉ KONFLIKTY · TTC",
+  "VISITOR ARRIVALS AND DEPARTURES · EVENT DAY": "PŘÍCHODY A ODCHODY NÁVŠTĚVNÍKŮ · DEN AKCE",
+  "SURFACE NETWORK ALONG THE TUNNEL CORRIDOR": "POVRCHOVÁ SÍŤ PODÉL KORIDORU TUNELU",
+  "TOWN CENTRE OPTIONS · LAND USE · ROADS · BUSES": "VARIANTY CENTRA · ÚZEMÍ · SILNICE · AUTOBUSY",
+};
+
 function Frame({ label, children }: { label: string; children: ReactNode }) {
+  const { t } = useLang();
+  const text = t(label, LABEL_CS[label] ?? label.replace("TOWN MICROSIMULATION MODELS", "MIKROSIMULAČNÍCH MODELŮ MĚST"));
   return (
     <>
       <defs>
@@ -24,7 +37,7 @@ function Frame({ label, children }: { label: string; children: ReactNode }) {
       {children}
       <rect x="0" y={H - 26} width={W} height="26" className="fill-void/85" />
       <text x="14" y={H - 10} fontSize="8.5" letterSpacing="1.4" className="fill-dim font-mono">
-        {label}
+        {text}
       </text>
     </>
   );

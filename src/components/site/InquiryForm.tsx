@@ -4,6 +4,7 @@ import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export const TOPICS = [
@@ -13,6 +14,32 @@ export const TOPICS = [
   { value: "gis-safety", label: "GIS & road safety" },
   { value: "other", label: "Something else" },
 ] as const;
+
+/** Czech versions of the form's fixed English strings (labels, topics, errors). */
+const CS: Record<string, string> = {
+  "National / strategic demand model": "Národní / strategický model poptávky",
+  Microsimulation: "Mikrosimulace",
+  "Major-event transport": "Doprava při velkých akcích",
+  "GIS & road safety": "GIS a bezpečnost provozu",
+  "Something else": "Něco jiného",
+  "Please enter your name": "Zadejte prosím své jméno",
+  "Keep it under 100 characters": "Maximálně 100 znaků",
+  "A name can't contain a link": "Jméno nemůže obsahovat odkaz",
+  "Enter a valid email address": "Zadejte platnou e-mailovou adresu",
+  "Please use a permanent email address so Jiri can reply":
+    "Použijte prosím trvalou e-mailovou adresu, aby vám Jiří mohl odpovědět",
+  "Keep it under 120 characters": "Maximálně 120 znaků",
+  "Please describe your question in a sentence or two (at least 30 characters)":
+    "Popište prosím svůj dotaz jednou dvěma větami (alespoň 30 znaků)",
+  "Keep it under 2,000 characters": "Maximálně 2 000 znaků",
+  "Please include no more than two links": "Uveďte prosím nejvýše dva odkazy",
+  "This doesn't look like a question yet — please write it in a few words":
+    "Tohle zatím nevypadá jako dotaz — napište ho prosím několika slovy",
+  "You've just sent a message. Please wait a few minutes before sending another.":
+    "Zprávu jste právě odeslali. Další prosím pošlete až za pár minut.",
+  "The message didn't go through. Check your connection and try again.":
+    "Zprávu se nepodařilo odeslat. Zkontrolujte připojení a zkuste to znovu.",
+};
 
 export type TopicValue = (typeof TOPICS)[number]["value"];
 
@@ -108,6 +135,8 @@ export function InquiryForm({
     topic: defaultTopic,
     message: defaultMessage,
   });
+  const { t } = useLang();
+  const tr = (en: string) => t(en, CS[en] ?? en);
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [honeypot, setHoneypot] = useState("");
@@ -184,10 +213,10 @@ export function InquiryForm({
           <CheckCircle2 className="size-5" />
         </div>
         <div>
-          <div className="telemetry text-[10px] text-cyan">Message received · {status.reference}</div>
-          <h3 className="mt-2 text-xl font-medium">Thanks, {values.name.split(" ")[0]}.</h3>
+          <div className="telemetry text-[10px] text-cyan">{t("Message received", "Zpráva přijata")} · {status.reference}</div>
+          <h3 className="mt-2 text-xl font-medium">{t("Thanks", "Děkujeme")}, {values.name.split(" ")[0]}.</h3>
           <p className="mt-1 max-w-sm text-sm text-dim">
-            Your message is logged for Jiri. He'll reply to {values.email}.
+            {t(`Your message has been received. Any reply will go to ${values.email}.`, `Vaše zpráva byla přijata. Případná odpověď přijde na ${values.email}.`)}
           </p>
         </div>
         <Button
@@ -198,7 +227,7 @@ export function InquiryForm({
             setStatus({ kind: "idle" });
           }}
         >
-          <RotateCcw /> Send another message
+          <RotateCcw /> {t("Send another message", "Poslat další zprávu")}
         </Button>
       </div>
     );
@@ -209,7 +238,7 @@ export function InquiryForm({
   return (
     <form onSubmit={onSubmit} noValidate className="space-y-4">
       <div className={cn("grid gap-4", !compact && "sm:grid-cols-2")}>
-        <Field label="Name" error={errors.name} htmlFor="inq-name">
+        <Field label={t("Name", "Jméno")} error={errors.name && tr(errors.name)} htmlFor="inq-name">
           <input
             id="inq-name"
             className={fieldClass}
@@ -220,7 +249,7 @@ export function InquiryForm({
             maxLength={100}
           />
         </Field>
-        <Field label="Email" error={errors.email} htmlFor="inq-email">
+        <Field label={t("Email", "E-mail")} error={errors.email && tr(errors.email)} htmlFor="inq-email">
           <input
             id="inq-email"
             type="email"
@@ -234,7 +263,7 @@ export function InquiryForm({
         </Field>
       </div>
       <div className={cn("grid gap-4", !compact && "sm:grid-cols-2")}>
-        <Field label="Organisation (optional)" error={errors.organisation} htmlFor="inq-org">
+        <Field label={t("Organisation (optional)", "Organizace (nepovinné)")} error={errors.organisation && tr(errors.organisation)} htmlFor="inq-org">
           <input
             id="inq-org"
             className={fieldClass}
@@ -244,22 +273,22 @@ export function InquiryForm({
             maxLength={120}
           />
         </Field>
-        <Field label="Topic" htmlFor="inq-topic">
+        <Field label={t("Topic", "Téma")} htmlFor="inq-topic">
           <select
             id="inq-topic"
             className={cn(fieldClass, "appearance-none bg-ink")}
             value={values.topic}
             onChange={(e) => set("topic", e.target.value as TopicValue)}
           >
-            {TOPICS.map((t) => (
-              <option key={t.value} value={t.value}>
-                {t.label}
+            {TOPICS.map((topic) => (
+              <option key={topic.value} value={topic.value}>
+                {tr(topic.label)}
               </option>
             ))}
           </select>
         </Field>
       </div>
-      <Field label="Message" error={errors.message} htmlFor="inq-message" hint={`${values.message.length}/2000`}>
+      <Field label={t("Message", "Zpráva")} error={errors.message && tr(errors.message)} htmlFor="inq-message" hint={`${values.message.length}/2000`}>
         <textarea
           id="inq-message"
           rows={compact ? 4 : 5}
@@ -268,7 +297,7 @@ export function InquiryForm({
           onChange={(e) => set("message", e.target.value)}
           aria-invalid={!!errors.message}
           maxLength={2000}
-          placeholder="What you would like to discuss…"
+          placeholder={t("What you would like to discuss…", "O čem byste chtěli mluvit…")}
         />
       </Field>
       <input
@@ -283,24 +312,24 @@ export function InquiryForm({
       />
       {status.kind === "error" && (
         <p role="alert" className="rounded-[14px] border border-alert/40 bg-alert/10 px-3.5 py-2.5 text-sm text-star">
-          {status.message}
+          {tr(status.message)}
         </p>
       )}
       <p className="text-xs leading-relaxed text-dim">
-        Your details are used only to reply to your message.{" "}
+        {t("Your details are used only to reply to your message.", "Vaše údaje použijeme jen k odpovědi na zprávu.")}{" "}
         <a href="/privacy" className="text-cyan underline-offset-2 hover:underline">
-          Privacy notice
+          {t("Privacy notice", "Ochrana osobních údajů")}
         </a>
       </p>
       <Button type="submit" variant="glow" size="pill" disabled={sending} className="w-full font-medium sm:w-auto">
         {sending ? (
           <>
-            <Loader2 className="animate-spin" /> Sending…
+            <Loader2 className="animate-spin" /> {t("Sending…", "Odesílám…")}
           </>
         ) : status.kind === "error" ? (
-          "Try again →"
+          t("Try again →", "Zkusit znovu →")
         ) : (
-          "Send message →"
+          t("Send message →", "Odeslat zprávu →")
         )}
       </Button>
     </form>

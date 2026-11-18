@@ -1,3 +1,4 @@
+import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { LOCATIONS, type NetworkLocation, type Region } from "@/data/portfolio";
 import { usePrefersReducedMotion } from "@/hooks/use-telemetry";
@@ -43,6 +44,7 @@ export function NetworkMap({
   onSelect: (id: string | undefined) => void;
 }) {
   const reducedMotion = usePrefersReducedMotion();
+  const { t } = useLang();
   const inRegion = (l: NetworkLocation) => !region || l.region === region;
 
   const careerD = CAREER_PATH.slice(1)
@@ -58,7 +60,7 @@ export function NetworkMap({
       className="h-full w-full"
       fill="none"
       role="group"
-      aria-label="Map of projects and career bases"
+      aria-label={t("Map of projects and career bases", "Mapa projektů a kariérních zastávek")}
       onClick={(e) => {
         if (e.target === e.currentTarget) onSelect(undefined);
       }}
@@ -66,10 +68,10 @@ export function NetworkMap({
       {/* sector frames */}
       <g className="font-mono" fontSize="9" letterSpacing="2">
         <rect x="20" y="30" width="640" height="510" rx="14" className="stroke-star/[0.06]" />
-        <text x="36" y="52" className="fill-dim">EUROPE</text>
+        <text x="36" y="52" className="fill-dim">{t("EUROPE", "EVROPA")}</text>
         <rect x="690" y="170" width="290" height="280" rx="14" className="stroke-star/[0.06]" />
-        <text x="706" y="192" className="fill-dim">AUSTRALIA</text>
-        <text x="36" y="575" className="fill-dim/70">SCHEMATIC MAP · NOT TO SCALE BETWEEN PANELS</text>
+        <text x="706" y="192" className="fill-dim">{t("AUSTRALIA", "AUSTRÁLIE")}</text>
+        <text x="36" y="575" className="fill-dim/70">{t("SCHEMATIC MAP · NOT TO SCALE BETWEEN PANELS", "SCHEMATICKÁ MAPA · PANELY NEJSOU VE STEJNÉM MĚŘÍTKU")}</text>
       </g>
       {/* career route */}
       <path d={careerD} strokeWidth="7" strokeLinejoin="round" className="stroke-volt/25" />
@@ -158,7 +160,7 @@ export function NetworkMap({
                   {l.name.toUpperCase()}
                 </text>
                 <text x={p.x + (labelRight ? 18 : -18)} y={p.y + 10} fontSize="8.5" className="fill-dim">
-                  {l.kind === "hq" ? "SYSTRA DUBLIN" : l.kind === "base" ? "CAREER BASE" : l.kind === "town" ? "TOWN MODEL" : "PROJECT"}
+                  {l.kind === "hq" ? "SYSTRA DUBLIN" : l.kind === "base" ? t("CAREER BASE", "KARIÉRNÍ ZASTÁVKA") : l.kind === "town" ? t("TOWN MODEL", "MODEL MĚSTA") : t("PROJECT", "PROJEKT")}
                 </text>
               </g>
             )}

@@ -1,11 +1,15 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 
-import { domainLabel, type Project } from "@/data/portfolio";
+import { type Project } from "@/data/portfolio";
+import { useContent } from "@/data/useContent";
+import { useLang } from "@/lib/i18n";
 import { ProjectCover } from "./ProjectCover";
 import { spotlightMove } from "@/hooks/use-spotlight";
 
 export function ProjectCard({ project }: { project: Project }) {
+  const { t } = useLang();
+  const { domainLabel } = useContent();
   const lead = project.metrics[0] ?? { value: project.code, label: project.region };
   return (
     <Link
@@ -28,7 +32,7 @@ export function ProjectCard({ project }: { project: Project }) {
       </p>
       {project.role && (
         <p className="mt-3 text-xs leading-snug text-starblue">
-          <span className="telemetry mr-1.5 text-[9px] text-cyan">Role</span>
+          <span className="telemetry mr-1.5 text-[9px] text-cyan">{t("Role", "Role")}</span>
           {project.role}
         </p>
       )}
@@ -40,7 +44,7 @@ export function ProjectCard({ project }: { project: Project }) {
             <div className="telemetry text-[9px] text-dim">{lead.label}</div>
           </div>
           <span className="inline-flex items-center gap-1 text-sm text-cyan">
-            Details <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+            {t("Details", "Detail")} <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
           </span>
         </div>
         <div className="mt-3 flex flex-wrap gap-1.5">

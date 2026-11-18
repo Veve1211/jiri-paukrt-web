@@ -3,7 +3,9 @@ import { ArrowRight, BookOpen } from "lucide-react";
 
 import { PageIntro } from "@/components/site/PageIntro";
 import { ProjectCard } from "@/components/site/ProjectCard";
-import { DOMAINS, filterProjects, isDomainKey, PROJECTS, type DomainKey } from "@/data/portfolio";
+import { DOMAINS, filterProjects, isDomainKey, type DomainKey } from "@/data/portfolio";
+import { useContent } from "@/data/useContent";
+import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/projects/")({
@@ -34,29 +36,36 @@ export const Route = createFileRoute("/projects/")({
 
 function ProjectsPage() {
   const { domain } = Route.useSearch();
-  const list = filterProjects(domain);
-  const publications = PROJECTS.filter((p) => p.publication);
+  const { t } = useLang();
+  const { projects, domainLabel } = useContent();
+  const list = domain ? projects.filter((p) => p.domains.includes(domain)) : projects;
+  const publications = projects.filter((p) => p.publication);
 
   return (
     <div className="px-4 pt-10 md:px-8">
       <PageIntro
-        chart="PROJECTS"
+        chart={t("PROJECTS", "PROJEKTY")}
         title={
           <>
-            Featured <span className="font-bold">Projects</span> &amp; Publications
+            {t("Featured ", "Vybrané ")}
+            <span className="font-bold">{t("Projects", "projekty")}</span>
+            {t(" & Publications", " a publikace")}
           </>
         }
       >
-        From national demand models for Ireland to vehicle-by-vehicle simulation of a single town centre.
+        {t(
+          "From national demand models for Ireland to vehicle-by-vehicle simulation of a single town centre.",
+          "Od národních modelů poptávky pro Irsko po simulaci jednotlivých vozidel v centru jednoho města.",
+        )}
       </PageIntro>
 
-      <div className="mt-8 flex flex-wrap items-center gap-2" role="group" aria-label="Filter by domain">
-        <FilterChip active={!domain} label="All projects" count={PROJECTS.length} search={{}} />
+      <div className="mt-8 flex flex-wrap items-center gap-2" role="group" aria-label={t("Filter by domain", "Filtrovat podle oboru")}>
+        <FilterChip active={!domain} label={t("All projects", "Všechny projekty")} count={projects.length} search={{}} />
         {DOMAINS.map((d) => (
           <FilterChip
             key={d.key}
             active={domain === d.key}
-            label={d.label}
+            label={domainLabel(d.key)}
             count={filterProjects(d.key).length}
             search={{ domain: d.key }}
           />
@@ -64,7 +73,7 @@ function ProjectsPage() {
       </div>
 
       <p className="mt-6 font-mono text-[11px] tracking-wider text-dim" aria-live="polite">
-        {String(list.length).padStart(2, "0")} PROJECT{list.length === 1 ? "" : "S"}
+        {String(list.length).padStart(2, "0")} {t(list.length === 1 ? "PROJECT" : "PROJECTS", list.length === 1 ? "PROJEKT" : list.length < 5 ? "PROJEKTY" : "PROJEKTŮ")}
       </p>
 
       {list.length > 0 ? (
@@ -75,17 +84,18 @@ function ProjectsPage() {
         </div>
       ) : (
         <div className="glass mt-4 rounded-[20px] p-10 text-center">
-          <p className="text-dim">No projects in this category.</p>
+          <p className="text-dim">{t("No projects in this category.", "V této kategorii nejsou žádné projekty.")}</p>
           <Link to="/projects" className="mt-3 inline-block text-sm text-cyan hover:underline">
-            Show all projects
+            {t("Show all projects", "Zobrazit všechny projekty")}
           </Link>
         </div>
       )}
 
       <section className="mt-20" aria-labelledby="pubs">
-        <p className="font-mono text-[11px] tracking-[0.25em] text-cyan/80">PUBLICATIONS & CONFERENCE PAPERS</p>
+        <p className="font-mono text-[11px] tracking-[0.25em] text-cyan/80">{t("PUBLICATIONS & CONFERENCE PAPERS", "PUBLIKACE A KONFERENČNÍ PŘÍSPĚVKY")}</p>
         <h2 id="pubs" className="mt-4 text-3xl font-light tracking-tight md:text-4xl">
-          Papers &amp; <span className="font-bold">Presentations</span>
+          {t("Papers & ", "Články a ")}
+          <span className="font-bold">{t("Presentations", "přednášky")}</span>
         </h2>
         <ul className="mt-8 divide-y divide-star/10 border-y border-star/10">
           {publications.map((p) => (

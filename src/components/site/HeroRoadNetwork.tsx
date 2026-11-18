@@ -2,7 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, X } from "lucide-react";
 import { useEffect, useState, type CSSProperties, type KeyboardEvent } from "react";
 
-import { getProject } from "@/data/portfolio";
+import { useContent } from "@/data/useContent";
+import { useLang } from "@/lib/i18n";
 import { usePrefersReducedMotion } from "@/hooks/use-telemetry";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +20,8 @@ interface Junction {
   slug: string;
   label: string;
   sub: string;
+  subCs: string;
+  labelCs?: string;
   major: boolean;
 }
 
@@ -31,13 +34,13 @@ const W = 700;
 const H = 600;
 
 const JUNCTIONS: Junction[] = [
-  { id: "ireland", x: 210, y: 170, slug: "nta-national-demand-model", label: "IRELAND · NTA", sub: "NATIONAL DEMAND MODEL", major: true },
-  { id: "cwg", x: 380, y: 300, slug: "commonwealth-games", label: "COMMONWEALTH GAMES", sub: "VISITOR DEMAND", major: true },
-  { id: "sydney", x: 560, y: 450, slug: "sydney-lane-cove-tunnel", label: "SYDNEY", sub: "LANE COVE TUNNEL", major: true },
-  { id: "uk", x: 500, y: 140, slug: "uk-microsimulation-models", label: "UK TOWNS", sub: "11 MICROSIMULATIONS", major: false },
-  { id: "melbourne", x: 610, y: 290, slug: "melbourne-dandenong", label: "MELBOURNE", sub: "DANDENONG MICROSIM", major: false },
-  { id: "glasgow", x: 140, y: 370, slug: "glasgow-m74-evaluation", label: "GLASGOW M74", sub: "5-YEAR EVALUATION", major: false },
-  { id: "safety", x: 290, y: 480, slug: "road-safety-traffic-conflicts", label: "BRNO · ROAD SAFETY", sub: "TRAFFIC CONFLICTS", major: false },
+  { id: "ireland", x: 210, y: 170, slug: "nta-national-demand-model", label: "IRELAND · NTA", labelCs: "IRSKO · NTA", sub: "NATIONAL DEMAND MODEL", subCs: "NÁRODNÍ MODEL POPTÁVKY", major: true },
+  { id: "cwg", x: 380, y: 300, slug: "commonwealth-games", label: "COMMONWEALTH GAMES", labelCs: "HRY COMMONWEALTHU", sub: "VISITOR DEMAND", subCs: "POPTÁVKA NÁVŠTĚVNÍKŮ", major: true },
+  { id: "sydney", x: 560, y: 450, slug: "sydney-lane-cove-tunnel", label: "SYDNEY", sub: "LANE COVE TUNNEL", subCs: "TUNEL LANE COVE", major: true },
+  { id: "uk", x: 500, y: 140, slug: "uk-microsimulation-models", label: "UK TOWNS", labelCs: "MĚSTA V UK", sub: "11 MICROSIMULATIONS", subCs: "11 MIKROSIMULACÍ", major: false },
+  { id: "melbourne", x: 610, y: 290, slug: "melbourne-dandenong", label: "MELBOURNE", sub: "DANDENONG MICROSIM", subCs: "MIKROSIMULACE DANDENONG", major: false },
+  { id: "glasgow", x: 140, y: 370, slug: "glasgow-m74-evaluation", label: "GLASGOW M74", sub: "5-YEAR EVALUATION", subCs: "HODNOCENÍ PO 5 LETECH", major: false },
+  { id: "safety", x: 290, y: 480, slug: "road-safety-traffic-conflicts", label: "BRNO · ROAD SAFETY", labelCs: "BRNO · BEZPEČNOST", sub: "TRAFFIC CONFLICTS", subCs: "DOPRAVNÍ KONFLIKTY", major: false },
 ];
 
 /** Roads between project junctions, with illustrative two-way flow (veh/h) and volume/capacity. */
@@ -174,6 +177,8 @@ export function HeroRoadNetwork() {
   const [hovered, setHovered] = useState<string | null>(null);
   const [showVc, setShowVc] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
+  const { t } = useLang();
+  const { getProject } = useContent();
 
   useEffect(() => {
     if (!selected) return;
@@ -209,7 +214,7 @@ export function HeroRoadNetwork() {
           className="absolute inset-0 h-full w-full"
           fill="none"
           role="group"
-          aria-label="Traffic-model style network of selected projects — each junction opens a project"
+          aria-label={t("Traffic-model style network of selected projects — each junction opens a project", "Síť vybraných projektů ve stylu dopravního modelu — každá křižovatka otevře projekt")}
           onClick={(e) => {
             if (e.target === e.currentTarget) setSelected(null);
           }}
@@ -279,7 +284,7 @@ export function HeroRoadNetwork() {
                 key={j.id}
                 role="button"
                 tabIndex={0}
-                aria-label={`${j.label} — ${j.sub}`}
+                aria-label={`${t(j.label, j.labelCs ?? j.label)} — ${t(j.sub, j.subCs)}`}
                 aria-pressed={isSel}
                 className="cursor-pointer outline-none [&:focus-visible_.focus-ring]:opacity-100"
                 onClick={() => setSelected((s) => (s === j.id ? null : j.id))}
@@ -319,10 +324,10 @@ export function HeroRoadNetwork() {
                 {showLabel && (
                   <g className="font-mono" letterSpacing="1.4" textAnchor={pos.anchor} stroke="var(--void)" strokeWidth="4" paintOrder="stroke" strokeLinejoin="round">
                     <text x={pos.x} y={pos.y} fontSize="11" className={isActive ? "fill-cyan" : "fill-star"}>
-                      {j.label}
+                      {t(j.label, j.labelCs ?? j.label)}
                     </text>
                     <text x={pos.x} y={pos.y + 15} fontSize="9" className="fill-dim">
-                      {j.sub}
+                      {t(j.sub, j.subCs)}
                     </text>
                   </g>
                 )}
@@ -331,30 +336,30 @@ export function HeroRoadNetwork() {
           })}
 
           <text x="24" y="584" fontSize="9" letterSpacing="1.4" className="fill-dim/80 font-mono">
-            ILLUSTRATIVE FLOWS · NOT PROJECT DATA
+            {t("ILLUSTRATIVE FLOWS · NOT PROJECT DATA", "ILUSTRATIVNÍ INTENZITY · NE DATA PROJEKTŮ")}
           </text>
         </svg>
 
         {/* legend */}
         <div className="absolute top-1 right-1 hidden space-y-1 text-right font-mono text-[9.5px] leading-relaxed tracking-[0.12em] text-dim sm:block">
           <div className="flex items-center justify-end gap-2 text-star/80">
-            FLOW BANDWIDTH <span className="h-0.5 w-3 bg-cyan" /><span className="h-2 w-3 bg-cyan" />
+            {t("FLOW BANDWIDTH", "INTENZITA DOPRAVY")} <span className="h-0.5 w-3 bg-cyan" /><span className="h-2 w-3 bg-cyan" />
           </div>
           {showVc && (
             <div className="space-y-1 animate-in fade-in-0">
               <div className="flex items-center justify-end gap-2">
-                V/C UNDER 0.70 <span className="h-1.5 w-5 bg-go" />
+                {t("V/C UNDER 0.70", "V/C POD 0,70")} <span className="h-1.5 w-5 bg-go" />
               </div>
               <div className="flex items-center justify-end gap-2">
-                0.70 – 0.90 <span className="h-1.5 w-5 bg-amber" />
+                {t("0.70 – 0.90", "0,70 – 0,90")} <span className="h-1.5 w-5 bg-amber" />
               </div>
               <div className="flex items-center justify-end gap-2">
-                OVER 0.90 <span className="h-1.5 w-5 bg-alert" />
+                {t("OVER 0.90", "NAD 0,90")} <span className="h-1.5 w-5 bg-alert" />
               </div>
             </div>
           )}
           <div className="flex items-center justify-end gap-2">
-            JUNCTION = PROJECT <span className="size-2.5 rounded-full border border-star bg-void" />
+            {t("JUNCTION = PROJECT", "KŘIŽOVATKA = PROJEKT")} <span className="size-2.5 rounded-full border border-star bg-void" />
           </div>
           <button
             type="button"
@@ -365,9 +370,9 @@ export function HeroRoadNetwork() {
             <span className={cn("flex h-3 w-5 items-center rounded-full p-0.5 transition-colors", showVc ? "bg-cyan" : "bg-star/20")}>
               <span className={cn("size-2 rounded-full bg-void transition-transform", showVc && "translate-x-2")} />
             </span>
-            Colour by V/C
+            {t("Colour by V/C", "Barvy podle V/C")}
           </button>
-          <div className="pt-1 text-dim/70">{selected ? "ESC TO CLOSE" : "CLICK A JUNCTION"}</div>
+          <div className="pt-1 text-dim/70">{selected ? t("ESC TO CLOSE", "ESC ZAVŘE") : t("CLICK A JUNCTION", "KLIKNĚTE NA KŘIŽOVATKU")}</div>
         </div>
 
         {node && project && (
@@ -375,7 +380,7 @@ export function HeroRoadNetwork() {
             style={cardStyle}
             className="glass-strong z-20 mt-3 w-full rounded-[14px] p-4 shadow-glow md:absolute md:top-[var(--y)] md:left-[var(--x)] md:mt-0 md:w-[270px] md:[transform:var(--t)] animate-in fade-in-0 zoom-in-95"
             role="dialog"
-            aria-label={`${project.title} — summary`}
+            aria-label={`${project.title} — ${t("summary", "shrnutí")}`}
           >
             <div className="flex items-start justify-between gap-3">
               <div className="telemetry text-[9px] text-cyan">
@@ -385,7 +390,7 @@ export function HeroRoadNetwork() {
                 type="button"
                 onClick={() => setSelected(null)}
                 className="-mt-1 -mr-1 rounded-full p-1 text-dim hover:bg-star/10 hover:text-star"
-                aria-label="Close project summary"
+                aria-label={t("Close project summary", "Zavřít shrnutí")}
               >
                 <X className="size-3.5" />
               </button>
@@ -405,7 +410,7 @@ export function HeroRoadNetwork() {
               params={{ slug: project.slug }}
               className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-cyan hover:underline"
             >
-              Open project <ArrowRight className="size-3.5" />
+              {t("Open project", "Otevřít projekt")} <ArrowRight className="size-3.5" />
             </Link>
           </div>
         )}

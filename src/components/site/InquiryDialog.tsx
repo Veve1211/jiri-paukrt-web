@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useLang } from "@/lib/i18n";
 import { InquiryForm, type TopicValue } from "./InquiryForm";
 
 export function InquiryDialog({
@@ -14,22 +15,24 @@ export function InquiryDialog({
   source?: string | undefined;
   subject?: string | undefined;
 }) {
+  const { t } = useLang();
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="glass-strong max-h-[90vh] overflow-y-auto rounded-[20px] border-star/10 bg-ink/95 sm:max-w-lg">
-        <div className="telemetry text-[10px] text-cyan">Message to Jiri</div>
+        <div className="telemetry text-[10px] text-cyan">{t("Message to Jiri", "Zpráva pro Jiřího")}</div>
         <DialogTitle className="text-2xl font-light tracking-tight">
           {subject ? (
             <>
-              Discuss <span className="font-bold">{subject}</span>
+              {t("Discuss ", "Dotaz: ")}
+              <span className="font-bold">{subject}</span>
             </>
           ) : (
-            "Send a message"
+            t("Send a message", "Napsat zprávu")
           )}
         </DialogTitle>
         <DialogDescription className="text-sm text-dim">
-          Your message goes straight to Jiri. All fields except organisation are required.
+          {t("All fields except organisation are required.", "Vyplňte všechna pole kromě organizace.")}
         </DialogDescription>
         <InquiryForm
           compact

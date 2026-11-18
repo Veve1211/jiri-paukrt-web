@@ -210,6 +210,15 @@ export const METHOD_CAPTION: Record<Method, string> = {
   profile: "Demand over the day: arrival and departure peaks",
 };
 
+export const METHOD_CAPTION_CS: Record<Method, string> = {
+  calibration: "Kalibrace: modelované intenzity porovnané se sčítáním dopravy",
+  matrix: "Poptávka: cesty mezi zónami v matici zdrojů a cílů",
+  bandwidth: "Přidělení: doprava zatížená na silniční síť",
+  beforeAfter: "Hodnocení: jak se doprava změnila po otevření stavby",
+  junction: "Mikrosimulace: jednotlivá vozidla na světelné křižovatce",
+  profile: "Poptávka během dne: špičky příchodů a odchodů",
+};
+
 export function MethodIllustration({ method, className }: { method: Method; className?: string }) {
   const Draw = DRAW[method];
   return (

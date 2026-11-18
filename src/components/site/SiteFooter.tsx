@@ -2,10 +2,12 @@ import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 
 import { PERSON } from "@/data/portfolio";
+import { useLang } from "@/lib/i18n";
 import { BrandMark } from "./BrandMark";
 import { NAV } from "./SiteHeader";
 
 export function SiteFooter() {
+  const { t } = useLang();
   return (
     <footer className="relative z-10 mx-4 mt-24 mb-6 md:mx-8">
       <div className="glass grid gap-8 rounded-[24px] px-6 py-8 md:grid-cols-3 md:px-8">
@@ -18,7 +20,7 @@ export function SiteFooter() {
         <nav aria-label="Footer" className="flex flex-wrap gap-x-6 gap-y-2 md:flex-col">
           {NAV.map((item) => (
             <Link key={item.to} to={item.to} className="telemetry text-[11px] text-dim hover:text-star">
-              {item.label}
+              {t(item.label, item.cs)}
             </Link>
           ))}
         </nav>
@@ -31,9 +33,11 @@ export function SiteFooter() {
           >
             LinkedIn <ArrowUpRight className="size-4" />
           </a>
-          <span className="telemetry text-[10px] text-dim">Based in the {PERSON.home} · SYSTRA {PERSON.city}</span>
+          <span className="telemetry text-[10px] text-dim">
+            {t(`Based in the ${PERSON.home}`, "Žije v Česku")} · SYSTRA {PERSON.city}
+          </span>
           <a href="/privacy" className="telemetry text-[10px] text-dim hover:text-star">
-            Privacy notice
+            {t("Privacy notice", "Ochrana osobních údajů")}
           </a>
           <span className="telemetry text-[10px] text-dim/70">
             © {new Date().getFullYear()} {PERSON.name}

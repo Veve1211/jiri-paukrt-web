@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Download, GraduationCap, Languages, Users } from "lucide-react";
 
 import { PageIntro } from "@/components/site/PageIntro";
-import { CAREER, EDUCATION, getProject, PERSON } from "@/data/portfolio";
+import { useContent } from "@/data/useContent";
+import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/career")({
@@ -27,30 +28,36 @@ export const Route = createFileRoute("/career")({
 });
 
 function CareerPage() {
+  const { t } = useLang();
+  const { career, education, person, getProject } = useContent();
   return (
     <div className="px-4 pt-10 md:px-8">
       <PageIntro
-        chart="CAREER"
+        chart={t("CAREER", "KARIÉRA")}
         title={
           <>
-            Career <span className="font-bold">route</span>
+            {t("Career ", "Kariérní ")}
+            <span className="font-bold">{t("route", "cesta")}</span>
           </>
         }
       >
-        Four employers across three continents: Prague, Leeds, Melbourne and, since 2008, Dublin.
+        {t(
+          "Four employers across three continents: Prague, Leeds, Melbourne and, since 2008, Dublin.",
+          "Čtyři zaměstnavatelé na třech kontinentech: Praha, Leeds, Melbourne a od roku 2008 Dublin.",
+        )}
       </PageIntro>
-      <p className="mt-6 max-w-3xl text-[15px] leading-relaxed text-starblue">{PERSON.summary}</p>
+      <p className="mt-6 max-w-3xl text-[15px] leading-relaxed text-starblue">{person.summary}</p>
       <a
         href="/Jiri-Paukrt-CV.pdf"
         download
         className="mt-6 inline-flex h-11 items-center gap-2 rounded-full bg-cyan px-5 text-sm font-semibold text-void shadow-glow hover:brightness-105"
       >
-        <Download className="size-4" /> Download CV (PDF)
+        <Download className="size-4" /> {t("Download CV (PDF)", "Stáhnout CV (PDF)")}
       </a>
 
       <ol className="relative mt-12 max-w-4xl">
         <span aria-hidden="true" className="absolute top-2 bottom-2 left-[6px] w-[3px] rounded-full bg-[repeating-linear-gradient(to_bottom,var(--cyan)_0_14px,transparent_14px_24px)] opacity-70 md:left-[166px]" />
-        {CAREER.map((c) => (
+        {career.map((c) => (
           <li key={c.company} className="relative grid gap-3 pb-10 pl-8 md:grid-cols-[150px_1fr] md:gap-10 md:pl-0">
             <span
               aria-hidden="true"
@@ -63,7 +70,7 @@ function CareerPage() {
             <div className="glass reveal rounded-[20px] p-6 md:ml-8">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <h2 className="text-xl font-medium">{c.role}</h2>
-                {c.current && <span className="telemetry text-[9.5px] text-cyan">Current role</span>}
+                {c.current && <span className="telemetry text-[9.5px] text-cyan">{t("Current role", "Současná pozice")}</span>}
               </div>
               <p className="mt-1 text-sm text-star">
                 {c.company} <span className="text-dim">· {c.location}</span>
@@ -81,7 +88,7 @@ function CareerPage() {
                 search={{ node: c.locationId }}
                 className="telemetry mt-4 inline-block text-[9.5px] text-dim hover:text-cyan"
               >
-                Show on map →
+                {t("Show on map →", "Ukázat na mapě →")}
               </Link>
               {c.related.length > 0 && (
                 <div className="mt-4 flex flex-wrap gap-1.5 border-t border-star/10 pt-4">
@@ -105,22 +112,22 @@ function CareerPage() {
       <section className="mt-6 max-w-4xl md:pl-[198px]" aria-labelledby="edu">
         <div className="rounded-[14px] border border-star/10 bg-star/[0.03] p-6">
           <div className="telemetry flex items-center gap-2 text-[10px] text-cyan">
-            <GraduationCap className="size-4" /> Education
+            <GraduationCap className="size-4" /> {t("Education", "Vzdělání")}
           </div>
-          <h2 id="edu" className="mt-3 text-xl font-medium">{EDUCATION.degree}</h2>
+          <h2 id="edu" className="mt-3 text-xl font-medium">{education.degree}</h2>
           <p className="mt-1 text-sm text-dim">
-            {EDUCATION.school} · {EDUCATION.location} · {EDUCATION.years}
+            {education.school} · {education.location} · {education.years}
           </p>
         </div>
       </section>
 
-      <section className="mt-4 grid max-w-4xl gap-4 md:grid-cols-2 md:pl-[198px] md:[grid-template-columns:1fr_1fr]" aria-label="Languages and ways of working">
+      <section className="mt-4 grid max-w-4xl gap-4 md:grid-cols-2 md:pl-[198px] md:[grid-template-columns:1fr_1fr]" aria-label={t("Languages and ways of working", "Jazyky a způsob práce")}>
         <div className="glass reveal rounded-[20px] p-6">
           <div className="telemetry flex items-center gap-2 text-[10px] text-cyan">
-            <Languages className="size-4" /> Languages
+            <Languages className="size-4" /> {t("Languages", "Jazyky")}
           </div>
           <ul className="mt-4 space-y-2">
-            {PERSON.languages.map((l) => (
+            {person.languages.map((l) => (
               <li key={l.name} className="flex items-baseline justify-between gap-3 text-sm">
                 <span className="font-medium">{l.name}</span>
                 <span className="text-right text-dim">{l.level}</span>
@@ -130,10 +137,10 @@ function CareerPage() {
         </div>
         <div className="glass reveal rounded-[20px] p-6">
           <div className="telemetry flex items-center gap-2 text-[10px] text-cyan">
-            <Users className="size-4" /> Ways of working
+            <Users className="size-4" /> {t("Ways of working", "Způsob práce")}
           </div>
           <ul className="mt-4 space-y-2">
-            {PERSON.waysOfWorking.map((w) => (
+            {person.waysOfWorking.map((w) => (
               <li key={w} className="flex gap-3 text-sm leading-relaxed text-starblue">
                 <span className="mt-2 size-1.5 shrink-0 rounded-full bg-cyan" />
                 {w}

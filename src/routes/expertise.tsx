@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CorridorSimulator } from "@/components/site/CorridorSimulator";
 import { PageIntro } from "@/components/site/PageIntro";
 import { ToolJunction } from "@/components/site/ToolJunction";
+import { useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/expertise")({
   head: () => ({
@@ -26,30 +27,38 @@ export const Route = createFileRoute("/expertise")({
 });
 
 function ExpertisePage() {
+  const { t } = useLang();
   return (
     <div className="px-4 pt-10 md:px-8">
       <PageIntro
-        chart="EXPERTISE"
+        chart={t("EXPERTISE", "ODBORNOST")}
         title={
           <>
-            Expertise &amp; <span className="font-bold">tools</span>
+            {t("Expertise & ", "Odbornost a ")}
+            <span className="font-bold">{t("tools", "nástroje")}</span>
           </>
         }
       >
-        Strategic assignment, variable demand, microsimulation, appraisal and GIS — the tools behind the projects.
+        {t(
+          "Strategic assignment, variable demand, microsimulation, appraisal and GIS — the tools behind the projects.",
+          "Strategické přidělení dopravy, proměnná poptávka, mikrosimulace, hodnocení a GIS — nástroje, na kterých stojí projekty.",
+        )}
       </PageIntro>
       <div className="mt-10">
         <ToolJunction />
       </div>
 
       <section className="mt-20" aria-labelledby="sim">
-        <p className="font-mono text-[11px] tracking-[0.25em] text-cyan/80">TRY IT — ILLUSTRATIVE MODEL</p>
+        <p className="font-mono text-[11px] tracking-[0.25em] text-cyan/80">{t("TRY IT — ILLUSTRATIVE MODEL", "VYZKOUŠEJTE — ILUSTRATIVNÍ MODEL")}</p>
         <h2 id="sim" className="mt-4 text-3xl font-light tracking-tight md:text-4xl">
-          Corridor <span className="font-bold">Flow Simulator</span>
+          {t("Corridor ", "Simulátor ")}
+          <span className="font-bold">{t("Flow Simulator", "dopravy v koridoru")}</span>
         </h2>
         <p className="mt-3 max-w-[560px] text-[15px] leading-relaxed text-dim">
-          Push demand towards capacity and watch speeds fall and conflicts climb — then switch on interventions to see
-          what they recover.
+          {t(
+            "Push demand towards capacity and watch speeds fall and conflicts climb — then switch on interventions to see what they recover.",
+            "Zvyšte poptávku ke kapacitě a sledujte, jak klesá rychlost a přibývá konfliktů — pak zapněte opatření a uvidíte, co zlepší.",
+          )}
         </p>
         <div className="mt-8">
           <CorridorSimulator />

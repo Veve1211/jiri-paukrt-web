@@ -1,3 +1,4 @@
+import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 /** Small roundabout glyph — four arms meeting at a ring. */
@@ -12,13 +13,14 @@ export function JunctionGlyph({ className }: { className?: string }) {
 }
 
 export function BrandMark({ showTagline = true }: { showTagline?: boolean }) {
+  const { t } = useLang();
   return (
     <span className="flex items-center gap-2.5">
       <JunctionGlyph />
       <span className="flex flex-col leading-none">
         <span className="font-display text-[15px] font-semibold tracking-wide">Jiri Paukrt</span>
         {showTagline && (
-          <span className="mt-1 font-mono text-[9px] tracking-wider text-dim uppercase">Transport modelling · Dublin & CZ</span>
+          <span className="mt-1 font-mono text-[9px] tracking-wider text-dim uppercase">{t("Transport modelling · Dublin & CZ", "Dopravní modelování · Dublin a ČR")}</span>
         )}
       </span>
     </span>

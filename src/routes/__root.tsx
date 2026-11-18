@@ -16,6 +16,7 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { BlueprintBackdrop } from "@/components/site/BlueprintBackdrop";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { LangProvider } from "@/lib/i18n";
 
 function NotFoundComponent() {
   return (
@@ -140,6 +141,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <LangProvider>
       <BlueprintBackdrop />
       <div className="relative flex min-h-screen flex-col">
         <SiteHeader />
@@ -150,6 +152,7 @@ function RootComponent() {
         <SiteFooter />
       </div>
       <Toaster theme="dark" position="bottom-right" />
+      </LangProvider>
     </QueryClientProvider>
   );
 }

@@ -3,18 +3,20 @@ import { Menu } from "lucide-react";
 import { useState } from "react";
 
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { LangSwitch, useLang } from "@/lib/i18n";
 import { BrandMark } from "./BrandMark";
 
 export const NAV = [
-  { to: "/career", label: "Career" },
-  { to: "/projects", label: "Projects" },
-  { to: "/network", label: "Map" },
-  { to: "/expertise", label: "Expertise" },
-  { to: "/contact", label: "Contact" },
+  { to: "/career", label: "Career", cs: "Kariéra" },
+  { to: "/projects", label: "Projects", cs: "Projekty" },
+  { to: "/network", label: "Map", cs: "Mapa" },
+  { to: "/expertise", label: "Expertise", cs: "Odbornost" },
+  { to: "/contact", label: "Contact", cs: "Kontakt" },
 ] as const;
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const { t } = useLang();
 
   return (
     <header className="sticky top-0 z-40 px-4 pt-4 md:px-8 md:pt-5">
@@ -31,23 +33,26 @@ export function SiteHeader() {
               className="rounded-full px-3 py-1.5 font-mono text-[11px] tracking-wider text-dim uppercase transition-colors hover:text-star"
               activeProps={{ className: "text-cyan bg-cyan/[0.08]" }}
             >
-              {item.label}
+              {t(item.label, item.cs)}
             </Link>
           ))}
         </nav>
 
+        <div className="flex items-center gap-2">
+        <LangSwitch />
         <a
           href="/Jiri-Paukrt-CV.pdf"
           download
           className="hidden items-center gap-2 rounded-full bg-cyan px-4 py-2 font-mono text-[11px] font-semibold tracking-wider text-void uppercase transition-[filter] hover:brightness-105 lg:flex"
         >
-          Download CV
+          {t("Download CV", "Stáhnout CV")}
         </a>
+        </div>
 
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger
             className="flex size-9 items-center justify-center rounded-full border border-star/15 text-star md:hidden"
-            aria-label="Open menu"
+            aria-label={t("Open menu", "Otevřít menu")}
           >
             <Menu className="size-4" />
           </SheetTrigger>
@@ -66,7 +71,7 @@ export function SiteHeader() {
                   activeProps={{ className: "text-cyan" }}
                 >
                   <span className="font-mono text-[10px] text-dim">0{i + 1}</span>
-                  {item.label}
+                  {t(item.label, item.cs)}
                 </Link>
               ))}
             </nav>
@@ -75,7 +80,7 @@ export function SiteHeader() {
               download
               className="absolute inset-x-6 bottom-8 flex h-12 items-center justify-center rounded-full bg-cyan font-mono text-[11px] font-semibold tracking-wider text-void uppercase"
             >
-              Download CV (PDF)
+              {t("Download CV (PDF)", "Stáhnout CV (PDF)")}
             </a>
           </SheetContent>
         </Sheet>

@@ -5,13 +5,14 @@ import { useState } from "react";
 import { NetworkMap } from "@/components/site/NetworkMap";
 import { PageIntro } from "@/components/site/PageIntro";
 import {
-  CAREER,
   getLocation,
   LOCATIONS,
   projectsAt,
   REGIONS,
   type Region,
 } from "@/data/portfolio";
+import { useContent } from "@/data/useContent";
+import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/network")({
@@ -41,6 +42,15 @@ export const Route = createFileRoute("/network")({
 });
 
 const KIND_LABEL = { hq: "Current employer", project: "Project", base: "Career base", town: "Town model" } as const;
+const KIND_LABEL_CS = { hq: "Současný zaměstnavatel", project: "Projekt", base: "Kariérní zastávka", town: "Model města" } as const;
+const COUNTRY_CS: Record<string, string> = {
+  Ireland: "Irsko",
+  "Scotland, UK": "Skotsko, Velká Británie",
+  "England, UK": "Anglie, Velká Británie",
+  "Czech Republic": "Česko",
+  Australia: "Austrálie",
+  "Isle of Man": "Ostrov Man",
+};
 
 function NetworkPage() {
   const { node } = Route.useSearch();
@@ -51,22 +61,28 @@ function NetworkPage() {
     navigate({ search: id ? { node: id } : {}, replace: true, resetScroll: false });
 
   const loc = node ? getLocation(node) : undefined;
+  const { t } = useLang();
+  const { regionLabel } = useContent();
 
   return (
     <div className="px-4 pt-10 md:px-8">
       <PageIntro
-        chart="PROJECT MAP"
+        chart={t("PROJECT MAP", "MAPA PROJEKTŮ")}
         title={
           <>
-            Where the <span className="font-bold">models</span> were built
+            {t("Where the ", "Kde ")}
+            <span className="font-bold">{t("models", "modely")}</span>
+            {t(" were built", " vznikaly")}
           </>
         }
       >
-        Every point is a place where Jiri built, presented or ran a model. Select a place to see the projects and roles
-        linked to it, or filter by country.
+        {t(
+          "Every point is a place where Jiri built, presented or ran a model. Select a place to see the projects and roles linked to it, or filter by country.",
+          "Každý bod je místo, kde Jiří vytvářel, prezentoval nebo provozoval model. Vyberte místo a uvidíte s ním spojené projekty a pozice, nebo filtrujte podle země.",
+        )}
       </PageIntro>
 
-      <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filter by region">
+      <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label={t("Filter by region", "Filtrovat podle země")}>
         {[undefined, ...REGIONS].map((r) => {
           const count = r ? LOCATIONS.filter((l) => l.region === r).length : LOCATIONS.length;
           const on = region === r;
@@ -81,7 +97,7 @@ function NetworkPage() {
                 on ? "border-cyan/40 bg-cyan/10 text-cyan" : "border-star/10 bg-star/[0.03] text-dim hover:text-star",
               )}
             >
-              {r ?? "All places"} <span className="ml-1 text-dim/70">{String(count).padStart(2, "0")}</span>
+              {r ? regionLabel(r) : t("All places", "Všechna místa")} <span className="ml-1 text-dim/70">{String(count).padStart(2, "0")}</span>
             </button>
           );
         })}
@@ -93,11 +109,11 @@ function NetworkPage() {
             <NetworkMap selected={node} region={region} onSelect={select} />
           </div>
           <div className="flex flex-wrap gap-x-5 gap-y-1 border-t border-star/10 px-4 py-3 font-mono text-[10px] tracking-wider text-dim">
-            <span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-cyan" /> CURRENT EMPLOYER</span>
-            <span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-star" /> PROJECT</span>
-            <span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-starblue" /> CAREER BASE</span>
-            <span className="flex items-center gap-1.5"><span className="size-1.5 rounded-full bg-star/80" /> TOWN MODEL</span>
-            <span className="flex items-center gap-1.5"><span className="h-px w-4 border-t border-dashed border-volt" /> CAREER PATH</span>
+            <span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-cyan" /> {t("CURRENT EMPLOYER", "SOUČASNÝ ZAMĚSTNAVATEL")}</span>
+            <span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-star" /> {t("PROJECT", "PROJEKT")}</span>
+            <span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-starblue" /> {t("CAREER BASE", "KARIÉRNÍ ZASTÁVKA")}</span>
+            <span className="flex items-center gap-1.5"><span className="size-1.5 rounded-full bg-star/80" /> {t("TOWN MODEL", "MODEL MĚSTA")}</span>
+            <span className="flex items-center gap-1.5"><span className="h-px w-4 border-t border-dashed border-volt" /> {t("CAREER PATH", "KARIÉRNÍ CESTA")}</span>
           </div>
         </div>
 
@@ -110,13 +126,17 @@ function NetworkPage() {
 }
 
 function Overview({ region, onSelect }: { region?: Region | undefined; onSelect: (id: string) => void }) {
+  const { t, lang } = useLang();
+  const { regionLabel } = useContent();
+  const kind = lang === "cs" ? KIND_LABEL_CS : KIND_LABEL;
+  const country = (c: string) => (lang === "cs" ? (COUNTRY_CS[c] ?? c) : c);
   const list = LOCATIONS.filter((l) => (!region || l.region === region) && l.kind !== "town");
   const towns = LOCATIONS.filter((l) => (!region || l.region === region) && l.kind === "town");
   return (
     <div>
-      <div className="telemetry text-[10px] text-cyan">Overview</div>
-      <h2 className="mt-2 text-xl font-medium">{region ?? "All places"}</h2>
-      <p className="mt-1 text-sm text-dim">Select a place on the map or from the list below.</p>
+      <div className="telemetry text-[10px] text-cyan">{t("Overview", "Přehled")}</div>
+      <h2 className="mt-2 text-xl font-medium">{region ? regionLabel(region) : t("All places", "Všechna místa")}</h2>
+      <p className="mt-1 text-sm text-dim">{t("Select a place on the map or from the list below.", "Vyberte místo na mapě nebo v seznamu níže.")}</p>
       <ul className="mt-5 divide-y divide-star/10">
         {list.map((l) => (
           <li key={l.id}>
@@ -127,7 +147,7 @@ function Overview({ region, onSelect }: { region?: Region | undefined; onSelect:
             >
               <span>
                 <span className="block text-sm font-medium">{l.name}</span>
-                <span className="telemetry block text-[9.5px] text-dim">{KIND_LABEL[l.kind]} · {l.country}</span>
+                <span className="telemetry block text-[9.5px] text-dim">{kind[l.kind]} · {country(l.country)}</span>
               </span>
               <span className="font-mono text-[10px] text-dim">
                 {String(projectsAt(l.id).length).padStart(2, "0")}
@@ -138,23 +158,23 @@ function Overview({ region, onSelect }: { region?: Region | undefined; onSelect:
       </ul>
       {towns.length > 0 && (
         <div className="mt-4">
-          <div className="telemetry text-[9.5px] text-dim">Town microsimulations · {towns.length}</div>
+          <div className="telemetry text-[9.5px] text-dim">{t("Town microsimulations", "Mikrosimulace měst")} · {towns.length}</div>
           <div className="mt-2 flex flex-wrap gap-1.5">
-            {towns.map((t) => (
+            {towns.map((town) => (
               <button
-                key={t.id}
+                key={town.id}
                 type="button"
-                onClick={() => onSelect(t.id)}
+                onClick={() => onSelect(town.id)}
                 className="rounded-full border border-star/10 px-2.5 py-1 text-xs text-dim hover:border-cyan/40 hover:text-cyan"
               >
-                {t.name}
+                {town.name}
               </button>
             ))}
           </div>
         </div>
       )}
       {list.length === 0 && towns.length === 0 && (
-        <p className="mt-6 text-sm text-dim">No places in this filter.</p>
+        <p className="mt-6 text-sm text-dim">{t("No places in this filter.", "Žádná místa pro tento filtr.")}</p>
       )}
     </div>
   );
@@ -162,21 +182,25 @@ function Overview({ region, onSelect }: { region?: Region | undefined; onSelect:
 
 function LocationPanel({ id, onClose }: { id: string; onClose: () => void }) {
   const loc = getLocation(id)!;
-  const projects = projectsAt(id);
-  const roles = CAREER.filter((c) => c.locationId === id);
+  const { t, lang } = useLang();
+  const { career, getProject, regionLabel } = useContent();
+  const projects = projectsAt(id).map((p) => getProject(p.slug) ?? p);
+  const roles = career.filter((c) => c.locationId === id);
+  const kind = lang === "cs" ? KIND_LABEL_CS : KIND_LABEL;
+  const country = (c: string) => (lang === "cs" ? (COUNTRY_CS[c] ?? c) : c);
   return (
     <div className="animate-in fade-in-0">
       <div className="flex items-start justify-between">
-        <div className="telemetry text-[10px] text-cyan">{KIND_LABEL[loc.kind]} · {loc.region}</div>
-        <button type="button" onClick={onClose} className="rounded-full p-1 text-dim hover:bg-star/10 hover:text-star" aria-label="Back to overview">
+        <div className="telemetry text-[10px] text-cyan">{kind[loc.kind]} · {regionLabel(loc.region)}</div>
+        <button type="button" onClick={onClose} className="rounded-full p-1 text-dim hover:bg-star/10 hover:text-star" aria-label={t("Back to overview", "Zpět na přehled")}>
           <X className="size-4" />
         </button>
       </div>
       <h2 className="mt-2 text-2xl font-medium">{loc.name}</h2>
-      <p className="text-sm text-dim">{loc.country}</p>
+      <p className="text-sm text-dim">{country(loc.country)}</p>
       <div className="mt-4 inline-flex items-baseline gap-2 rounded-[10px] border border-cyan/30 bg-cyan/[0.06] px-3 py-2">
         <span className="text-xl font-bold text-cyan">{projects.length}</span>
-        <span className="telemetry text-[9px] text-dim">Linked project{projects.length === 1 ? "" : "s"}</span>
+        <span className="telemetry text-[9px] text-dim">{t(projects.length === 1 ? "Linked project" : "Linked projects", "Propojené projekty")}</span>
       </div>
 
       {roles.map((r) => (
@@ -187,12 +211,12 @@ function LocationPanel({ id, onClose }: { id: string; onClose: () => void }) {
         </div>
       ))}
       {loc.id === "prague" && (
-        <p className="mt-3 text-xs text-dim">Also home to ČVUT, where Jiri earned his Ing. in Transport Planning and Traffic Engineering.</p>
+        <p className="mt-3 text-xs text-dim">{t("Also home to ČVUT, where Jiri earned his Ing. in Transport Planning and Traffic Engineering.", "Také sídlo ČVUT, kde Jiří získal titul Ing. v oboru dopravní plánování a dopravní inženýrství.")}</p>
       )}
 
       {projects.length > 0 && (
         <div className="mt-5">
-          <div className="telemetry text-[9.5px] text-dim">Projects here</div>
+          <div className="telemetry text-[9.5px] text-dim">{t("Projects here", "Projekty zde")}</div>
           <ul className="mt-2 space-y-2">
             {projects.map((p) => (
               <li key={p.slug}>
