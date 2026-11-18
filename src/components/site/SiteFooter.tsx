@@ -1,0 +1,42 @@
+import { Link } from "@tanstack/react-router";
+import { ArrowUpRight } from "lucide-react";
+
+import { PERSON } from "@/data/portfolio";
+import { BrandMark } from "./BrandMark";
+import { NAV } from "./SiteHeader";
+
+export function SiteFooter() {
+  return (
+    <footer className="relative z-10 mx-4 mt-24 mb-6 md:mx-8">
+      <div className="glass grid gap-8 rounded-[14px] px-6 py-8 md:grid-cols-3 md:px-8">
+        <div>
+          <BrandMark />
+          <p className="mt-4 max-w-xs text-sm text-dim">
+            {PERSON.name} — {PERSON.role}, {PERSON.company} {PERSON.city}.
+          </p>
+        </div>
+        <nav aria-label="Footer" className="flex flex-wrap gap-x-6 gap-y-2 md:flex-col">
+          {NAV.map((item) => (
+            <Link key={item.to} to={item.to} className="telemetry text-[11px] text-dim hover:text-star">
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+        <div className="flex flex-col gap-3 md:items-end">
+          <a
+            href={PERSON.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm text-star hover:text-cyan"
+          >
+            LinkedIn <ArrowUpRight className="size-4" />
+          </a>
+          <span className="telemetry text-[10px] text-dim">Dublin HQ · {PERSON.coordinates}</span>
+          <span className="telemetry text-[10px] text-dim/70">
+            © {new Date().getFullYear()} {PERSON.name}
+          </span>
+        </div>
+      </div>
+    </footer>
+  );
+}
