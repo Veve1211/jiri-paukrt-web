@@ -133,7 +133,7 @@ function CvPage() {
             <Section title="Education">
               <p className="font-semibold text-[#0f2443]">{EDUCATION.degree}</p>
               <p className="text-[#4a5a70]">
-                {EDUCATION.school}, {EDUCATION.location}
+                {EDUCATION.school}, {EDUCATION.location}, {EDUCATION.years}
               </p>
             </Section>
             <Section title="Languages">

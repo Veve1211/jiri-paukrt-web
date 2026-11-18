@@ -18,7 +18,7 @@ export const Route = createFileRoute("/projects/")({
       {
         name: "description",
         content:
-          "National demand models for Ireland's NTA, Commonwealth Games spectator demand, Sydney's Lane Cove Tunnel and 11 UK town microsimulations, plus papers and conference talks.",
+          "National demand models for Ireland's NTA, Commonwealth Games visitor demand, Sydney's Lane Cove Tunnel and 11 UK town microsimulations, plus papers and conference talks.",
       },
       { property: "og:title", content: "Projects & Publications — Jiri Paukrt" },
       {

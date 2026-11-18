@@ -32,7 +32,7 @@ const H = 600;
 
 const JUNCTIONS: Junction[] = [
   { id: "ireland", x: 210, y: 170, slug: "nta-national-demand-model", label: "IRELAND · NTA", sub: "NATIONAL DEMAND MODEL", major: true },
-  { id: "cwg", x: 380, y: 300, slug: "commonwealth-games", label: "COMMONWEALTH GAMES", sub: "SPECTATOR DEMAND", major: true },
+  { id: "cwg", x: 380, y: 300, slug: "commonwealth-games", label: "COMMONWEALTH GAMES", sub: "VISITOR DEMAND", major: true },
   { id: "sydney", x: 560, y: 450, slug: "sydney-lane-cove-tunnel", label: "SYDNEY", sub: "LANE COVE TUNNEL", major: true },
   { id: "uk", x: 500, y: 140, slug: "uk-microsimulation-models", label: "UK TOWNS", sub: "11 MICROSIMULATIONS", major: false },
   { id: "melbourne", x: 610, y: 290, slug: "melbourne-dandenong", label: "MELBOURNE", sub: "DANDENONG MICROSIM", major: false },

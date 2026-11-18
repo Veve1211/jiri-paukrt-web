@@ -1,5 +1,7 @@
-// Portfolio content for Jiri Paukrt. Facts come from the brief and were cross-checked
-// against public sources (NTA, STAR 2017, ETC 2019, SWOV/ICTTE 2014) in Nov 2026.
+// Portfolio content for Jiri Paukrt. Primary source: Jiri's own LinkedIn profile export
+// (Nov 2026). Cross-checked against public sources (NTA, STAR 2017, ETC 2019,
+// SWOV/ICTTE 2014). Anything only in the older Lovable brief and not confirmed by
+// LinkedIn or a public source has been left out.
 // Do not add metrics, dates or clients that are not verified.
 
 export const PERSON = {
@@ -11,14 +13,14 @@ export const PERSON = {
   careerStartYear: 1999,
   linkedin: "https://www.linkedin.com/in/jiri-paukrt",
   summary:
-    "Principal Transportation Engineer with 27 years of experience in travel demand forecasting, traffic microsimulation and scheme evaluation across Ireland, the UK, Australia and Central Europe. Leads the development and calibration of strategic multi-modal models for national and regional transport authorities, and builds the data and automation tools behind them.",
+    "Transport modeller with 27 years of experience across Ireland, the UK, Australia and the Czech Republic. Managed the development and calibration of Ireland's National Demand Forecasting Model for the National Transport Authority, backed by more than ten years of microsimulation modelling, variable demand modelling, GIS analysis and programming.",
   languages: [
     { name: "Czech", level: "Native" },
     { name: "English", level: "Professional working proficiency" },
   ],
   waysOfWorking: [
-    "Technical leadership of model development, calibration and validation workstreams",
-    "Long-term client work with national authorities such as the NTA and Transport Scotland",
+    "Managing model development, calibration and validation for national clients such as the NTA",
+    "Analysis and processing of large datasets, with GIS for accident and accessibility studies",
     "Presenting methods and results at international conferences (ETC, STAR, ICTTE)",
     "Reproducible modelling: automated data pipelines and checks in Python, SQL and VBA",
   ],
@@ -74,7 +76,7 @@ export interface Project {
 export const PROJECTS: Project[] = [
   {
     slug: "nta-national-demand-model",
-    role: "Calibration and ongoing enhancement of the NDFM and NTEM; technical work on the regional models",
+    role: "Managed the development and calibration of the NDFM; developed the National Trip End Model",
     code: "IE-01",
     title: "National Demand Forecasting Model",
     client: "National Transport Authority (NTA), Ireland",
@@ -82,11 +84,11 @@ export const PROJECTS: Project[] = [
     region: "Ireland",
     domains: ["national"],
     summary:
-      "Work on the NTA's Regional Modelling System, the strategic tool behind national transport planning in Ireland: a National Demand Forecasting Model that feeds five regional multi-modal models.",
+      "The NTA's Regional Modelling System is the strategic tool behind national transport planning in Ireland: a National Demand Forecasting Model that feeds five regional multi-modal models, which together cover the entire Republic of Ireland.",
     highlights: [
-      "National Demand Forecasting Model (NDFM)",
-      "Its sub-models: National Trip End Model (NTEM) and Long Distance Model",
-      "Five regional multi-modal models: East, West, Mid-West, South-East and South-West",
+      "Managed the development and calibration of the National Demand Forecasting Model (NDFM)",
+      "Developed the National Trip End Model and a demand model for major ports and airports in Ireland and Northern Ireland",
+      "Involved in developing and calibrating the five regional models: East, West, Mid-West, South-East and South-West",
       "Post-COVID trip rates estimated from the 2022 National Household Travel Survey (about 20,000 diary records)",
     ],
     metrics: [
@@ -99,12 +101,12 @@ export const PROJECTS: Project[] = [
       authors: "William Brazil, Warren Whitney, Jiri Paukrt",
       url: "https://www.nationaltransport.ie/wp-content/uploads/2025/09/Post-COVID-19-Trip-Rate-Estimation-in-Ireland.pdf",
     },
-    tools: ["CUBE", "Python"],
+    tools: ["Python", "VBA"],
     locationIds: ["dublin"],
   },
   {
     slug: "nta-long-distance-model",
-    role: "Long Distance Model development; co-presenter at ETC 2019",
+    role: "Developed the Long Distance Demand Model; co-presenter at ETC 2019",
     years: "2019",
     code: "IE-02",
     title: "NTA Long Distance Model",
@@ -164,7 +166,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "road-safety-traffic-conflicts",
-    role: "Microsimulation of traffic conflicts in S-Paramics; co-author",
+    role: "Co-author",
     years: "2014",
     code: "RS-01",
     title: "Road Safety via Traffic Conflicts",
@@ -196,20 +198,20 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "commonwealth-games",
-    role: "Spectator travel demand modelling",
+    role: "Involved in modelling visitor demand",
     years: "2014 · 2022",
     code: "EV-01",
-    title: "Commonwealth Games Spectator Demand",
+    title: "Commonwealth Games Visitor Demand",
     client: "Glasgow 2014 · Birmingham 2022",
     location: "Glasgow & Birmingham, UK",
     region: "UK",
     domains: ["mega-events"],
     summary:
-      "Spectator travel demand modelling for two Commonwealth Games — forecasting how spectators travel to venues on event days.",
+      "Visitor demand modelling and planning for two Commonwealth Games — forecasting how visitors travel to venues on event days.",
     highlights: [
       "Commonwealth Games Glasgow 2014",
       "Commonwealth Games Birmingham 2022",
-      "Spectator travel demand modelling",
+      "Visitor demand modelling",
     ],
     metrics: [
       { value: "2", label: "Games editions" },
@@ -219,7 +221,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "sydney-lane-cove-tunnel",
-    role: "Lead simulation modeller",
+    role: "Involved in developing the microsimulation model",
     years: "2006–2007",
     code: "AU-01",
     title: "Lane Cove Tunnel Microsimulation",
@@ -228,22 +230,22 @@ export const PROJECTS: Project[] = [
     region: "Australia",
     domains: ["microsim"],
     summary:
-      "Microsimulation of the Lane Cove Tunnel in Sydney, the 3.6 km twin-tube motorway tunnel linking the M2 Hills Motorway with the Gore Hill Freeway — the largest microsimulation model in Australia by geographical coverage at the time.",
+      "Microsimulation model of the surface road network along the full length of the Lane Cove Tunnel corridor in Sydney, used to assess traffic management plans while the 3.6 km twin-tube tunnel was being built. At the time it was the largest microsimulation model in Australia by geographical coverage.",
     highlights: [
-      "3.6 km twin-tube tunnel, opened to traffic in March 2007",
+      "Covered the surface network along the full tunnel corridor",
+      "Used to assess construction traffic management plans",
       "Largest microsimulation model in Australia by geographical coverage at the time",
-      "Delivered with Hyder Consulting",
+      "Tunnel opened to traffic in March 2007",
     ],
     metrics: [
       { value: "3.6 km", label: "Twin-tube tunnel" },
       { value: "2007", label: "Opened to traffic" },
     ],
-    tools: ["Paramics"],
     locationIds: ["sydney"],
   },
   {
     slug: "melbourne-dandenong",
-    role: "Microsimulation model development",
+    role: "Responsible for the model and option testing",
     years: "2006–2007",
     code: "AU-02",
     title: "Dandenong Revitalisation Microsimulation",
@@ -251,21 +253,26 @@ export const PROJECTS: Project[] = [
     location: "Dandenong, Melbourne, Australia",
     region: "Australia",
     domains: ["microsim"],
-    summary: "Microsimulation supporting the revitalisation of Dandenong in Melbourne.",
-    highlights: ["Dandenong revitalisation", "Delivered with Hyder Consulting"],
+    summary:
+      "Microsimulation model of Dandenong in Melbourne, used to test revitalisation options — land-use changes, road network alterations and public transport operations — for one of the largest revitalisation projects in Australia at the time.",
+    highlights: [
+      "Responsible for developing the microsimulation model",
+      "Tested land-use, road network and public transport options",
+      "Delivered with Hyder Consulting",
+    ],
     metrics: [{ value: "2006–07", label: "Hyder Consulting" }],
     locationIds: ["melbourne"],
   },
   {
     slug: "uk-microsimulation-models",
-    role: "Model development, calibration and traffic-management testing",
+    role: "Developed the microsimulation models",
     code: "UK-02",
     title: "UK Town Microsimulation Models",
     client: "UK portfolio",
     location: "England & Isle of Man",
     region: "UK",
     domains: ["microsim"],
-    summary: "Eleven microsimulation models for towns across England and the Isle of Man.",
+    summary: "Eleven microsimulation models for towns across England and the Isle of Man, alongside variable demand models of Plymouth and Chippenham.",
     highlights: [
       "Gillingham",
       "Douglas (Isle of Man)",
@@ -280,7 +287,7 @@ export const PROJECTS: Project[] = [
       "Hinckley",
     ],
     metrics: [{ value: "11", label: "Town models" }],
-    tools: ["Paramics Discovery", "S-Paramics"],
+    tools: ["Paramics Discovery"],
     locationIds: [
       "gillingham",
       "douglas",
@@ -377,26 +384,27 @@ export interface CareerEntry {
   location: string;
   locationId: string;
   current?: boolean;
-  /** What the role involved — from the brief; confirm wording with Jiri. */
+  /** What the role involved — from Jiri's LinkedIn profile. */
   duties: string[];
   related: string[];
 }
 
 export const CAREER: CareerEntry[] = [
   {
-    years: "2008 – Present",
+    years: "Jan 2008 – present",
     role: "Principal Transportation Engineer",
     company: "SYSTRA",
     location: "Dublin, Ireland",
     locationId: "dublin",
     current: true,
     duties: [
-      "Leads the development, calibration and validation of strategic multi-modal travel demand models for national, regional and local transport authorities.",
-      "Manages the calibration and ongoing enhancement of Ireland's National Demand Forecasting Model and National Trip End Model for the National Transport Authority.",
-      "Technical work on the NTA's five regional multi-modal models and on the Long Distance Model for Ireland and Northern Ireland.",
-      "Post-COVID trip rate estimation for the NTA Regional Modelling System, using negative binomial regression on the 2022 National Household Travel Survey.",
-      "Spectator travel demand modelling for the Glasgow 2014 and Birmingham 2022 Commonwealth Games; five-year evaluation of the M74 Completion for Transport Scotland.",
-      "Builds Python, SQL and VBA tools for data cleaning, matrix manipulation, assignment convergence checks and GIS visualisation.",
+      "Development, calibration and validation of large strategic demand models.",
+      "Managed the development and calibration of the National Demand Forecasting Model for the National Transport Authority; involved in developing and calibrating its five regional models, which together cover the Republic of Ireland.",
+      "Developed the National Trip End Model, the Long Distance Demand Model of Ireland and a demand model for major ports and airports in Ireland and Northern Ireland.",
+      "Microsimulation models of 11 UK towns, including Plymouth, Blackpool, Nuneaton and Douglas (Isle of Man); variable demand models of Plymouth and Chippenham.",
+      "Visitor demand modelling for the Glasgow 2014 and Birmingham 2022 Commonwealth Games.",
+      "Standalone programs in VB, VBA and Python that add functionality, increase efficiency and improve reporting.",
+      "Co-author of papers and talks on post-COVID trip rates (NTA), the Long Distance Model (ETC 2019), the M74 evaluation (STAR 2017) and traffic conflicts (ICTTE 2014).",
     ],
     related: [
       "nta-national-demand-model",
@@ -406,41 +414,41 @@ export const CAREER: CareerEntry[] = [
     ],
   },
   {
-    years: "2006 – 2007",
+    years: "Oct 2006 – Dec 2007",
     role: "Senior Transport Modeller",
     company: "Hyder Consulting",
     location: "Melbourne, Australia",
     locationId: "melbourne",
     duties: [
-      "Lead simulation modeller for the Lane Cove Tunnel in Sydney: tunnel portal operations, incident scenarios and the connecting road network.",
-      "Microsimulation models for the City of Greater Dandenong in Melbourne.",
-      "Variable demand modelling, transport impact assessments and scheme feasibility studies.",
+      "Responsible for the microsimulation model of Dandenong, Melbourne, and for testing revitalisation options — land use, road network and public transport — for one of the largest revitalisation projects in Australia at the time.",
+      "Involved in developing the Lane Cove Tunnel microsimulation model in Sydney, covering the surface network along the full tunnel corridor and used to assess construction traffic management plans; the largest microsimulation model in Australia by geographical coverage at the time.",
     ],
     related: ["sydney-lane-cove-tunnel", "melbourne-dandenong"],
   },
   {
-    years: "2004 – 2006",
+    years: "Jul 2004 – Sep 2006",
     role: "Transport Planner",
     company: "Jacobs Babtie",
     location: "Leeds, UK",
     locationId: "leeds",
     duties: [
-      "Built, calibrated and validated SATURN highway assignment models in Scotland and northern England.",
-      "Economic appraisal of trunk road and motorway schemes using UK Department for Transport methods (COBA, TUBA).",
-      "Traffic impact studies, junction capacity analysis and public transport priority evaluations.",
+      "Development of strategic models in SATURN.",
+      "Cost–benefit assessments using COBA.",
+      "Spreadsheet-based traffic models and transport assessments.",
+      "Visual Basic applications to speed up model development and data processing.",
     ],
     related: [],
   },
   {
-    years: "1999 – 2004",
+    years: "Jul 1999 – Jun 2004",
     role: "Transport Planner",
     company: "CityPlan",
     location: "Prague, Czech Republic",
     locationId: "prague",
     duties: [
-      "Urban and regional traffic models for the Czech Ministry of Transport and the City of Prague.",
-      "Traffic signal timing plans, junction capacity assessments and corridor feasibility studies.",
-      "Research on traffic conflict techniques, junction safety and transport economics.",
+      "Economic assessments using HDM-4.",
+      "SWOT and multi-criteria assessments of transport networks.",
+      "Research projects for the Czech Ministry of Transport.",
     ],
     related: [],
   },
@@ -448,6 +456,7 @@ export const CAREER: CareerEntry[] = [
 
 export const EDUCATION = {
   degree: "Master's Degree (Ing.) in Transport Planning and Traffic Engineering",
+  years: "1994 – 1999",
   school: "Czech Technical University in Prague (ČVUT)",
   location: "Prague, Czech Republic",
 };
@@ -467,18 +476,18 @@ export interface Tech {
 }
 
 export const TECH: Tech[] = [
+  { name: "3D visualisation", quadrant: "Microsimulation", blurb: "Three-dimensional visualisation of simulated traffic to explain schemes to clients and the public." },
   { name: "Paramics Discovery", quadrant: "Microsimulation", blurb: "Microscopic traffic simulation of junctions, corridors and town networks, vehicle by vehicle." },
   { name: "S-Paramics", quadrant: "Microsimulation", blurb: "Microsimulation platform used for the traffic-conflict road-safety pilot.", projects: ["road-safety-traffic-conflicts"] },
-  { name: "Vissim", quadrant: "Microsimulation", blurb: "Microsimulation of signalised junctions, bus priority and multimodal corridors." },
   { name: "SATURN", quadrant: "Strategic Demand", blurb: "Strategic highway assignment for network-wide route choice and congestion." },
-  { name: "CUBE", quadrant: "Strategic Demand", blurb: "Platform of the NTA Regional Modelling System — demand, mode and destination choice, and assignment.", projects: ["nta-national-demand-model"] },
   { name: "Variable Demand Modeling", quadrant: "Strategic Demand", blurb: "Demand that responds to changing travel costs — frequency, mode, destination and time of day." },
   { name: "COBA", quadrant: "Appraisal", blurb: "UK cost–benefit analysis for road schemes." },
-  { name: "TUBA", quadrant: "Appraisal", blurb: "Transport user benefit appraisal: time, vehicle operating cost and user charges." },
-  { name: "HDM4", quadrant: "Appraisal", blurb: "Highway Development and Management model for road investment appraisal." },
-  { name: "QGIS", quadrant: "GIS & Code", blurb: "Open-source spatial analysis, zoning systems and network mapping." },
+  { name: "HDM-4", quadrant: "Appraisal", blurb: "Highway Development and Management model for road investment appraisal." },
+  { name: "QGIS", quadrant: "GIS & Code", blurb: "Open-source spatial analysis: accident analysis, accessibility studies and network mapping." },
   { name: "ArcGIS", quadrant: "GIS & Code", blurb: "Spatial analysis, geodatabases and cartographic outputs." },
   { name: "Python", quadrant: "GIS & Code", blurb: "Model automation, data pipelines and analysis." },
+  { name: "Ruby", quadrant: "GIS & Code", blurb: "Scripting for data processing and automation." },
+  { name: "Google Maps & OpenStreetMap APIs", quadrant: "GIS & Code", blurb: "Web mapping data for accessibility studies and network analysis." },
   { name: "SQL", quadrant: "GIS & Code", blurb: "Querying large survey, count and model datasets." },
   { name: "VB/VBA", quadrant: "GIS & Code", blurb: "Automation of spreadsheet-based model processing and reporting." },
 ];

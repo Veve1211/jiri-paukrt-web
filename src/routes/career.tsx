@@ -109,7 +109,7 @@ function CareerPage() {
           </div>
           <h2 id="edu" className="mt-3 text-xl font-medium">{EDUCATION.degree}</h2>
           <p className="mt-1 text-sm text-dim">
-            {EDUCATION.school} · {EDUCATION.location}
+            {EDUCATION.school} · {EDUCATION.location} · {EDUCATION.years}
           </p>
         </div>
       </section>
