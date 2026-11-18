@@ -109,10 +109,16 @@ function FlowLink({
   animate: boolean;
   seed: number;
 }) {
-  const path = `M${a.x} ${a.y} L${b.x} ${b.y}`;
-  const back = `M${b.x} ${b.y} L${a.x} ${a.y}`;
   const len = Math.hypot(b.x - a.x, b.y - a.y);
-  const dur = Math.max(4, len / 45) + (seed % 3) * 0.7;
+  const dur = Math.max(4, len / 40) + (seed % 3) * 0.8;
+  // Two lanes, offset either side of the centreline: headlights travel a→b,
+  // tail-lights travel b→a — like traffic seen from above at night.
+  const off = Math.min(3.2, bandWidth(flow) / 2 - 0.6);
+  const nx = (-(b.y - a.y) / (len || 1)) * off;
+  const ny = ((b.x - a.x) / (len || 1)) * off;
+  const lane1 = `M${a.x + nx} ${a.y + ny} L${b.x + nx} ${b.y + ny}`;
+  const lane2 = `M${b.x - nx} ${b.y - ny} L${a.x - nx} ${a.y - ny}`;
+  const cars = flow > 2500 ? 2 : 1;
   const c = showVc ? vcClass(vc) : { stroke: "stroke-cyan", label: "fill-cyan" };
   const mx = (a.x + b.x) / 2;
   const my = (a.y + b.y) / 2;
@@ -125,9 +131,9 @@ function FlowLink({
           y1={a.y}
           x2={b.x}
           y2={b.y}
-          strokeWidth={bandWidth(flow) + 12}
+          strokeWidth={bandWidth(flow) + 8}
           filter="url(#glow)"
-          className={cn("stroke-cyan transition-opacity duration-500", lit ? "opacity-75" : "opacity-35")}
+          className={cn("stroke-cyan transition-opacity duration-500", lit ? "opacity-50" : "opacity-20")}
         />
       )}
       {/* flow bandwidth, coloured by volume / capacity */}
@@ -138,7 +144,7 @@ function FlowLink({
         y2={b.y}
         strokeWidth={bandWidth(flow) + (lit ? 2 : 0)}
         strokeLinecap="butt"
-        className={cn(c.stroke, "transition-all duration-500", lit ? "opacity-100" : showVc ? "opacity-75" : "opacity-85")}
+        className={cn(c.stroke, "transition-all duration-500", lit ? "opacity-100" : showVc ? "opacity-75" : "opacity-60")}
       />
       {/* link centreline — a bright lit core when glowing, a dark lane line when coloured */}
       <line
@@ -146,20 +152,32 @@ function FlowLink({
         y1={a.y}
         x2={b.x}
         y2={b.y}
-        strokeWidth={showVc ? 0.8 : 1.2}
-        className={showVc ? "stroke-void/70" : "stroke-white/35"}
+        strokeWidth={0.8}
+        strokeDasharray={showVc ? undefined : "4 5"}
+        className={showVc ? "stroke-void/70" : "stroke-void/60"}
       />
       {animate &&
-        [0, 0.5].map((phase, i) => (
-          <circle key={phase} r="2.4" className="fill-white" filter="url(#glow-small)">
-            <animateMotion
-              dur={`${dur}s`}
-              begin={`${-phase * dur}s`}
-              repeatCount="indefinite"
-              path={i === 0 ? path : back}
-            />
-          </circle>
-        ))}
+        Array.from({ length: cars }, (_, k) => {
+          const phase = (k + (seed % 2) * 0.5) / cars;
+          return (
+            <g key={k}>
+              {/* headlights: a pair of small white lights */}
+              <rect x="-2.6" y="-1.1" width="5.2" height="2.2" rx="1.1" className="fill-white" filter="url(#glow-small)">
+                <animateMotion dur={`${dur}s`} begin={`${-phase * dur}s`} repeatCount="indefinite" path={lane1} rotate="auto" />
+              </rect>
+              {/* tail-lights on the opposite lane */}
+              <rect x="-2.2" y="-0.9" width="4.4" height="1.8" rx="0.9" className="fill-alert" filter="url(#glow-small)">
+                <animateMotion
+                  dur={`${dur * 1.1}s`}
+                  begin={`${-((phase + 0.37) % 1) * dur}s`}
+                  repeatCount="indefinite"
+                  path={lane2}
+                  rotate="auto"
+                />
+              </rect>
+            </g>
+          );
+        })}
       {lit && (
         <g className="font-mono" fontSize="9.5" letterSpacing="0.8">
           <rect x={mx - 40} y={my - 9} width="80" height="18" rx="3" className="fill-void stroke-star/20" />
@@ -221,7 +239,7 @@ export function HeroRoadNetwork() {
         >
           <defs>
             <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="7" />
+              <feGaussianBlur stdDeviation="5" />
             </filter>
             <filter id="glow-small" x="-200%" y="-200%" width="500%" height="500%">
               <feGaussianBlur stdDeviation="1.2" result="b" />
@@ -231,7 +249,7 @@ export function HeroRoadNetwork() {
               </feMerge>
             </filter>
             <radialGradient id="junction-light" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="var(--cyan)" stopOpacity="0.5" />
+              <stop offset="0%" stopColor="var(--cyan)" stopOpacity="0.32" />
               <stop offset="100%" stopColor="var(--cyan)" stopOpacity="0" />
             </radialGradient>
             <clipPath id="frame">
@@ -266,7 +284,7 @@ export function HeroRoadNetwork() {
                   vc={r.vc}
                   lit={lit}
                   dimmed={active !== null && !lit}
-                  animate={!reducedMotion && (i < 6 || lit)}
+                  animate={!reducedMotion}
                   seed={i}
                   showVc={showVc}
                 />
@@ -294,7 +312,7 @@ export function HeroRoadNetwork() {
                 onFocus={() => setHovered(j.id)}
                 onBlur={() => setHovered(null)}
               >
-                <circle cx={j.x} cy={j.y} r={isActive ? 46 : j.major ? 34 : 26} fill="url(#junction-light)" className="transition-all duration-300" />
+                <circle cx={j.x} cy={j.y} r={isActive ? 40 : j.major ? 28 : 22} fill="url(#junction-light)" className="transition-all duration-300" />
                 <circle cx={j.x} cy={j.y} r="24" className="fill-transparent" />
                 <circle cx={j.x} cy={j.y} r="20" className="focus-ring stroke-cyan opacity-0 transition-opacity" strokeDasharray="3 3" />
                 {/* junction drawn as a technical node symbol: ring, crosshair ticks, centre point */}
