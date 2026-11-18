@@ -17,4 +17,7 @@ Poslední kontrola: 18. 11. 2026. Postup podle bezpečnostní matice z manuálu 
 ## K řešení
 
 1. **zranitelné balíčky.** `bun audit` hlásí 30 nálezů (1 kritický, 15 vysokých). Většina jsou vývojové nástroje (vite, esbuild, launch-editor, shell-quote), které na produkčním webu neběží. Za běhu webu se týká jen `seroval` (přes TanStack Router; střední závažnost) a `zod`. Řešení: `bun audit fix`, potom `npx tsc --noEmit`, `npx vitest run` a kontrola webu, než to půjde do `main`.
-2. **historie commitů.** Jedna zpráva commitu zmiňuje odstranění textu o hledání práce. Dokud je to tak, repo by mělo zůstat soukromé a přístup se dává pozváním jako collaborator.
+
+## Vědomé rozhodnutí
+
+1. **repo je veřejné (od 18. 11. 2026).** Jedna zpráva commitu v historii zmiňuje odstranění textu o hledání práce. Historie se nepřepisuje (rozbilo by to synchronizaci s Lovable), riziko je tedy vědomě přijaté.
