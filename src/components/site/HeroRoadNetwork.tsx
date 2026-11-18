@@ -98,19 +98,21 @@ function FlowLink({
   animate,
   seed,
   showVc,
+  slow = false,
 }: {
   a: Pt;
   b: Pt;
   flow: number;
   vc: number;
   showVc: boolean;
+  slow?: boolean;
   lit: boolean;
   dimmed: boolean;
   animate: boolean;
   seed: number;
 }) {
   const len = Math.hypot(b.x - a.x, b.y - a.y);
-  const dur = Math.max(4, len / 40) + (seed % 3) * 0.8;
+  const dur = (Math.max(4, len / 40) + (seed % 3) * 0.8) * (slow ? 1.8 : 1);
   // Two lanes, offset either side of the centreline: headlights travel a→b,
   // tail-lights travel b→a — like traffic seen from above at night.
   const off = Math.min(3.2, bandWidth(flow) / 2 - 0.6);
@@ -133,7 +135,7 @@ function FlowLink({
           y2={b.y}
           strokeWidth={bandWidth(flow) + 8}
           filter="url(#glow)"
-          className={cn("stroke-cyan transition-opacity duration-500", lit ? "opacity-50" : "opacity-20")}
+          className={cn("stroke-cyan transition-opacity duration-500", lit ? "opacity-90" : "opacity-20")}
         />
       )}
       {/* flow bandwidth, coloured by volume / capacity */}
@@ -193,6 +195,18 @@ function FlowLink({
 export function HeroRoadNetwork() {
   const [selected, setSelected] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
+  const [mouse, setMouse] = useState<Pt | null>(null);
+
+  const trackMouse = (e: React.MouseEvent<SVGSVGElement>) => {
+    const svg = e.currentTarget;
+    const ctm = svg.getScreenCTM();
+    if (!ctm) return;
+    const pt = svg.createSVGPoint();
+    pt.x = e.clientX;
+    pt.y = e.clientY;
+    const p = pt.matrixTransform(ctm.inverse());
+    setMouse({ x: p.x, y: p.y });
+  };
   const [showVc, setShowVc] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
   const { t } = useLang();
@@ -236,6 +250,8 @@ export function HeroRoadNetwork() {
           onClick={(e) => {
             if (e.target === e.currentTarget) setSelected(null);
           }}
+          onMouseMove={trackMouse}
+          onMouseLeave={() => setMouse(null)}
         >
           <defs>
             <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
@@ -255,7 +271,34 @@ export function HeroRoadNetwork() {
             <clipPath id="frame">
               <rect x="0" y="0" width={W} height={H} rx="18" />
             </clipPath>
+            <clipPath id="torch">
+              <circle cx={mouse?.x ?? -999} cy={mouse?.y ?? -999} r="95" />
+            </clipPath>
+            <radialGradient id="torch-light" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="var(--cyan)" stopOpacity="0.16" />
+              <stop offset="100%" stopColor="var(--cyan)" stopOpacity="0" />
+            </radialGradient>
           </defs>
+
+          {/* torch: the network lights up where the mouse is */}
+          {mouse && !showVc && (
+            <g className="pointer-events-none">
+              <circle cx={mouse.x} cy={mouse.y} r="110" fill="url(#torch-light)" />
+              <g clipPath="url(#torch)">
+                {ROADS.map((r) => {
+                  const a = byId(r.a);
+                  const b = byId(r.b);
+                  return (
+                    <g key={`torch-${r.a}-${r.b}`}>
+                      <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} strokeWidth={bandWidth(r.flow) + 10} filter="url(#glow)" className="stroke-cyan opacity-70" />
+                      <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} strokeWidth={bandWidth(r.flow)} className="stroke-[#9fd0ff]" />
+                      <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} strokeWidth="1.2" className="stroke-white/80" />
+                    </g>
+                  );
+                })}
+              </g>
+            </g>
+          )}
 
           <g clipPath="url(#frame)">
             {EXITS.map(([id, p], i) => {
@@ -284,13 +327,15 @@ export function HeroRoadNetwork() {
                   vc={r.vc}
                   lit={lit}
                   dimmed={active !== null && !lit}
-                  animate={!reducedMotion}
+                  animate
+                  slow={reducedMotion}
                   seed={i}
                   showVc={showVc}
                 />
               );
             })}
           </g>
+
 
           {JUNCTIONS.map((j) => {
             const isActive = active === j.id;

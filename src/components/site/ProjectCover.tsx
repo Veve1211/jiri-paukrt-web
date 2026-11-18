@@ -19,10 +19,11 @@ const AnimateCtx = createContext(false);
 type CarKind = "head" | "tail";
 
 /** Car lights moving along a path: white headlights or red tail-lights. */
-function Cars({ d, kind = "head", n = 1, dur = 6, offset = 0 }: { d: string; kind?: CarKind; n?: number; dur?: number; offset?: number }) {
+function Cars({ d, kind = "head", n = 1, dur: baseDur = 6, offset = 0 }: { d: string; kind?: CarKind; n?: number; dur?: number; offset?: number }) {
   const animate = useContext(AnimateCtx);
   const reduced = usePrefersReducedMotion();
-  if (!animate || reduced) return null;
+  if (!animate) return null;
+  const dur = reduced ? baseDur * 1.8 : baseDur;
   return (
     <>
       {Array.from({ length: n }, (_, k) => (
