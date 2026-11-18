@@ -5,7 +5,7 @@ import { usePrefersReducedMotion } from "@/hooks/use-telemetry";
 const VW = 1000;
 const VH = 600;
 
-/** Two-sector star-chart projection: Europe on the left, Australia on the right. */
+/** Two-panel map projection: Europe on the left, Australia on the right. */
 export function project(loc: { lat: number; lon: number }): { x: number; y: number } {
   if (loc.lat < 0) {
     const k = 24.7;
@@ -18,7 +18,7 @@ export function project(loc: { lat: number; lon: number }): { x: number; y: numb
 const POS = new Map(LOCATIONS.map((l) => [l.id, project(l)]));
 const pt = (id: string) => POS.get(id) ?? { x: 0, y: 0 };
 
-const PROJECT_LINKS = ["glasgow", "birmingham", "belgrade", "sydney", "melbourne"];
+const PROJECT_LINKS = ["glasgow", "birmingham", "brno", "sydney", "melbourne"];
 const CAREER_PATH = ["prague", "leeds", "melbourne", "dublin"];
 
 function arc(a: { x: number; y: number }, b: { x: number; y: number }, lift = 0.25) {
@@ -52,7 +52,7 @@ export function NetworkMap({
       className="h-full w-full"
       fill="none"
       role="group"
-      aria-label="Star network of projects and career bases"
+      aria-label="Map of projects and career bases"
       onClick={(e) => {
         if (e.target === e.currentTarget) onSelect(undefined);
       }}
@@ -60,10 +60,10 @@ export function NetworkMap({
       {/* sector frames */}
       <g className="font-mono" fontSize="9" letterSpacing="2">
         <rect x="20" y="30" width="640" height="510" rx="14" className="stroke-star/[0.06]" />
-        <text x="36" y="52" className="fill-dim">SECTOR EU · 43°N–58°N</text>
+        <text x="36" y="52" className="fill-dim">EUROPE</text>
         <rect x="690" y="170" width="290" height="280" rx="14" className="stroke-star/[0.06]" />
-        <text x="706" y="192" className="fill-dim">SECTOR AU · 31°S–40°S</text>
-        <text x="36" y="575" className="fill-dim/70">RA 00h · DEC +53° · EPOCH 1998–2025</text>
+        <text x="706" y="192" className="fill-dim">AUSTRALIA</text>
+        <text x="36" y="575" className="fill-dim/70">SCHEMATIC MAP · NOT TO SCALE BETWEEN PANELS</text>
       </g>
       <circle cx={pt("dublin").x} cy={pt("dublin").y} r="160" className="stroke-cyan/[0.07]" />
       <circle cx={pt("dublin").x} cy={pt("dublin").y} r="90" className="stroke-volt/[0.14]" strokeDasharray="2 6" />
@@ -71,7 +71,7 @@ export function NetworkMap({
       {/* career trajectory */}
       <path d={careerD} className="stroke-volt/60" strokeDasharray="4 5" />
 
-      {/* project links radiate from Dublin HQ */}
+      {/* project links radiate from the Dublin base */}
       {PROJECT_LINKS.map((id) => {
         const lit = selected === id || selected === "dublin";
         const d = pt(id).x > 680 ? arc(pt("dublin"), pt(id), 0.22) : `M${pt("dublin").x} ${pt("dublin").y} L${pt(id).x} ${pt(id).y}`;
@@ -146,7 +146,7 @@ export function NetworkMap({
                   {l.name.toUpperCase()}
                 </text>
                 <text x={p.x + (labelRight ? 14 : -14)} y={p.y + 10} fontSize="8.5" className="fill-dim">
-                  {l.kind === "hq" ? "DUBLIN HQ" : l.kind === "base" ? "CAREER BASE" : l.kind === "town" ? "TOWN MODEL" : "PROJECT NODE"}
+                  {l.kind === "hq" ? "CURRENT BASE" : l.kind === "base" ? "CAREER BASE" : l.kind === "town" ? "TOWN MODEL" : "PROJECT"}
                 </text>
               </g>
             )}

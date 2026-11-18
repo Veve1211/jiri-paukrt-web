@@ -6,7 +6,6 @@ import { NetworkMap } from "@/components/site/NetworkMap";
 import { PageIntro } from "@/components/site/PageIntro";
 import {
   CAREER,
-  formatCoord,
   getLocation,
   LOCATIONS,
   projectsAt,
@@ -23,16 +22,16 @@ export const Route = createFileRoute("/network")({
   },
   head: () => ({
     meta: [
-      { title: "Star Network Models — Jiri Paukrt Global Projects Map" },
+      { title: "Project Map — Jiri Paukrt" },
       {
         name: "description",
         content:
-          "Interactive star chart of Jiri Paukrt's transport modelling projects and career bases across Ireland, the UK, Australia, Czech Republic and Serbia.",
+          "Interactive map of Jiri Paukrt's transport modelling projects and career bases across Ireland, the UK, Australia and Central Europe.",
       },
-      { property: "og:title", content: "Star Network Models — Jiri Paukrt" },
+      { property: "og:title", content: "Project Map — Jiri Paukrt" },
       {
         property: "og:description",
-        content: "Explore every project node: national demand models, microsimulations, mega-events and road safety research.",
+        content: "Where the models were built: national demand models, microsimulations, major events and road safety research.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -41,7 +40,7 @@ export const Route = createFileRoute("/network")({
   component: NetworkPage,
 });
 
-const KIND_LABEL = { hq: "Dublin HQ", project: "Project node", base: "Career base", town: "Town model" } as const;
+const KIND_LABEL = { hq: "Current base", project: "Project", base: "Career base", town: "Town model" } as const;
 
 function NetworkPage() {
   const { node } = Route.useSearch();
@@ -56,15 +55,15 @@ function NetworkPage() {
   return (
     <div className="px-4 pt-10 md:px-8">
       <PageIntro
-        chart="CHART 02 — STAR NETWORK"
+        chart="PROJECT MAP"
         title={
           <>
-            Star Network <span className="font-bold">Models</span>
+            Where the <span className="font-bold">models</span> were built
           </>
         }
       >
-        Every star is a place where models were built, presented or run. Select a node to read its telemetry; filter by
-        region to isolate a sector.
+        Every point is a place where Jiri built, presented or ran a model. Select a place to see the projects and roles
+        linked to it, or filter by country.
       </PageIntro>
 
       <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filter by region">
@@ -82,7 +81,7 @@ function NetworkPage() {
                 on ? "border-cyan/40 bg-cyan/10 text-cyan" : "border-star/10 bg-star/[0.03] text-dim hover:text-star",
               )}
             >
-              {r ?? "All sectors"} <span className="ml-1 text-dim/70">{String(count).padStart(2, "0")}</span>
+              {r ?? "All places"} <span className="ml-1 text-dim/70">{String(count).padStart(2, "0")}</span>
             </button>
           );
         })}
@@ -94,8 +93,8 @@ function NetworkPage() {
             <NetworkMap selected={node} region={region} onSelect={select} />
           </div>
           <div className="flex flex-wrap gap-x-5 gap-y-1 border-t border-star/10 px-4 py-3 font-mono text-[10px] tracking-wider text-dim">
-            <span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-cyan" /> DUBLIN HQ</span>
-            <span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-star" /> PROJECT NODE</span>
+            <span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-cyan" /> CURRENT BASE</span>
+            <span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-star" /> PROJECT</span>
             <span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-starblue" /> CAREER BASE</span>
             <span className="flex items-center gap-1.5"><span className="size-1.5 rounded-full bg-star/80" /> TOWN MODEL</span>
             <span className="flex items-center gap-1.5"><span className="h-px w-4 border-t border-dashed border-volt" /> CAREER PATH</span>
@@ -115,9 +114,9 @@ function Overview({ region, onSelect }: { region?: Region | undefined; onSelect:
   const towns = LOCATIONS.filter((l) => (!region || l.region === region) && l.kind === "town");
   return (
     <div>
-      <div className="telemetry text-[10px] text-cyan">Network overview</div>
-      <h2 className="mt-2 text-xl font-medium">{region ?? "All sectors"}</h2>
-      <p className="mt-1 text-sm text-dim">Select a star on the chart or from the list below.</p>
+      <div className="telemetry text-[10px] text-cyan">Overview</div>
+      <h2 className="mt-2 text-xl font-medium">{region ?? "All places"}</h2>
+      <p className="mt-1 text-sm text-dim">Select a place on the map or from the list below.</p>
       <ul className="mt-5 divide-y divide-star/10">
         {list.map((l) => (
           <li key={l.id}>
@@ -155,7 +154,7 @@ function Overview({ region, onSelect }: { region?: Region | undefined; onSelect:
         </div>
       )}
       {list.length === 0 && towns.length === 0 && (
-        <p className="mt-6 text-sm text-dim">No nodes in this sector yet.</p>
+        <p className="mt-6 text-sm text-dim">No places in this filter.</p>
       )}
     </div>
   );
@@ -175,15 +174,9 @@ function LocationPanel({ id, onClose }: { id: string; onClose: () => void }) {
       </div>
       <h2 className="mt-2 text-2xl font-medium">{loc.name}</h2>
       <p className="text-sm text-dim">{loc.country}</p>
-      <div className="mt-4 grid grid-cols-2 gap-2">
-        <div className="rounded-[12px] border border-star/10 bg-star/[0.03] p-3">
-          <div className="font-mono text-[11px] text-star">{formatCoord(loc.lat, loc.lon)}</div>
-          <div className="telemetry mt-1 text-[9px] text-dim">Coordinates</div>
-        </div>
-        <div className="rounded-[12px] border border-cyan/30 bg-cyan/[0.06] p-3">
-          <div className="text-xl font-bold text-cyan">{String(projects.length).padStart(2, "0")}</div>
-          <div className="telemetry mt-1 text-[9px] text-dim">Linked missions</div>
-        </div>
+      <div className="mt-4 inline-flex items-baseline gap-2 rounded-[10px] border border-cyan/30 bg-cyan/[0.06] px-3 py-2">
+        <span className="text-xl font-bold text-cyan">{projects.length}</span>
+        <span className="telemetry text-[9px] text-dim">Linked project{projects.length === 1 ? "" : "s"}</span>
       </div>
 
       {roles.map((r) => (
@@ -199,7 +192,7 @@ function LocationPanel({ id, onClose }: { id: string; onClose: () => void }) {
 
       {projects.length > 0 && (
         <div className="mt-5">
-          <div className="telemetry text-[9.5px] text-dim">Missions at this node</div>
+          <div className="telemetry text-[9.5px] text-dim">Projects here</div>
           <ul className="mt-2 space-y-2">
             {projects.map((p) => (
               <li key={p.slug}>

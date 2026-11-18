@@ -6,10 +6,10 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/s
 import { BrandMark } from "./BrandMark";
 
 export const NAV = [
-  { to: "/network", label: "Network" },
-  { to: "/projects", label: "Projects" },
-  { to: "/expertise", label: "Expertise" },
   { to: "/career", label: "Career" },
+  { to: "/projects", label: "Projects" },
+  { to: "/network", label: "Map" },
+  { to: "/expertise", label: "Expertise" },
   { to: "/contact", label: "Contact" },
 ] as const;
 
@@ -19,7 +19,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 px-4 pt-4 md:px-8 md:pt-5">
       <div className="glass flex h-12 items-center justify-between rounded-[14px] px-4 md:px-5">
-        <Link to="/" aria-label="Paukrt / Transit — home" className="shrink-0">
+        <Link to="/" aria-label="Jiri Paukrt — home" className="shrink-0">
           <BrandMark />
         </Link>
 
@@ -36,10 +36,12 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 font-mono text-[11px] tracking-wider text-cyan lg:flex">
-          <span className="size-1.5 rounded-full bg-cyan shadow-dot" />
-          SYSTEM: 27+ YRS TRANSPORT MODELING
-        </div>
+        <Link
+          to="/contact"
+          className="hidden items-center gap-2 rounded-full border border-cyan/40 px-3.5 py-1.5 font-mono text-[11px] tracking-wider text-cyan uppercase transition-colors hover:bg-cyan/10 lg:flex"
+        >
+          Get in touch
+        </Link>
 
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger
@@ -67,9 +69,8 @@ export function SiteHeader() {
                 </Link>
               ))}
             </nav>
-            <div className="absolute inset-x-6 bottom-8 flex items-center gap-2 font-mono text-[10px] tracking-wider text-cyan">
-              <span className="size-1.5 rounded-full bg-cyan shadow-dot" />
-              SYSTEM: 27+ YRS TRANSPORT MODELING
+            <div className="absolute inset-x-6 bottom-8 font-mono text-[10px] tracking-wider text-dim uppercase">
+              27+ years in transport modelling
             </div>
           </SheetContent>
         </Sheet>

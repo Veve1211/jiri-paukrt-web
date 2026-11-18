@@ -14,7 +14,7 @@ import appCss from "../styles.css?url";
 import { Toaster } from "@/components/ui/sonner";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
-import { Starfield } from "@/components/site/Starfield";
+import { NightBackdrop } from "@/components/site/NightBackdrop";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -89,7 +89,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Jiri Paukrt, Principal Transportation Engineer at SYSTRA Dublin: 27+ years of demand modelling, microsimulation, GIS and mega-event transport.",
+          "Jiri Paukrt, Principal Transportation Engineer at SYSTRA in Dublin: 27+ years of travel demand modelling, traffic microsimulation, scheme evaluation and road safety.",
       },
       { name: "author", content: "Jiri Paukrt" },
       { property: "og:title", content: "Jiri Paukrt — Principal Transportation Engineer" },
@@ -110,7 +110,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap",
       },
     ],
   }),
@@ -139,7 +139,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Starfield />
+      <NightBackdrop />
       <div className="relative flex min-h-screen flex-col">
         <SiteHeader />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}

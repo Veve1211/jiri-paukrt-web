@@ -134,7 +134,7 @@ export function TechRadar() {
           </div>
         )}
         <div className="mt-6 border-t border-star/10 pt-4">
-          <div className="telemetry text-[9.5px] text-dim">Full instrument panel</div>
+          <div className="telemetry text-[9.5px] text-dim">All tools</div>
           <div className="mt-3 flex flex-wrap gap-1.5">
             {TECH.filter((t) => !quadrant || t.quadrant === quadrant).map((t) => (
               <button

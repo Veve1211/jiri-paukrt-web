@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 export const TOPICS = [
   { value: "national-models", label: "National / strategic demand model" },
   { value: "microsimulation", label: "Microsimulation" },
-  { value: "mega-events", label: "Mega-event transport" },
+  { value: "mega-events", label: "Major-event transport" },
   { value: "gis-safety", label: "GIS & road safety" },
   { value: "other", label: "Something else" },
 ] as const;
@@ -80,7 +80,7 @@ export function InquiryForm({
       return;
     }
     if (honeypot) {
-      setStatus({ kind: "sent", reference: "TX-00000000" });
+      setStatus({ kind: "sent", reference: "MSG-00000000" });
       return;
     }
     setStatus({ kind: "sending" });
@@ -97,11 +97,11 @@ export function InquiryForm({
     if (error) {
       setStatus({
         kind: "error",
-        message: "The transmission didn't go through. Check your connection and try again.",
+        message: "The message didn't go through. Check your connection and try again.",
       });
       return;
     }
-    setStatus({ kind: "sent", reference: `TX-${id.slice(0, 8).toUpperCase()}` });
+    setStatus({ kind: "sent", reference: `MSG-${id.slice(0, 8).toUpperCase()}` });
   }
 
   if (status.kind === "sent") {
@@ -111,7 +111,7 @@ export function InquiryForm({
           <CheckCircle2 className="size-5" />
         </div>
         <div>
-          <div className="telemetry text-[10px] text-cyan">Transmission received · {status.reference}</div>
+          <div className="telemetry text-[10px] text-cyan">Message received · {status.reference}</div>
           <h3 className="mt-2 text-xl font-medium">Thanks, {values.name.split(" ")[0]}.</h3>
           <p className="mt-1 max-w-sm text-sm text-dim">
             Your message is logged for Jiri. He'll reply to {values.email}.
@@ -216,12 +216,12 @@ export function InquiryForm({
       <Button type="submit" variant="glow" size="pill" disabled={sending} className="w-full font-medium sm:w-auto">
         {sending ? (
           <>
-            <Loader2 className="animate-spin" /> Transmitting…
+            <Loader2 className="animate-spin" /> Sending…
           </>
         ) : status.kind === "error" ? (
           "Try again →"
         ) : (
-          "Send transmission →"
+          "Send message →"
         )}
       </Button>
     </form>

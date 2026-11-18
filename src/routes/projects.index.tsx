@@ -18,12 +18,12 @@ export const Route = createFileRoute("/projects/")({
       {
         name: "description",
         content:
-          "National demand models for Ireland's NTA, Commonwealth Games visitor demand, Sydney's Lane Cove Tunnel and 11 UK town microsimulations, plus verified conference papers.",
+          "National demand models for Ireland's NTA, Commonwealth Games spectator demand, Sydney's Lane Cove Tunnel and 11 UK town microsimulations, plus papers and conference talks.",
       },
       { property: "og:title", content: "Projects & Publications — Jiri Paukrt" },
       {
         property: "og:description",
-        content: "Filter missions by National Models, Microsimulations, Mega-Events and GIS & Safety.",
+        content: "Filter projects by strategic models, microsimulation, major events and road safety.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -40,19 +40,18 @@ function ProjectsPage() {
   return (
     <div className="px-4 pt-10 md:px-8">
       <PageIntro
-        chart="CHART 03 — MISSION FILES"
+        chart="PROJECTS"
         title={
           <>
             Featured <span className="font-bold">Projects</span> &amp; Publications
           </>
         }
       >
-        From a national model covering the entire Republic of Ireland to vehicle-by-vehicle simulation of a single
-        town centre.
+        From national demand models for Ireland to vehicle-by-vehicle simulation of a single town centre.
       </PageIntro>
 
       <div className="mt-8 flex flex-wrap items-center gap-2" role="group" aria-label="Filter by domain">
-        <FilterChip active={!domain} label="All missions" count={PROJECTS.length} search={{}} />
+        <FilterChip active={!domain} label="All projects" count={PROJECTS.length} search={{}} />
         {DOMAINS.map((d) => (
           <FilterChip
             key={d.key}
@@ -65,7 +64,7 @@ function ProjectsPage() {
       </div>
 
       <p className="mt-6 font-mono text-[11px] tracking-wider text-dim" aria-live="polite">
-        {String(list.length).padStart(2, "0")} MISSION{list.length === 1 ? "" : "S"} ON CHART
+        {String(list.length).padStart(2, "0")} PROJECT{list.length === 1 ? "" : "S"}
       </p>
 
       {list.length > 0 ? (
@@ -76,15 +75,15 @@ function ProjectsPage() {
         </div>
       ) : (
         <div className="glass mt-4 rounded-[14px] p-10 text-center">
-          <p className="text-dim">No missions in this domain yet.</p>
+          <p className="text-dim">No projects in this category.</p>
           <Link to="/projects" className="mt-3 inline-block text-sm text-cyan hover:underline">
-            Show all missions
+            Show all projects
           </Link>
         </div>
       )}
 
       <section className="mt-20" aria-labelledby="pubs">
-        <p className="font-mono text-[11px] tracking-[0.25em] text-cyan/80">TRANSMISSIONS — VERIFIED PUBLICATIONS</p>
+        <p className="font-mono text-[11px] tracking-[0.25em] text-cyan/80">PUBLICATIONS & CONFERENCE PAPERS</p>
         <h2 id="pubs" className="mt-4 text-3xl font-light tracking-tight md:text-4xl">
           Papers &amp; <span className="font-bold">Presentations</span>
         </h2>

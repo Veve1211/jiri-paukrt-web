@@ -76,7 +76,7 @@ export function CorridorSimulator() {
         <div className="glass overflow-hidden rounded-[14px]">
           <div className="flex items-center justify-between px-4 pt-3 font-mono text-[10px] tracking-wider text-dim">
             <span className="flex items-center gap-1.5 text-cyan">
-              <span className="size-1 animate-pulse rounded-full bg-cyan shadow-dot" /> SCENARIO FEED
+              <span className="size-1 rounded-full bg-cyan" /> SCENARIO
             </span>
             <span>V/C {scenario.vc.toFixed(2)}</span>
           </div>

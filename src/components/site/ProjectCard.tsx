@@ -9,11 +9,11 @@ export function ProjectCard({ project }: { project: Project }) {
     <Link
       to="/projects/$slug"
       params={{ slug: project.slug }}
-      className="group glass flex h-full flex-col rounded-[14px] p-5 transition-all hover:-translate-y-0.5 hover:border-cyan/40 hover:shadow-glow"
+      className="group glass flex h-full flex-col rounded-[14px] p-5 transition-all hover:-translate-y-0.5 hover:border-cyan/40"
     >
       <div className="flex items-center justify-between">
-        <span className="telemetry text-[10px] text-cyan">{project.code}</span>
-        <span className="telemetry text-[10px] text-dim">{project.region}</span>
+        <span className="telemetry text-[10px] text-cyan">{project.location}</span>
+        
       </div>
       <h3 className="mt-4 text-xl leading-snug font-medium">{project.title}</h3>
       <p className="mt-1 text-xs text-dim">{project.client}</p>
@@ -25,7 +25,7 @@ export function ProjectCard({ project }: { project: Project }) {
             <div className="telemetry text-[9px] text-dim">{lead.label}</div>
           </div>
           <span className="inline-flex items-center gap-1 text-sm text-cyan">
-            Mission file <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+            Details <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
           </span>
         </div>
         <div className="mt-3 flex flex-wrap gap-1.5">

@@ -18,14 +18,14 @@ export function InquiryDialog({
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="glass-strong max-h-[90vh] overflow-y-auto rounded-[14px] border-star/10 bg-ink/95 sm:max-w-lg">
-        <div className="telemetry text-[10px] text-cyan">Open channel · Dublin HQ</div>
+        <div className="telemetry text-[10px] text-cyan">Message to Jiri</div>
         <DialogTitle className="text-2xl font-light tracking-tight">
           {subject ? (
             <>
               Discuss <span className="font-bold">{subject}</span>
             </>
           ) : (
-            "Send a transmission"
+            "Send a message"
           )}
         </DialogTitle>
         <DialogDescription className="text-sm text-dim">

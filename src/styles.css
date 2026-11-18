@@ -12,14 +12,19 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * "Stellar Transit Matrix" design system — a dark-only planetarium star chart.
- * Cosmic void backgrounds, cyan light paths, volt-blue glow, starlight text.
+ * "Night Drive" design system — a road network at night.
+ * Asphalt backgrounds, sodium-lamp amber accent, headlight-white text,
+ * tail-light red used sparingly. Token names are historical:
+ *   void = page (asphalt) · ink = card · star = main text (headlight white)
+ *   dim = muted text · cyan = primary accent (sodium amber)
+ *   volt = secondary line colour (dusk steel) · starblue = soft secondary text
+ *   alert = tail-light red
  */
 
 @theme inline {
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-display: "Barlow", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -72,23 +77,23 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --shadow-glow: 0 0 28px color-mix(in oklab, var(--cyan) 45%, transparent);
-  --shadow-glow-strong: 0 0 40px color-mix(in oklab, var(--cyan) 70%, transparent);
-  --shadow-dot: 0 0 10px var(--cyan);
+  --shadow-glow: 0 8px 30px -12px color-mix(in oklab, var(--cyan) 55%, transparent);
+  --shadow-glow-strong: 0 10px 36px -10px color-mix(in oklab, var(--cyan) 75%, transparent);
+  --shadow-dot: 0 0 8px color-mix(in oklab, var(--cyan) 80%, transparent);
 }
 
 :root {
-  --radius: 14px;
+  --radius: 10px;
 
-  /* Brand palette */
-  --void: oklch(0.123 0.016 265.2); /* #04060c */
-  --ink: oklch(0.171 0.028 267.4); /* #0a0f1c */
-  --cyan: oklch(0.864 0.123 210.2); /* #5ce8ff */
-  --volt: oklch(0.585 0.226 265.8); /* #3b6bff */
-  --star: oklch(0.97 0.015 251.2); /* #eef6ff */
-  --dim: oklch(0.672 0.041 265.7); /* #8a96b0 */
-  --starblue: oklch(0.807 0.097 263); /* #9fc0ff */
-  --alert: oklch(0.712 0.181 22.8);
+  /* Brand palette — night drive */
+  --void: #0c0f13; /* asphalt at night */
+  --ink: #141920; /* card surface */
+  --cyan: #f2a93b; /* sodium street-lamp amber (primary accent) */
+  --volt: #5f7a96; /* dusk steel — secondary lines */
+  --star: #eeece6; /* headlight white — main text */
+  --dim: #9aa3ad; /* muted text */
+  --starblue: #c7d3df; /* soft secondary text */
+  --alert: #e5484d; /* tail-light red */
 
   /* shadcn semantic mapping */
   --background: var(--void);
@@ -143,34 +148,24 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+  }
+
   ::selection {
     background: color-mix(in oklab, var(--cyan) 35%, transparent);
     color: var(--star);
   }
 }
 
-/* Starfield: tiled pin-point stars, drawn from the starlight token. */
-@utility stars {
+/* Faint lane markings for the page background. */
+@utility road-lines {
   background-image:
-    radial-gradient(1px 1px at 12% 18%, var(--star), transparent),
-    radial-gradient(1px 1px at 33% 72%, var(--cyan), transparent),
-    radial-gradient(1.5px 1.5px at 58% 12%, var(--star), transparent),
-    radial-gradient(1px 1px at 77% 44%, var(--starblue), transparent),
-    radial-gradient(1px 1px at 88% 82%, var(--star), transparent),
-    radial-gradient(1px 1px at 22% 48%, var(--star), transparent),
-    radial-gradient(1px 1px at 46% 90%, var(--cyan), transparent),
-    radial-gradient(1px 1px at 66% 64%, var(--star), transparent),
-    radial-gradient(1px 1px at 5% 85%, var(--star), transparent),
-    radial-gradient(1px 1px at 94% 9%, var(--star), transparent);
-  background-size: 340px 300px;
-}
-
-@utility stars-fine {
-  background-size: 210px 190px;
-}
-
-@utility twinkle {
-  animation: twinkle 4s ease-in-out infinite;
+    linear-gradient(to right, color-mix(in oklab, var(--star) 3.5%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--star) 3.5%, transparent) 1px, transparent 1px);
+  background-size: 96px 96px;
 }
 
 @utility glass {
@@ -201,12 +196,6 @@
   animation: flow-dash 1.6s linear infinite;
 }
 
-@keyframes twinkle {
-  50% {
-    opacity: 0.35;
-  }
-}
-
 @keyframes node-pulse {
   0%,
   100% {
@@ -226,7 +215,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .twinkle,
   .node-pulse,
   .flow-dash {
     animation: none;

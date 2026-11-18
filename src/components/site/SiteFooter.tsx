@@ -31,7 +31,7 @@ export function SiteFooter() {
           >
             LinkedIn <ArrowUpRight className="size-4" />
           </a>
-          <span className="telemetry text-[10px] text-dim">Dublin HQ · {PERSON.coordinates}</span>
+          <span className="telemetry text-[10px] text-dim">Based in {PERSON.city}, Ireland</span>
           <span className="telemetry text-[10px] text-dim/70">
             © {new Date().getFullYear()} {PERSON.name}
           </span>

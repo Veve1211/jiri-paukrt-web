@@ -1,5 +1,6 @@
-// Verified portfolio content for Jiri Paukrt. Every fact here comes from the brief;
-// do not add metrics, dates or clients that are not verified.
+// Portfolio content for Jiri Paukrt. Facts come from the brief and were cross-checked
+// against public sources (NTA, STAR 2017, ETC 2019, SWOV/ICTTE 2014) in Nov 2026.
+// Do not add metrics, dates or clients that are not verified.
 
 export const PERSON = {
   name: "Jiri Paukrt",
@@ -8,24 +9,23 @@ export const PERSON = {
   city: "Dublin",
   yearsLabel: "27+",
   careerStartYear: 1999,
-  linkedin: "https://linkedin.com/in/jiri-paukrt",
-  coordinates: "53.3498° N · 6.2603° W",
+  linkedin: "https://www.linkedin.com/in/jiri-paukrt",
 } as const;
 
 export type DomainKey = "national" | "microsim" | "mega-events" | "gis-safety";
 
 export const DOMAINS: { key: DomainKey; label: string }[] = [
-  { key: "national", label: "National Models" },
-  { key: "microsim", label: "Microsimulations" },
-  { key: "mega-events", label: "Mega-Events" },
-  { key: "gis-safety", label: "GIS & Safety" },
+  { key: "national", label: "Strategic Models" },
+  { key: "microsim", label: "Microsimulation" },
+  { key: "mega-events", label: "Major Events" },
+  { key: "gis-safety", label: "Road Safety" },
 ];
 
 export function isDomainKey(value: unknown): value is DomainKey {
   return typeof value === "string" && DOMAINS.some((d) => d.key === value);
 }
 
-export type Region = "Ireland" | "UK" | "Australia" | "Czech Republic" | "Serbia";
+export type Region = "Ireland" | "UK" | "Australia" | "Czech Republic";
 
 export interface Metric {
   value: string;
@@ -36,6 +36,7 @@ export interface Publication {
   title: string;
   venue: string;
   authors?: string;
+  url?: string;
 }
 
 export interface Project {
@@ -64,23 +65,24 @@ export const PROJECTS: Project[] = [
     region: "Ireland",
     domains: ["national"],
     summary:
-      "A national-scale model suite for the National Transport Authority, covering the entire Republic of Ireland — from trip generation through long-distance travel to regional detail.",
+      "Work on the NTA's Regional Modelling System, the strategic tool behind national transport planning in Ireland: a National Demand Forecasting Model that feeds five regional multi-modal models.",
     highlights: [
       "National Demand Forecasting Model (NDFM)",
-      "National Trip End Model (NTEM)",
-      "Long Distance Demand Model",
-      "5 Regional Models covering the entire Republic of Ireland",
+      "Its sub-models: National Trip End Model (NTEM) and Long Distance Model",
+      "Five regional multi-modal models: East, West, Mid-West, South-East and South-West",
+      "Post-COVID trip rates estimated from the 2022 National Household Travel Survey (about 20,000 diary records)",
     ],
     metrics: [
-      { value: "100%", label: "Republic of Ireland coverage" },
-      { value: "5", label: "Regional models" },
-      { value: "3", label: "National model components" },
+      { value: "5", label: "Regional multi-modal models" },
+      { value: "~20k", label: "Travel-diary records (2022)" },
     ],
     publication: {
       title: "Post COVID-19 Trip Rate Estimation in Ireland",
-      venue: "Co-authored paper",
+      venue: "National Transport Authority technical paper",
       authors: "William Brazil, Warren Whitney, Jiri Paukrt",
+      url: "https://www.nationaltransport.ie/wp-content/uploads/2025/09/Post-COVID-19-Trip-Rate-Estimation-in-Ireland.pdf",
     },
+    tools: ["CUBE", "Python"],
     locationIds: ["dublin"],
   },
   {
@@ -92,11 +94,12 @@ export const PROJECTS: Project[] = [
     region: "Ireland",
     domains: ["national"],
     summary:
-      "The National Transport Authority's long-distance model spanning rail, bus, car and freight — presented at the European Transport Conference 2019 in Dublin.",
+      "The NTA's model of long-distance inter-urban travel across Ireland and Northern Ireland by car, bus, rail and goods vehicle. Recent work improved long-distance rail demand forecasting, so the model can test more trains, higher capacity or fare changes.",
     highlights: [
-      "Modes: rail, bus, car and freight",
-      "Presented at ETC 2019, Dublin",
-      "Co-presented with Sean Kearns (SYSTRA)",
+      "Covers Ireland and Northern Ireland",
+      "Modes: car, bus, rail and goods vehicles",
+      "Focus on long-distance rail demand",
+      "Presented at ETC 2019 in Dublin with Sean Kearns (SYSTRA)",
     ],
     metrics: [
       { value: "4", label: "Modes modelled" },
@@ -105,7 +108,8 @@ export const PROJECTS: Project[] = [
     publication: {
       title: "National Transport Authority Long Distance Model",
       venue: "European Transport Conference (ETC 2019), Dublin",
-      authors: "With Sean Kearns (SYSTRA)",
+      authors: "Sean Kearns, Jiri Paukrt",
+      url: "https://www.systra.com/en/news/european-transport-conference-british-and-french-systra-experts-in-the-spotlight/",
     },
     locationIds: ["dublin"],
   },
@@ -118,21 +122,22 @@ export const PROJECTS: Project[] = [
     region: "UK",
     domains: ["national"],
     summary:
-      "Five-year after-opening evaluation of the Glasgow M74 Completion Scheme for Transport Scotland, presented at the STAR Conference 2017.",
+      "Five-year after-opening evaluation of the M74 Completion — about 8 km of motorway across the south side of Glasgow, opened in June 2011 — for Transport Scotland. Observed traffic was compared with what the scheme was expected to deliver.",
     highlights: [
-      "5-Year After Opening Project Evaluation",
-      "Client: Transport Scotland",
-      "Presented at the STAR Conference 2017",
-      "With Robert Allan & Iain Clement",
+      "About 8 km of new motorway linking the M74 and the M8",
+      "Opened to traffic in June 2011",
+      "Evaluated traffic redistribution and relief to the M8",
+      "Presented at the STAR Conference 2017 with Robert Allan & Iain Clement",
     ],
     metrics: [
-      { value: "5 yrs", label: "After-opening horizon" },
-      { value: "2017", label: "STAR Conference" },
+      { value: "~8 km", label: "New motorway" },
+      { value: "5 yrs", label: "After opening" },
     ],
     publication: {
-      title: "M74 Completion Scheme: 5-Year After Opening Project Evaluation",
-      venue: "STAR Conference 2017",
-      authors: "With Robert Allan & Iain Clement",
+      title: "Scottish Trunk Road Infrastructure Project Evaluation (STRIPE): M74 Completion Scheme — 5 Years After Opening",
+      venue: "STAR Conference 2017, Glasgow",
+      authors: "Robert Allan, Iain Clement, Jiri Paukrt",
+      url: "https://starconference.org.uk/star/2017/Allan.pdf",
     },
     locationIds: ["glasgow"],
   },
@@ -140,16 +145,17 @@ export const PROJECTS: Project[] = [
     slug: "road-safety-traffic-conflicts",
     code: "RS-01",
     title: "Road Safety via Traffic Conflicts",
-    client: "Research pilot",
-    location: "Presented at ICTTE, Belgrade",
-    region: "Serbia",
+    client: "With the Transport Research Centre (CDV)",
+    location: "Brno, Czech Republic",
+    region: "Czech Republic",
     domains: ["gis-safety", "microsim"],
     summary:
-      "A pilot comparing traffic conflicts produced by S-Paramics microsimulation with conflicts observed on street — testing microsimulation as a road-safety evaluation tool.",
+      "A pilot comparing traffic conflicts produced by S-Paramics microsimulation with conflicts observed on street using the Czech traffic conflict technique — testing microsimulation as a proactive road-safety tool that does not have to wait for years of accident records.",
     highlights: [
-      "S-Paramics microsimulation",
+      "Signalised intersections in Brno",
+      "S-Paramics microsimulation, time-to-conflict indicator",
       "Simulated vs observed traffic conflicts",
-      "Presented at ICTTE Belgrade 2014",
+      "Presented at ICTTE, Belgrade, November 2014",
     ],
     metrics: [
       { value: "2", label: "Methods compared" },
@@ -158,25 +164,27 @@ export const PROJECTS: Project[] = [
     publication: {
       title:
         "Road safety evaluation using traffic conflicts: Pilot comparison of micro-simulation and observation",
-      venue: "ICTTE Belgrade 2014",
+      venue: "ICTTE 2014, Belgrade",
+      authors: "Jiří Ambros, Richard Turek, Jiri Paukrt",
+      url: "https://www.researchgate.net/publication/271135792_Road_safety_evaluation_using_traffic_conflicts_Pilot_comparison_of_micro-simulation_and_observation",
     },
     tools: ["S-Paramics"],
-    locationIds: ["belgrade"],
+    locationIds: ["brno"],
   },
   {
     slug: "commonwealth-games",
     code: "EV-01",
-    title: "Commonwealth Games Visitor Demand",
+    title: "Commonwealth Games Spectator Demand",
     client: "Glasgow 2014 · Birmingham 2022",
     location: "Glasgow & Birmingham, UK",
     region: "UK",
     domains: ["mega-events"],
     summary:
-      "Visitor demand modelling for two Commonwealth Games — forecasting how spectators travel to venues on event days.",
+      "Spectator travel demand modelling for two Commonwealth Games — forecasting how spectators travel to venues on event days.",
     highlights: [
       "Commonwealth Games Glasgow 2014",
       "Commonwealth Games Birmingham 2022",
-      "Visitor demand modelling",
+      "Spectator travel demand modelling",
     ],
     metrics: [
       { value: "2", label: "Games editions" },
@@ -193,15 +201,17 @@ export const PROJECTS: Project[] = [
     region: "Australia",
     domains: ["microsim"],
     summary:
-      "Microsimulation of the Lane Cove Tunnel in Sydney — the largest microsimulation model in Australia by geographical coverage at the time.",
+      "Microsimulation of the Lane Cove Tunnel in Sydney, the 3.6 km twin-tube motorway tunnel linking the M2 Hills Motorway with the Gore Hill Freeway — the largest microsimulation model in Australia by geographical coverage at the time.",
     highlights: [
+      "3.6 km twin-tube tunnel, opened to traffic in March 2007",
       "Largest microsimulation model in Australia by geographical coverage at the time",
       "Delivered with Hyder Consulting",
     ],
     metrics: [
-      { value: "#1", label: "Coverage in Australia at the time" },
-      { value: "Hyder", label: "Consulting" },
+      { value: "3.6 km", label: "Twin-tube tunnel" },
+      { value: "2007", label: "Opened to traffic" },
     ],
+    tools: ["Paramics"],
     locationIds: ["sydney"],
   },
   {
@@ -214,7 +224,7 @@ export const PROJECTS: Project[] = [
     domains: ["microsim"],
     summary: "Microsimulation supporting the revitalisation of Dandenong in Melbourne.",
     highlights: ["Dandenong revitalisation", "Delivered with Hyder Consulting"],
-    metrics: [{ value: "Hyder", label: "Consulting" }],
+    metrics: [{ value: "2006–07", label: "Hyder Consulting" }],
     locationIds: ["melbourne"],
   },
   {
@@ -240,6 +250,7 @@ export const PROJECTS: Project[] = [
       "Hinckley",
     ],
     metrics: [{ value: "11", label: "Town models" }],
+    tools: ["Paramics Discovery", "S-Paramics"],
     locationIds: [
       "gillingham",
       "douglas",
@@ -289,12 +300,12 @@ export interface NetworkLocation {
 }
 
 export const LOCATIONS: NetworkLocation[] = [
-  { id: "dublin", name: "Dublin", country: "Ireland", region: "Ireland", lat: 53.3498, lon: -6.2603, kind: "hq", note: "SYSTRA · 2008–Present" },
+  { id: "dublin", name: "Dublin", country: "Ireland", region: "Ireland", lat: 53.3498, lon: -6.2603, kind: "hq", note: "SYSTRA · 2008–present" },
   { id: "glasgow", name: "Glasgow", country: "Scotland, UK", region: "UK", lat: 55.8642, lon: -4.2518, kind: "project" },
   { id: "birmingham", name: "Birmingham", country: "England, UK", region: "UK", lat: 52.4862, lon: -1.8904, kind: "project" },
   { id: "leeds", name: "Leeds", country: "England, UK", region: "UK", lat: 53.8008, lon: -1.5491, kind: "base", note: "Jacobs Babtie · 2004–2006" },
   { id: "prague", name: "Prague", country: "Czech Republic", region: "Czech Republic", lat: 50.0755, lon: 14.4378, kind: "base", note: "CityPlan · 1999–2004 · ČVUT" },
-  { id: "belgrade", name: "Belgrade", country: "Serbia", region: "Serbia", lat: 44.7866, lon: 20.4489, kind: "project" },
+  { id: "brno", name: "Brno", country: "Czech Republic", region: "Czech Republic", lat: 49.1951, lon: 16.6068, kind: "project" },
   { id: "melbourne", name: "Melbourne", country: "Australia", region: "Australia", lat: -37.8136, lon: 144.9631, kind: "base", note: "Hyder Consulting · 2006–2007" },
   { id: "sydney", name: "Sydney", country: "Australia", region: "Australia", lat: -33.8688, lon: 151.2093, kind: "project" },
   { id: "gillingham", name: "Gillingham", country: "England, UK", region: "UK", lat: 51.389, lon: 0.5486, kind: "town" },
@@ -310,7 +321,7 @@ export const LOCATIONS: NetworkLocation[] = [
   { id: "hinckley", name: "Hinckley", country: "England, UK", region: "UK", lat: 52.5413, lon: -1.3725, kind: "town" },
 ];
 
-export const REGIONS: Region[] = ["Ireland", "UK", "Australia", "Czech Republic", "Serbia"];
+export const REGIONS: Region[] = ["Ireland", "UK", "Australia", "Czech Republic"];
 
 export function projectsAt(locationId: string): Project[] {
   return PROJECTS.filter((p) => p.locationIds.includes(locationId));
@@ -403,10 +414,13 @@ export interface Tech {
 export const TECH: Tech[] = [
   { name: "Paramics Discovery", quadrant: "Microsimulation", blurb: "Microscopic traffic simulation of junctions, corridors and town networks, vehicle by vehicle." },
   { name: "S-Paramics", quadrant: "Microsimulation", blurb: "Microsimulation platform used for the traffic-conflict road-safety pilot.", projects: ["road-safety-traffic-conflicts"] },
+  { name: "Vissim", quadrant: "Microsimulation", blurb: "Microsimulation of signalised junctions, bus priority and multimodal corridors." },
   { name: "3D Traffic Simulation", quadrant: "Microsimulation", blurb: "Three-dimensional playback of simulated traffic to communicate schemes to stakeholders." },
   { name: "SATURN", quadrant: "Strategic Demand", blurb: "Strategic highway assignment for network-wide route choice and congestion." },
+  { name: "CUBE", quadrant: "Strategic Demand", blurb: "Platform of the NTA Regional Modelling System — demand, mode and destination choice, and assignment.", projects: ["nta-national-demand-model"] },
   { name: "Variable Demand Modeling", quadrant: "Strategic Demand", blurb: "Demand that responds to changing travel costs — frequency, mode, destination and time of day." },
   { name: "COBA", quadrant: "Appraisal", blurb: "UK cost–benefit analysis for road schemes." },
+  { name: "TUBA", quadrant: "Appraisal", blurb: "Transport user benefit appraisal: time, vehicle operating cost and user charges." },
   { name: "HDM4", quadrant: "Appraisal", blurb: "Highway Development and Management model for road investment appraisal." },
   { name: "QGIS", quadrant: "GIS & Code", blurb: "Open-source spatial analysis, zoning systems and network mapping." },
   { name: "ArcGIS", quadrant: "GIS & Code", blurb: "Spatial analysis, geodatabases and cartographic outputs." },
