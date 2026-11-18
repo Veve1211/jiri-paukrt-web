@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { HeroRoadNetwork } from "@/components/site/HeroRoadNetwork";
 import { ProjectCover } from "@/components/site/ProjectCover";
 import { Button } from "@/components/ui/button";
-import { EDUCATION, PERSON, PROJECTS, TECH, UK_MICROSIM_TOWNS } from "@/data/portfolio";
+import { CAREER, EDUCATION, PERSON, PROJECTS, TECH, UK_MICROSIM_TOWNS } from "@/data/portfolio";
 import { spotlightMove } from "@/hooks/use-spotlight";
 import { cn } from "@/lib/utils";
 
@@ -42,8 +42,9 @@ function Index() {
   return (
     <>
       <Hero />
-      <Strengths />
       <Bento />
+      <CareerOverview />
+      <Strengths />
     </>
   );
 }
@@ -230,6 +231,60 @@ function Bento() {
             <p className="mt-auto pt-4 text-sm text-dim">Ing. — Transport Planning and Traffic Engineering</p>
           </Tile>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function CareerOverview() {
+  return (
+    <section aria-labelledby="career-overview" className="pt-16 pb-4">
+      <div className="mx-auto max-w-7xl px-4 md:px-8">
+        <p className="telemetry text-[11px] text-cyan">Career</p>
+        <h2 id="career-overview" className="mt-3 text-4xl font-light md:text-5xl">
+          27 years, <span className="font-semibold">four employers</span>
+        </h2>
+
+        <div className="glass reveal mt-10 flex flex-col gap-3 rounded-[24px] border-cyan/30 p-6 md:flex-row md:items-center md:gap-8">
+          <span className="w-fit rounded-full bg-cyan px-3 py-1 font-mono text-[11px] font-semibold tracking-wider text-void uppercase">
+            Latest · 2025
+          </span>
+          <p className="text-[15px] leading-relaxed text-star">
+            New post-COVID trip rates for the National Transport Authority's 2022 base-year model update — the first in
+            Ireland since the pandemic — presented at the European Transport Conference 2025 in Antwerp.
+          </p>
+        </div>
+
+        <ol className="relative mt-8 grid gap-4 lg:grid-cols-4">
+          <span aria-hidden="true" className="absolute top-[30px] right-6 left-6 hidden h-[3px] bg-[repeating-linear-gradient(to_right,var(--cyan)_0_14px,transparent_14px_24px)] opacity-50 lg:block" />
+          {CAREER.map((c) => (
+            <li key={c.company} className="glass reveal relative rounded-[24px] p-6">
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "mb-4 block size-4 rounded-full border-2",
+                  c.current ? "border-cyan bg-cyan shadow-dot" : "border-star/60 bg-void",
+                )}
+              />
+              <p className="font-mono text-[11px] tracking-wider text-cyan uppercase">{c.years}</p>
+              <h3 className="mt-2 text-xl leading-snug font-semibold">{c.role}</h3>
+              <p className="mt-1 text-sm text-starblue">
+                {c.company} · {c.location}
+              </p>
+              <ul className="mt-4 space-y-2">
+                {c.duties.slice(0, c.current ? 3 : 2).map((d) => (
+                  <li key={d} className="flex gap-2.5 text-[13px] leading-relaxed text-dim">
+                    <span className="mt-2 size-1 shrink-0 rounded-full bg-cyan" />
+                    {d}
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ol>
+        <Link to="/career" className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-cyan hover:underline">
+          Full career and education <ArrowRight className="size-4" />
+        </Link>
       </div>
     </section>
   );

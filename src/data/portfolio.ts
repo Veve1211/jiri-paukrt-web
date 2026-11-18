@@ -35,7 +35,7 @@ export const PERSON = {
     },
     {
       title: "International and published",
-      body: "Four countries of practice and four papers and conference talks with the NTA, ETC, STAR and ICTTE.",
+      body: "Four countries of practice; papers and talks with the NTA, ETC (2019 and 2025), STAR and ICTTE.",
     },
   ],
   waysOfWorking: [
@@ -112,7 +112,8 @@ export const PROJECTS: Project[] = [
       "Managed the development and calibration of the National Demand Forecasting Model (NDFM)",
       "Developed the National Trip End Model and a demand model for major ports and airports in Ireland and Northern Ireland",
       "Involved in developing and calibrating the five regional models: East, West, Mid-West, South-East and South-West",
-      "Post-COVID trip rates estimated from the 2022 National Household Travel Survey (about 20,000 diary records)",
+      "Update to a 2022 base year: the first post-COVID trip rates in Ireland, from about 20,000 travel-diary records",
+      "Presented at the European Transport Conference 2025 in Antwerp",
     ],
     metrics: [
       { value: "5", label: "Regional multi-modal models" },
@@ -120,7 +121,7 @@ export const PROJECTS: Project[] = [
     ],
     publication: {
       title: "Post COVID-19 Trip Rate Estimation in Ireland",
-      venue: "National Transport Authority technical paper",
+      venue: "NTA, September 2025 · presented at ETC 2025, Antwerp",
       authors: "William Brazil, Warren Whitney, Jiri Paukrt",
       url: "https://www.nationaltransport.ie/wp-content/uploads/2025/09/Post-COVID-19-Trip-Rate-Estimation-in-Ireland.pdf",
     },
@@ -433,7 +434,8 @@ export const CAREER: CareerEntry[] = [
       "Microsimulation models of 11 UK towns, including Plymouth, Blackpool, Nuneaton and Douglas (Isle of Man); variable demand models of Plymouth and Chippenham.",
       "Visitor demand modelling for the Glasgow 2014 and Birmingham 2022 Commonwealth Games.",
       "Standalone programs in VB, VBA and Python that add functionality, increase efficiency and improve reporting.",
-      "Co-author of papers and talks on post-COVID trip rates (NTA), the Long Distance Model (ETC 2019), the M74 evaluation (STAR 2017) and traffic conflicts (ICTTE 2014).",
+      "Most recently: new post-COVID trip rates for the NTA's 2022 base-year model update, presented at the European Transport Conference 2025 in Antwerp.",
+      "Co-author of papers and talks on the Long Distance Model (ETC 2019), the M74 evaluation (STAR 2017) and traffic conflicts (ICTTE 2014).",
     ],
     related: [
       "nta-national-demand-model",

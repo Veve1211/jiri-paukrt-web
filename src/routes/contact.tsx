@@ -59,6 +59,10 @@ function ContactPage() {
             </div>
           </div>
 
+          <p className="mt-4 max-w-md text-xs leading-relaxed text-dim">
+            Jiri works for SYSTRA. Enquiries about commissioning modelling work are handled through SYSTRA; this page
+            is for questions about his projects, papers and experience.
+          </p>
           <Button asChild variant="glass" size="pill" className="mt-4">
             <a href={PERSON.linkedin} target="_blank" rel="noreferrer">
               Connect on LinkedIn <ArrowUpRight />
