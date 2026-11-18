@@ -27,7 +27,12 @@ export const Route = createFileRoute("/")({
           "Travel demand modelling, traffic microsimulation and scheme evaluation across Ireland, the UK, Australia and Central Europe.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: "https://paukrt.lovable.app/og.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "Jiri Paukrt, Ing. — Principal Transportation Engineer" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "https://paukrt.lovable.app/og.png" },
     ],
   }),
   component: Index,
@@ -52,7 +57,7 @@ function Index() {
 }
 
 function Hero() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   return (
     <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 pt-10 pb-10 md:px-8 lg:min-h-[calc(100vh-90px)] lg:grid-cols-12">
       <section className="flex flex-col justify-center lg:col-span-5">
@@ -66,6 +71,11 @@ function Hero() {
           <span className="text-glow mt-4 block text-[26px] leading-tight font-semibold tracking-[-0.02em] sm:text-[38px]">
             Principal Transportation Engineer
           </span>
+          {lang === "cs" && (
+            <span className="mt-2 block text-[18px] leading-snug font-normal tracking-normal text-starblue sm:text-[22px]">
+              hlavní dopravní inženýr
+            </span>
+          )}
         </h1>
         <p className="mt-6 max-w-[460px] text-[16px] leading-relaxed text-starblue">
           {t(
@@ -133,7 +143,7 @@ function Tile({
 }
 
 function Bento() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const { projects, tech, education } = useContent();
   const pubs = projects.filter((p) => p.publication);
   const tools = tech.map((x) => x.name);
@@ -149,6 +159,7 @@ function Bento() {
         <div className="mt-10 grid auto-rows-[minmax(190px,auto)] gap-4 md:grid-cols-6">
           <Tile to="/career" label={t("Current role", "Současná pozice")} className="md:col-span-4">
             <h3 className="mt-6 text-3xl font-semibold md:text-4xl">Principal Transportation Engineer</h3>
+            {lang === "cs" && <p className="mt-1 text-lg text-starblue">hlavní dopravní inženýr</p>}
             <p className="mt-2 text-starblue">{t("SYSTRA Dublin · since 2008 · based in the Czech Republic", "SYSTRA Dublin · od roku 2008 · žije v Česku")}</p>
             <div className="mt-auto flex flex-wrap items-center gap-2 pt-6 font-mono text-[10.5px] tracking-wider text-dim uppercase">
               {[t("Prague 1999", "Praha 1999"), "Leeds 2004", "Melbourne 2006", "Dublin 2008"].map((stop, i) => (
