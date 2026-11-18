@@ -230,7 +230,7 @@ function Bento() {
             <div className="relative mt-auto -mx-6 overflow-hidden pt-6 [mask-image:linear-gradient(90deg,transparent,black_15%,black_85%,transparent)]">
               <div className="marquee flex w-max gap-2">
                 {[...tools, ...tools].map((name, i) => (
-                  <span key={`${name}-${i}`} className="rounded-full border border-star/10 bg-star/[0.04] px-3 py-1.5 font-mono text-[11px] whitespace-nowrap text-starblue">
+                  <span key={`${name}-${i}`} aria-hidden={i >= tools.length ? true : undefined} className="rounded-full border border-star/10 bg-star/[0.04] px-3 py-1.5 font-mono text-[11px] whitespace-nowrap text-starblue">
                     {name}
                   </span>
                 ))}

@@ -3,7 +3,7 @@ import { Menu } from "lucide-react";
 import { useState } from "react";
 
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { LangSwitch, useLang } from "@/lib/i18n";
+import { useLang } from "@/lib/i18n";
 import { BrandMark } from "./BrandMark";
 
 export const NAV = [
@@ -39,7 +39,6 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-        <LangSwitch />
         <a
           href="/Jiri-Paukrt-CV.pdf"
           download
