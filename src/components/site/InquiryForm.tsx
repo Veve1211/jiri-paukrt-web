@@ -1,5 +1,5 @@
 import { CheckCircle2, Loader2, RotateCcw } from "lucide-react";
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 
 export const TOPICS = [
+  { value: "role", label: "A role or job opportunity" },
   { value: "national-models", label: "National / strategic demand model" },
   { value: "microsimulation", label: "Microsimulation" },
   { value: "mega-events", label: "Major-event transport" },
@@ -16,16 +17,66 @@ export const TOPICS = [
 
 export type TopicValue = (typeof TOPICS)[number]["value"];
 
+// --- Junk filters ----------------------------------------------------------
+// Client-side checks that stop careless spam and nonsense messages. They are not a
+// substitute for server-side protection, which is managed in Lovable.
+
+const DISPOSABLE_DOMAINS = [
+  "mailinator.com",
+  "guerrillamail.com",
+  "10minutemail.com",
+  "tempmail.com",
+  "temp-mail.org",
+  "yopmail.com",
+  "trashmail.com",
+  "sharklasers.com",
+  "getnada.com",
+  "dispostable.com",
+  "maildrop.cc",
+  "throwawaymail.com",
+];
+const URL_RE = /(https?:\/\/|www\.)/gi; // global: for counting links
+const HAS_URL = /(https?:\/\/|www\.)/i; // non-global: safe for .test()
+const MIN_FILL_MS = 4000;
+const COOLDOWN_MS = 10 * 60 * 1000;
+const COOLDOWN_KEY = "inquiry-last-sent";
+
+function looksLikeGibberish(text: string): boolean {
+  const letters = (text.match(/\p{L}/gu) ?? []).length;
+  if (letters < text.replace(/\s/g, "").length * 0.6) return true; // mostly symbols or digits
+  if (/(.)\1{6,}/u.test(text)) return true; // "aaaaaaa", "!!!!!!!"
+  const words = text.split(/\s+/).filter((w) => /\p{L}{2,}/u.test(w));
+  if (words.length < 4) return true; // too few real words to be a question
+  if (words.some((w) => w.length > 40)) return true; // keyboard mashing
+  return false;
+}
+
 const schema = z.object({
-  name: z.string().trim().min(1, "Please enter your name").max(100, "Keep it under 100 characters"),
-  email: z.string().trim().email("Enter a valid email address").max(255),
+  name: z
+    .string()
+    .trim()
+    .min(2, "Please enter your name")
+    .max(100, "Keep it under 100 characters")
+    .refine((v) => /\p{L}{2,}/u.test(v), "Please enter your name")
+    .refine((v) => !HAS_URL.test(v), "A name can't contain a link"),
+  email: z
+    .string()
+    .trim()
+    .email("Enter a valid email address")
+    .max(255)
+    .refine(
+      (v) => !DISPOSABLE_DOMAINS.includes(v.split("@")[1]?.toLowerCase() ?? ""),
+      "Please use a permanent email address so Jiri can reply",
+    ),
   organisation: z.string().trim().max(120, "Keep it under 120 characters").optional(),
-  topic: z.enum(["national-models", "microsimulation", "mega-events", "gis-safety", "other"]),
+  topic: z.enum(["role", "national-models", "microsimulation", "mega-events", "gis-safety", "other"]),
   message: z
     .string()
     .trim()
-    .min(10, "Tell Jiri a little more (at least 10 characters)")
-    .max(2000, "Keep it under 2,000 characters"),
+    .min(30, "Please describe your question in a sentence or two (at least 30 characters)")
+    .max(2000, "Keep it under 2,000 characters")
+    .refine((v) => (v.match(URL_RE) ?? []).length <= 2, "Please include no more than two links")
+    .refine((v) => !looksLikeGibberish(v), "This doesn't look like a question yet — please write it in a few words"),
 });
 
 type Values = z.infer<typeof schema>;
@@ -61,6 +112,10 @@ export function InquiryForm({
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [honeypot, setHoneypot] = useState("");
+  const openedAt = useRef(Date.now());
+  useEffect(() => {
+    openedAt.current = Date.now();
+  }, []);
 
   const set = <K extends keyof Values>(key: K, value: Values[K]) => {
     setValues((v) => ({ ...v, [key]: value }));
@@ -79,7 +134,21 @@ export function InquiryForm({
       setErrors(next);
       return;
     }
-    if (honeypot) {
+    let lastSent = 0;
+    try {
+      lastSent = Number(window.localStorage.getItem(COOLDOWN_KEY) ?? 0);
+    } catch {
+      // storage unavailable — skip the cooldown check
+    }
+    if (Date.now() - lastSent < COOLDOWN_MS) {
+      setStatus({
+        kind: "error",
+        message: "You've just sent a message. Please wait a few minutes before sending another.",
+      });
+      return;
+    }
+    // Bots fill the hidden field or submit within a couple of seconds of loading.
+    if (honeypot || Date.now() - openedAt.current < MIN_FILL_MS) {
       setStatus({ kind: "sent", reference: "MSG-00000000" });
       return;
     }
@@ -90,9 +159,11 @@ export function InquiryForm({
       name: parsed.data.name,
       email: parsed.data.email,
       organisation: parsed.data.organisation || null,
-      topic: parsed.data.topic,
+      // The database only accepts the original topics, so job enquiries are stored
+      // as "other" and tagged in `source`.
+      topic: parsed.data.topic === "role" ? "other" : parsed.data.topic,
       message: parsed.data.message,
-      source: source ?? null,
+      source: parsed.data.topic === "role" ? `role:${source ?? "site"}`.slice(0, 120) : (source ?? null),
     });
     if (error) {
       setStatus({
@@ -100,6 +171,11 @@ export function InquiryForm({
         message: "The message didn't go through. Check your connection and try again.",
       });
       return;
+    }
+    try {
+      window.localStorage.setItem(COOLDOWN_KEY, String(Date.now()));
+    } catch {
+      // storage unavailable — nothing to remember
     }
     setStatus({ kind: "sent", reference: `MSG-${id.slice(0, 8).toUpperCase()}` });
   }
@@ -195,7 +271,7 @@ export function InquiryForm({
           onChange={(e) => set("message", e.target.value)}
           aria-invalid={!!errors.message}
           maxLength={2000}
-          placeholder="Project scope, timeline, the question you're trying to answer…"
+          placeholder="The role or project, where it is based and the timeline…"
         />
       </Field>
       <input

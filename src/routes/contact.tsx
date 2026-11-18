@@ -38,11 +38,12 @@ function ContactPage() {
             chart="CONTACT"
             title={
               <>
-                Get in <span className="font-bold">touch</span>
+                Let's talk about <span className="font-bold">a role</span>
               </>
             }
           >
-            Questions about a project, a paper or a possible collaboration? Send a message or connect on LinkedIn.
+            Recruiting for a senior or principal transport modelling role, or building a modelling team? Send a
+            message, email Jiri directly or connect on LinkedIn.
           </PageIntro>
 
           <div className="glass mt-10 flex items-center gap-5 rounded-[20px] p-5">
@@ -57,6 +58,9 @@ function ContactPage() {
                 <MapPin className="size-3 text-cyan" /> Dublin, Ireland
               </div>
               <EmailLink className="mt-3" />
+              <p className="mt-3 inline-flex items-center gap-2 text-xs text-starblue">
+                <span className="size-2 rounded-full bg-go" /> {PERSON.openTo}
+              </p>
             </div>
           </div>
 
@@ -72,7 +76,7 @@ function ContactPage() {
           <h2 id="form-title" className="mt-2 mb-6 text-2xl font-light tracking-tight">
             Send Jiri a <span className="font-bold">message</span>
           </h2>
-          <InquiryForm source="contact-page" />
+          <InquiryForm source="contact-page" defaultTopic="role" />
         </section>
       </div>
     </div>

@@ -18,6 +18,26 @@ export const PERSON = {
     { name: "Czech", level: "Native" },
     { name: "English", level: "Professional working proficiency" },
   ],
+  /** Shown on the home and contact pages — the purpose of the site. */
+  openTo: "Open to senior and principal transport modelling roles",
+  strengths: [
+    {
+      title: "National-scale models, end to end",
+      body: "Managed the development and calibration of Ireland's National Demand Forecasting Model and built its trip-end and long-distance sub-models.",
+    },
+    {
+      title: "Strategic and microscopic",
+      body: "Variable demand and SATURN assignment models alongside more than ten years of microsimulation — from town centres to the Lane Cove Tunnel corridor.",
+    },
+    {
+      title: "Builds his own tools",
+      body: "Python, VBA, SQL and Ruby programs that automate model development, data processing and reporting.",
+    },
+    {
+      title: "International and published",
+      body: "Four countries of practice and four papers and conference talks with the NTA, ETC, STAR and ICTTE.",
+    },
+  ],
   waysOfWorking: [
     "Managing model development, calibration and validation for national clients such as the NTA",
     "Analysis and processing of large datasets, with GIS for accident and accessibility studies",

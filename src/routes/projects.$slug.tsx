@@ -2,10 +2,23 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, MapPin } from "lucide-react";
 
 import { InquiryDialog } from "@/components/site/InquiryDialog";
+import { METHOD_CAPTION, MethodIllustration, type Method } from "@/components/site/MethodIllustration";
 import { ProjectCover } from "@/components/site/ProjectCover";
+
 import type { TopicValue } from "@/components/site/InquiryForm";
 import { Button } from "@/components/ui/button";
 import { domainLabel, getProject, PROJECTS, type DomainKey } from "@/data/portfolio";
+
+const GALLERY: Record<string, Method[]> = {
+  "nta-national-demand-model": ["matrix", "calibration"],
+  "nta-long-distance-model": ["matrix", "bandwidth"],
+  "glasgow-m74-evaluation": ["beforeAfter", "calibration"],
+  "road-safety-traffic-conflicts": ["junction", "calibration"],
+  "commonwealth-games": ["profile", "bandwidth"],
+  "sydney-lane-cove-tunnel": ["junction", "bandwidth"],
+  "melbourne-dandenong": ["junction", "beforeAfter"],
+  "uk-microsimulation-models": ["junction", "calibration"],
+};
 
 const TOPIC_FOR: Record<DomainKey, TopicValue> = {
   national: "national-models",
@@ -184,6 +197,24 @@ function ProjectPage() {
           </div>
         </aside>
       </div>
+
+      {GALLERY[p.slug] && (
+        <section className="mt-16" aria-labelledby="how">
+          <p className="telemetry text-[11px] text-cyan">How this kind of work is done</p>
+          <h2 id="how" className="mt-3 text-2xl font-light md:text-3xl">
+            The method, <span className="font-semibold">in pictures</span>
+          </h2>
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            {GALLERY[p.slug]!.map((m) => (
+              <figure key={m} className="glass reveal overflow-hidden rounded-[20px]">
+                <MethodIllustration method={m} />
+                <figcaption className="border-t border-star/10 px-5 py-3 text-sm text-starblue">{METHOD_CAPTION[m]}</figcaption>
+              </figure>
+            ))}
+          </div>
+          <p className="mt-3 text-xs text-dim">Illustrations of the method — not data from this project.</p>
+        </section>
+      )}
 
       <nav aria-label="More projects" className="mt-16 grid gap-3 border-t border-star/10 pt-6 sm:grid-cols-2">
         <Link to="/projects/$slug" params={{ slug: prev.slug }} className="group glass rounded-[20px] p-4 hover:border-cyan/40">

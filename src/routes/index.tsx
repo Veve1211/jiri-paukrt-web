@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 
 import { HeroRoadNetwork } from "@/components/site/HeroRoadNetwork";
 import { Button } from "@/components/ui/button";
-import { EDUCATION, PROJECTS, TECH, UK_MICROSIM_TOWNS } from "@/data/portfolio";
+import { EDUCATION, PERSON, PROJECTS, TECH, UK_MICROSIM_TOWNS } from "@/data/portfolio";
 import { spotlightMove } from "@/hooks/use-spotlight";
 import { cn } from "@/lib/utils";
 
@@ -41,6 +41,7 @@ function Index() {
   return (
     <>
       <Hero />
+      <Strengths />
       <Bento />
     </>
   );
@@ -52,11 +53,14 @@ function Hero() {
       <section className="flex flex-col justify-center lg:col-span-5">
         <p className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-cyan/30 bg-cyan/[0.08] py-1.5 pr-4 pl-2 font-mono text-[10.5px] tracking-[0.16em] text-cyan uppercase">
           <span className="rounded-full bg-cyan px-2 py-0.5 font-semibold text-void">SYSTRA</span>
-          Principal Transportation Engineer · Dublin
+          Dublin, Ireland
         </p>
-        <h1 className="text-[56px] leading-[0.95] font-semibold tracking-[-0.04em] text-balance sm:text-[84px]">
+        <h1 className="text-[52px] leading-[0.95] font-semibold tracking-[-0.04em] text-balance sm:text-[76px]">
           <span className="text-gradient">Jiri Paukrt</span>
           <span className="text-[0.55em] font-light tracking-[-0.02em] text-dim">, Ing.</span>
+          <span className="text-glow mt-4 block text-[26px] leading-tight font-semibold tracking-[-0.02em] sm:text-[38px]">
+            Principal Transportation Engineer
+          </span>
         </h1>
         <p className="mt-6 max-w-[460px] text-[16px] leading-relaxed text-starblue">
           27 years of transport modelling across Ireland, the UK, Australia and Central Europe — from national demand
@@ -71,14 +75,21 @@ function Hero() {
             </div>
           ))}
         </dl>
-        <div className="mt-8 flex flex-wrap gap-3">
+        <p className="mt-8 inline-flex items-center gap-2 text-sm text-starblue">
+          <span className="relative flex size-2.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-go opacity-60 motion-reduce:animate-none" />
+            <span className="relative inline-flex size-2.5 rounded-full bg-go" />
+          </span>
+          {PERSON.openTo}
+        </p>
+        <div className="mt-4 flex flex-wrap gap-3">
           <Button asChild variant="glow" size="pill" className="font-medium">
-            <Link to="/career">View career →</Link>
-          </Button>
-          <Button asChild variant="glass" size="pill" className="font-normal">
             <a href="/Jiri-Paukrt-CV.pdf" download>
               Download CV (PDF)
             </a>
+          </Button>
+          <Button asChild variant="glass" size="pill" className="font-normal">
+            <Link to="/contact">Discuss a role →</Link>
           </Button>
         </div>
       </section>
@@ -149,9 +160,7 @@ function Bento() {
           </Tile>
 
           <Tile to="/contact" label="Contact" className="bg-cyan/[0.06] md:col-span-2">
-            <p className="mt-6 text-xl leading-snug font-medium">
-              Questions about a project, a paper or a possible collaboration?
-            </p>
+            <p className="mt-6 text-xl leading-snug font-medium">Hiring a senior transport modeller?</p>
             <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-cyan">
               Send a message <ArrowRight className="size-4" />
             </span>
@@ -221,6 +230,28 @@ function Bento() {
             <p className="mt-auto pt-4 text-sm text-dim">Ing. — Transport Planning and Traffic Engineering</p>
           </Tile>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function Strengths() {
+  return (
+    <section aria-labelledby="strengths" className="pt-10 pb-6">
+      <div className="mx-auto max-w-7xl px-4 md:px-8">
+        <p className="telemetry text-[11px] text-cyan">For employers</p>
+        <h2 id="strengths" className="mt-3 text-4xl font-light md:text-5xl">
+          What Jiri brings <span className="font-semibold">to a team</span>
+        </h2>
+        <ol className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {PERSON.strengths.map((s, i) => (
+            <li key={s.title} onMouseMove={spotlightMove} className="glass spotlight reveal rounded-[24px] p-6">
+              <span className="font-mono text-[11px] text-cyan">0{i + 1}</span>
+              <h3 className="mt-4 text-xl leading-snug font-semibold">{s.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-starblue">{s.body}</p>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );

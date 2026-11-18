@@ -115,6 +115,18 @@ function FlowLink({
   const my = (a.y + b.y) / 2;
   return (
     <g className={cn("transition-opacity duration-300", dimmed && "opacity-30")}>
+      {/* soft light halo under the band */}
+      {!showVc && (
+        <line
+          x1={a.x}
+          y1={a.y}
+          x2={b.x}
+          y2={b.y}
+          strokeWidth={bandWidth(flow) + 10}
+          filter="url(#glow)"
+          className={cn("stroke-cyan transition-opacity duration-500", lit ? "opacity-60" : "opacity-25")}
+        />
+      )}
       {/* flow bandwidth, coloured by volume / capacity */}
       <line
         x1={a.x}
@@ -123,13 +135,13 @@ function FlowLink({
         y2={b.y}
         strokeWidth={bandWidth(flow) + (lit ? 2 : 0)}
         strokeLinecap="butt"
-        className={cn(c.stroke, "transition-all duration-500", lit ? "opacity-100" : showVc ? "opacity-75" : "opacity-45")}
+        className={cn(c.stroke, "transition-all duration-500", lit ? "opacity-100" : showVc ? "opacity-75" : "opacity-80")}
       />
       {/* link centreline */}
       <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} strokeWidth="0.8" className="stroke-void/70" />
       {animate &&
         [0, 0.5].map((phase, i) => (
-          <circle key={phase} r="1.6" className="fill-star">
+          <circle key={phase} r="2" className="fill-white" filter="url(#glow-small)">
             <animateMotion
               dur={`${dur}s`}
               begin={`${-phase * dur}s`}
@@ -196,6 +208,20 @@ export function HeroRoadNetwork() {
           }}
         >
           <defs>
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="6" />
+            </filter>
+            <filter id="glow-small" x="-200%" y="-200%" width="500%" height="500%">
+              <feGaussianBlur stdDeviation="1.2" result="b" />
+              <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            <radialGradient id="junction-light" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="var(--cyan)" stopOpacity="0.45" />
+              <stop offset="100%" stopColor="var(--cyan)" stopOpacity="0" />
+            </radialGradient>
             <clipPath id="frame">
               <rect x="0" y="0" width={W} height={H} rx="18" />
             </clipPath>
@@ -256,6 +282,7 @@ export function HeroRoadNetwork() {
                 onFocus={() => setHovered(j.id)}
                 onBlur={() => setHovered(null)}
               >
+                <circle cx={j.x} cy={j.y} r={isActive ? 40 : j.major ? 30 : 22} fill="url(#junction-light)" className="transition-all duration-300" />
                 <circle cx={j.x} cy={j.y} r="24" className="fill-transparent" />
                 <circle cx={j.x} cy={j.y} r="20" className="focus-ring stroke-cyan opacity-0 transition-opacity" strokeDasharray="3 3" />
                 {/* junction drawn as a technical node symbol: ring, crosshair ticks, centre point */}
