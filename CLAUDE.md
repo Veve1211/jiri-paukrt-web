@@ -3,7 +3,7 @@
 ## Projekt
 * Název: Jiri Paukrt — osobní web (vizitka a online CV)
 * Cíl: zaujmout tak, aby Jirkovi někdo nabídl práci. Jirka = Jiri Paukrt, Ing., Principal Transportation Engineer, SYSTRA Dublin, 27 let praxe.
-* Cílová skupina: personalisté a firmy z oboru dopravního inženýrství, mezinárodně.
+* Cílová skupina: personalisté a firmy z oboru dopravního inženýrství, mezinárodně. Web anglicky i česky (EN výchozí).
 * Adresa: paukrt.lovable.app
 
 ## Uživatel
@@ -35,7 +35,7 @@
 * NIKDY text o hledání práce ("open to roles", "available", "hledám práci"). Nadřízení v SYSTRA to nesmí vidět.
 * Žádný placeholder ani lorem ipsum v UI.
 * Žádná soukromá adresa ani osobní telefon na webu ani v PDF CV.
-* Obrázky (např. og.png) patří do `/public`, ne na externí dočasné adresy.
+* Obrázky patří do `/public`, ne na externí dočasné adresy. Náhled pro sdílení: `public/og.png` (1200×630), og:image nastavený v `src/routes/index.tsx`.
 * Opakované (dekorativní) kopie obsahu mají `aria-hidden`.
 * Needituj `supabase/migrations/`, `drizzle/` ani automaticky generované soubory (viz AGENTS.md).
 
