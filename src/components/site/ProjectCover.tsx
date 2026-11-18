@@ -1,6 +1,7 @@
-import type { ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 
 import { getLocation, UK_MICROSIM_TOWNS } from "@/data/portfolio";
+import { usePrefersReducedMotion } from "@/hooks/use-telemetry";
 import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +12,36 @@ import { cn } from "@/lib/utils";
  */
 
 const W = 400;
+
+/** Whether the little cars should drive (hovered card or project page). */
+const AnimateCtx = createContext(false);
+
+type CarKind = "head" | "tail";
+
+/** Car lights moving along a path: white headlights or red tail-lights. */
+function Cars({ d, kind = "head", n = 1, dur = 6, offset = 0 }: { d: string; kind?: CarKind; n?: number; dur?: number; offset?: number }) {
+  const animate = useContext(AnimateCtx);
+  const reduced = usePrefersReducedMotion();
+  if (!animate || reduced) return null;
+  return (
+    <>
+      {Array.from({ length: n }, (_, k) => (
+        <rect
+          key={k}
+          x="-2.6"
+          y="-1.1"
+          width="5.2"
+          height="2.2"
+          rx="1.1"
+          className={kind === "head" ? "fill-white" : "fill-alert"}
+          style={{ filter: `drop-shadow(0 0 2px ${kind === "head" ? "rgb(255 255 255 / 0.8)" : "rgb(239 83 80 / 0.8)"})` }}
+        >
+          <animateMotion dur={`${dur}s`} begin={`${-((k / n + offset) % 1) * dur}s`} repeatCount="indefinite" path={d} rotate="auto" />
+        </rect>
+      ))}
+    </>
+  );
+}
 const H = 210;
 
 const LABEL_CS: Record<string, string> = {
@@ -70,6 +101,9 @@ function NationalModel() {
         <path key={i} d={`M${x} ${y} Q${(x + hub.x) / 2} ${Math.min(y, hub.y) - 30} ${hub.x} ${hub.y}`} className="stroke-cyan/70" strokeWidth={0.8 + (i % 4) * 0.6} />
       ))}
       {origins.map(([x, y], i) => (
+        <Cars key={`c${i}`} d={`M${x} ${y} Q${(x + hub.x) / 2} ${Math.min(y, hub.y) - 30} ${hub.x} ${hub.y}`} dur={3 + (i % 4)} offset={i * 0.13} />
+      ))}
+      {origins.map(([x, y], i) => (
         <circle key={`o${i}`} cx={x} cy={y} r="2.5" className="fill-star" />
       ))}
       <circle cx={hub.x} cy={hub.y} r="7" className="fill-void stroke-cyan" strokeWidth="1.6" />
@@ -100,6 +134,12 @@ function LongDistance() {
       {IRISH_LINKS.map(([a, b], i) => (
         <line key={i} x1={p[a]!.x} y1={p[a]!.y} x2={p[b]!.x} y2={p[b]!.y} strokeWidth={a === 0 || b === 0 ? 2.2 : 1} className={a === 0 || b === 0 ? "stroke-cyan/80" : "stroke-cyan/40"} />
       ))}
+      {IRISH_LINKS.filter(([a, b]) => a === 0 || b === 0).map(([a, b], i) => (
+        <g key={`car${i}`}>
+          <Cars d={`M${p[a]!.x} ${p[a]!.y} L${p[b]!.x} ${p[b]!.y}`} dur={4 + (i % 3)} offset={i * 0.2} />
+          <Cars d={`M${p[b]!.x} ${p[b]!.y} L${p[a]!.x} ${p[a]!.y}`} kind="tail" dur={4.5 + (i % 3)} offset={i * 0.3 + 0.5} />
+        </g>
+      ))}
       {IRISH_CITIES.map(([name], i) => (
         <g key={name}>
           <circle cx={p[i]!.x} cy={p[i]!.y} r={i === 0 ? 5 : 3.2} className={i === 0 ? "fill-cyan" : "fill-void stroke-star"} strokeWidth="1.2" />
@@ -123,6 +163,9 @@ function Motorway() {
       {/* the completion */}
       <path d="M90 150 C170 150 200 120 250 104 S330 70 360 52" strokeWidth="10" className="stroke-cyan/70" />
       <path d="M90 150 C170 150 200 120 250 104 S330 70 360 52" strokeWidth="1" strokeDasharray="6 5" className="stroke-void" />
+      <Cars d="M0 49 H400" n={3} dur={7} />
+      <Cars d="M400 55 H0" kind="tail" n={3} dur={7.5} offset={0.2} />
+      <Cars d="M0 150 H90 C170 150 200 120 250 104 S330 70 360 52" n={2} dur={6} />
       {(
         [
           [90, 150],
@@ -150,6 +193,8 @@ function ConflictJunction() {
       {/* trajectories */}
       <path d="M20 118 C120 118 170 118 190 150 S200 200 196 210" className="stroke-cyan/80" strokeWidth="1.6" />
       <path d="M212 0 C212 60 214 98 260 92 S360 92 400 92" className="stroke-cyan/80" strokeWidth="1.6" />
+      <Cars d="M20 118 C120 118 170 118 190 150 S200 200 196 210" dur={4} />
+      <Cars d="M212 0 C212 60 214 98 260 92 S360 92 400 92" dur={4.5} offset={0.4} />
       <path d="M380 92 C300 92 230 96 205 120 S188 160 188 210" className="stroke-starblue/60" strokeWidth="1.2" strokeDasharray="4 3" />
       {/* conflict points */}
       {(
@@ -209,6 +254,10 @@ function Tunnel() {
       {/* twin tubes */}
       <path d="M40 112 Q60 150 100 156 H300 Q340 150 360 112" className="stroke-star/80" strokeWidth="1.4" />
       <path d="M40 112 Q58 164 100 172 H300 Q342 164 360 112" className="stroke-star/80" strokeWidth="1.4" />
+      <Cars d="M40 112 Q60 150 100 156 H300 Q340 150 360 112" n={2} dur={6} />
+      <Cars d="M360 112 Q342 164 300 172 H100 Q58 164 40 112" kind="tail" n={2} dur={6.5} offset={0.3} />
+      <Cars d="M0 40 H400" n={2} dur={7} offset={0.1} />
+      <Cars d="M400 70 C260 74 120 66 0 70" kind="tail" n={2} dur={7.5} offset={0.6} />
       <rect x="30" y="104" width="20" height="10" className="fill-void stroke-star" />
       <rect x="350" y="104" width="20" height="10" className="fill-void stroke-star" />
       <text x="200" y="168" textAnchor="middle" fontSize="8.5" letterSpacing="1" className="fill-starblue font-mono">TWIN TUBES · 3.6 KM</text>
@@ -229,6 +278,9 @@ function TownCentre() {
       ))}
       <rect x="140" y="70" width="100" height="70" rx="4" className="fill-cyan/10 stroke-cyan" strokeWidth="1.2" strokeDasharray="5 4" />
       <path d="M0 116 H120 L150 62 H300 L330 0" className="stroke-cyan" strokeWidth="2" />
+      <Cars d="M0 116 H120 L150 62 H300 L330 0" dur={8} />
+      <Cars d="M0 104 L400 110" n={2} dur={7} offset={0.3} />
+      <Cars d="M196 210 L184 0" kind="tail" n={2} dur={6} offset={0.5} />
       {[60, 150, 230, 318].map((x, i) => (
         <circle key={x} cx={x} cy={[116, 62, 62, 18][i]} r="3.5" className="fill-void stroke-cyan" strokeWidth="1.4" />
       ))}
@@ -272,12 +324,14 @@ const COVERS: Record<string, () => ReactNode> = {
   "uk-microsimulation-models": UkTowns,
 };
 
-export function ProjectCover({ slug, className }: { slug: string; className?: string }) {
+export function ProjectCover({ slug, className, animate = false }: { slug: string; className?: string; animate?: boolean }) {
   const Cover = COVERS[slug];
   if (!Cover) return null;
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className={cn("block h-auto w-full bg-void/40", className)} fill="none" role="img" aria-label="Schematic illustration of the project">
-      <Cover />
-    </svg>
+    <AnimateCtx.Provider value={animate}>
+      <svg viewBox={`0 0 ${W} ${H}`} className={cn("block h-auto w-full bg-void/40", className)} fill="none" role="img" aria-label="Schematic illustration of the project">
+        <Cover />
+      </svg>
+    </AnimateCtx.Provider>
   );
 }

@@ -146,7 +146,7 @@ function ProjectPage() {
 
         <aside className="space-y-4 lg:col-span-5">
           <div className="glass overflow-hidden rounded-[20px]">
-            <ProjectCover slug={p.slug} />
+            <ProjectCover slug={p.slug} animate />
           </div>
           <div className="glass rounded-[20px] p-5">
             <div className="telemetry text-[10px] text-cyan">{isTownList ? t("Towns modelled", "Modelovaná města") : t("Key points", "Hlavní body")}</div>

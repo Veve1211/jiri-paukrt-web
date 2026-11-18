@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
+import { useState } from "react";
 
 import { type Project } from "@/data/portfolio";
 import { useContent } from "@/data/useContent";
@@ -11,15 +12,20 @@ export function ProjectCard({ project }: { project: Project }) {
   const { t } = useLang();
   const { domainLabel } = useContent();
   const lead = project.metrics[0] ?? { value: project.code, label: project.region };
+  const [hover, setHover] = useState(false);
   return (
     <Link
       to="/projects/$slug"
       params={{ slug: project.slug }}
       onMouseMove={spotlightMove}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      onFocus={() => setHover(true)}
+      onBlur={() => setHover(false)}
       className="group glass spotlight reveal flex h-full flex-col rounded-[20px] p-6 transition-transform duration-300 hover:-translate-y-1"
     >
       <div className="-mx-6 -mt-6 mb-5 overflow-hidden rounded-t-[20px] border-b border-star/10">
-        <ProjectCover slug={project.slug} className="transition-transform duration-500 group-hover:scale-[1.03]" />
+        <ProjectCover slug={project.slug} animate={hover} className="transition-transform duration-500 group-hover:scale-[1.03]" />
       </div>
       <div className="flex items-center justify-between">
         <span className="telemetry text-[10px] text-cyan">{project.location}</span>
