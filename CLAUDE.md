@@ -6,6 +6,17 @@
 * Cílová skupina: personalisté a firmy z oboru dopravního inženýrství, mezinárodně.
 * Adresa: paukrt.lovable.app
 
+## Uživatel
+* Skill level: začátečník. AI rozhoduje technickou syntaxi a architekturu sama, uživatelce vysvětluje funkčně a jednoduše česky.
+
+## Stack & Prostředí
+* Framework: TanStack Start + React 19 + TypeScript, build Vite
+* UI: Tailwind CSS 4 + shadcn/ui (`src/components/ui`), vlastní komponenty v `src/components/site`
+* Data: obsah webu v `src/data/portfolio.ts`; Supabase spravuje Lovable
+* Hosting: Lovable (paukrt.lovable.app), repo GitHub Veve1211/transport-constellation-atlas
+* Testy: `npx vitest run`, typy: `npx tsc --noEmit`. Před každým pushem obojí musí projít.
+* Zákaz: secrets a `.env` hodnoty nikdy do repa.
+
 ## Jazyk
 * Web VÝHRADNĚ anglicky. Žádný přepínač jazyků, žádná česká verze v UI.
 * Kód, komentáře a commity anglicky.
@@ -30,6 +41,8 @@
 ## Git
 * Práce na větvi `dev`, do `main` jen otestované. `main` se synchronizuje do Lovable.
 * Nikdy force push ani přepis historie.
+* Na začátku každé práce `git pull` (do repa píše i Lovable a další nástroje). Na konci commit a push. Při nepushnutých změnách upozorni uživatelku.
+* Nikdy necommituj přímo do `main`.
 
 ## Před publikováním
 * Test na mobilu, tabletu i počítači.
