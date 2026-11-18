@@ -18,13 +18,19 @@ export function project(loc: { lat: number; lon: number }): { x: number; y: numb
 const POS = new Map(LOCATIONS.map((l) => [l.id, project(l)]));
 const pt = (id: string) => POS.get(id) ?? { x: 0, y: 0 };
 
-const PROJECT_LINKS = ["glasgow", "birmingham", "brno", "sydney", "melbourne"];
+const PROJECT_LINKS = ["glasgow", "birmingham", "brno", "sydney"];
 const CAREER_PATH = ["prague", "leeds", "melbourne", "dublin"];
 
-function arc(a: { x: number; y: number }, b: { x: number; y: number }, lift = 0.25) {
-  const mx = (a.x + b.x) / 2;
-  const my = (a.y + b.y) / 2 - Math.abs(b.x - a.x) * lift;
-  return `M${a.x} ${a.y} Q${mx} ${my} ${b.x} ${b.y}`;
+/** Schematic road between two points: straight run, then a 45° section (octilinear). */
+function road(a: { x: number; y: number }, b: { x: number; y: number }) {
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  if (Math.abs(dx) >= Math.abs(dy)) {
+    const mx = b.x - Math.sign(dx) * Math.abs(dy);
+    return `M${a.x} ${a.y} L${mx} ${a.y} L${b.x} ${b.y}`;
+  }
+  const my = b.y - Math.sign(dy) * Math.abs(dx);
+  return `M${a.x} ${a.y} L${a.x} ${my} L${b.x} ${b.y}`;
 }
 
 export function NetworkMap({
@@ -42,7 +48,7 @@ export function NetworkMap({
   const careerD = CAREER_PATH.slice(1)
     .map((id, i) => {
       const from = CAREER_PATH[i] ?? id;
-      return arc(pt(from), pt(id), id === "melbourne" || from === "melbourne" ? 0.18 : 0.12);
+      return road(pt(from), pt(id));
     })
     .join(" ");
 
@@ -65,30 +71,25 @@ export function NetworkMap({
         <text x="706" y="192" className="fill-dim">AUSTRALIA</text>
         <text x="36" y="575" className="fill-dim/70">SCHEMATIC MAP · NOT TO SCALE BETWEEN PANELS</text>
       </g>
-      <circle cx={pt("dublin").x} cy={pt("dublin").y} r="160" className="stroke-cyan/[0.07]" />
-      <circle cx={pt("dublin").x} cy={pt("dublin").y} r="90" className="stroke-volt/[0.14]" strokeDasharray="2 6" />
-
-      {/* career trajectory */}
-      <path d={careerD} className="stroke-volt/60" strokeDasharray="4 5" />
+      {/* career route */}
+      <path d={careerD} strokeWidth="7" strokeLinejoin="round" className="stroke-volt/25" />
+      <path d={careerD} strokeWidth="1.2" strokeLinejoin="round" className="stroke-starblue/70" strokeDasharray="8 6" />
 
       {/* project links radiate from the Dublin base */}
       {PROJECT_LINKS.map((id) => {
         const lit = selected === id || selected === "dublin";
-        const d = pt(id).x > 680 ? arc(pt("dublin"), pt(id), 0.22) : `M${pt("dublin").x} ${pt("dublin").y} L${pt(id).x} ${pt(id).y}`;
+        const d = road(pt("dublin"), pt(id));
         return (
-          <path
-            key={id}
-            d={d}
-            strokeWidth={lit ? 1.4 : 1}
-            strokeDasharray={lit ? "6 3" : undefined}
-            className={cn(lit ? "flow-dash stroke-cyan" : "stroke-cyan/40", "transition-all")}
-          />
+          <g key={id}>
+            <path d={d} strokeWidth={lit ? 6 : 4} strokeLinejoin="round" className={cn(lit ? "stroke-cyan/70" : "stroke-cyan/25", "transition-all")} />
+            <path d={d} strokeWidth="0.8" strokeLinejoin="round" className="stroke-void/80" />
+          </g>
         );
       })}
       {!reducedMotion &&
         PROJECT_LINKS.slice(0, 3).map((id, i) => (
-          <circle key={`pulse-${id}`} r="1.8" className="fill-cyan">
-            <animateMotion dur={`${3.5 + i}s`} repeatCount="indefinite" path={`M${pt("dublin").x} ${pt("dublin").y} L${pt(id).x} ${pt(id).y}`} />
+          <circle key={`vehicle-${id}`} r="1.6" className="fill-star">
+            <animateMotion dur={`${5 + i}s`} repeatCount="indefinite" path={road(pt("dublin"), pt(id))} />
           </circle>
         ))}
 
@@ -123,12 +124,23 @@ export function NetworkMap({
               className="stroke-cyan opacity-0 transition-opacity group-focus-visible:opacity-100"
               strokeDasharray="3 3"
             />
-            {(l.kind === "hq" || sel) && <circle cx={p.x} cy={p.y} r={r + 9} className="node-pulse fill-cyan/15" />}
-            {l.kind === "base" && <circle cx={p.x} cy={p.y} r={r + 5} className="fill-volt/25" />}
+            {(l.kind === "hq" || sel) && (
+              <circle cx={p.x} cy={p.y} r={r + 9} strokeWidth="0.8" strokeDasharray="2 3" className="stroke-cyan" />
+            )}
+            {!town && (
+              <>
+                <circle cx={p.x} cy={p.y} r={r + 3.5} strokeWidth="1.2" className={cn("fill-void", sel || l.kind === "hq" ? "stroke-cyan" : "stroke-star/70")} />
+                <path
+                  d={`M${p.x - r - 7} ${p.y}h-4M${p.x + r + 7} ${p.y}h4M${p.x} ${p.y - r - 7}v-4M${p.x} ${p.y + r + 7}v4`}
+                  strokeWidth="1"
+                  className={sel || l.kind === "hq" ? "stroke-cyan" : "stroke-star/50"}
+                />
+              </>
+            )}
             <circle
               cx={p.x}
               cy={p.y}
-              r={sel ? r + 1.5 : r}
+              r={town ? (sel ? r + 1.5 : r) : sel ? 3.5 : 2.6}
               className={cn(
                 "transition-all",
                 l.kind === "hq" || sel ? "fill-cyan" : l.kind === "base" ? "fill-starblue" : "fill-star",
@@ -138,14 +150,14 @@ export function NetworkMap({
             {(!town || sel) && (
               <g className="font-mono" letterSpacing="1.5" textAnchor={labelRight ? "start" : "end"}>
                 <text
-                  x={p.x + (labelRight ? 14 : -14)}
+                  x={p.x + (labelRight ? 18 : -18)}
                   y={p.y - 4}
                   fontSize="11"
                   className={cn(sel || l.kind === "hq" ? "fill-cyan" : l.kind === "base" ? "fill-starblue" : "fill-star")}
                 >
                   {l.name.toUpperCase()}
                 </text>
-                <text x={p.x + (labelRight ? 14 : -14)} y={p.y + 10} fontSize="8.5" className="fill-dim">
+                <text x={p.x + (labelRight ? 18 : -18)} y={p.y + 10} fontSize="8.5" className="fill-dim">
                   {l.kind === "hq" ? "CURRENT BASE" : l.kind === "base" ? "CAREER BASE" : l.kind === "town" ? "TOWN MODEL" : "PROJECT"}
                 </text>
               </g>

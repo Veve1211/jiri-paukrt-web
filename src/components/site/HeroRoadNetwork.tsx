@@ -94,11 +94,13 @@ function FlowLink({
   dimmed,
   animate,
   seed,
+  showVc,
 }: {
   a: Pt;
   b: Pt;
   flow: number;
   vc: number;
+  showVc: boolean;
   lit: boolean;
   dimmed: boolean;
   animate: boolean;
@@ -108,7 +110,7 @@ function FlowLink({
   const back = `M${b.x} ${b.y} L${a.x} ${a.y}`;
   const len = Math.hypot(b.x - a.x, b.y - a.y);
   const dur = Math.max(4, len / 45) + (seed % 3) * 0.7;
-  const c = vcClass(vc);
+  const c = showVc ? vcClass(vc) : { stroke: "stroke-cyan", label: "fill-cyan" };
   const mx = (a.x + b.x) / 2;
   const my = (a.y + b.y) / 2;
   return (
@@ -121,7 +123,7 @@ function FlowLink({
         y2={b.y}
         strokeWidth={bandWidth(flow) + (lit ? 2 : 0)}
         strokeLinecap="butt"
-        className={cn(c.stroke, "transition-all", lit ? "opacity-100" : "opacity-75")}
+        className={cn(c.stroke, "transition-all duration-500", lit ? "opacity-100" : showVc ? "opacity-75" : "opacity-45")}
       />
       {/* link centreline */}
       <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} strokeWidth="0.8" className="stroke-void/70" />
@@ -151,6 +153,7 @@ function FlowLink({
 export function HeroRoadNetwork() {
   const [selected, setSelected] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
+  const [showVc, setShowVc] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
@@ -227,6 +230,7 @@ export function HeroRoadNetwork() {
                   dimmed={active !== null && !lit}
                   animate={!reducedMotion && (i < 6 || lit)}
                   seed={i}
+                  showVc={showVc}
                 />
               );
             })}
@@ -298,20 +302,37 @@ export function HeroRoadNetwork() {
         </svg>
 
         {/* legend */}
-        <div className="pointer-events-none absolute top-1 right-1 hidden space-y-1 text-right font-mono text-[9.5px] leading-relaxed tracking-[0.12em] text-dim sm:block">
-          <div className="pb-0.5 text-star/80">FLOW BANDWIDTH · V/C</div>
-          <div className="flex items-center justify-end gap-2">
-            UNDER 0.70 <span className="h-1.5 w-5 bg-go" />
+        <div className="absolute top-1 right-1 hidden space-y-1 text-right font-mono text-[9.5px] leading-relaxed tracking-[0.12em] text-dim sm:block">
+          <div className="flex items-center justify-end gap-2 text-star/80">
+            FLOW BANDWIDTH <span className="h-0.5 w-3 bg-cyan" /><span className="h-2 w-3 bg-cyan" />
           </div>
+          {showVc && (
+            <div className="space-y-1 animate-in fade-in-0">
+              <div className="flex items-center justify-end gap-2">
+                V/C UNDER 0.70 <span className="h-1.5 w-5 bg-go" />
+              </div>
+              <div className="flex items-center justify-end gap-2">
+                0.70 – 0.90 <span className="h-1.5 w-5 bg-amber" />
+              </div>
+              <div className="flex items-center justify-end gap-2">
+                OVER 0.90 <span className="h-1.5 w-5 bg-alert" />
+              </div>
+            </div>
+          )}
           <div className="flex items-center justify-end gap-2">
-            0.70 – 0.90 <span className="h-1.5 w-5 bg-amber" />
-          </div>
-          <div className="flex items-center justify-end gap-2">
-            OVER 0.90 <span className="h-1.5 w-5 bg-alert" />
-          </div>
-          <div className="flex items-center justify-end gap-2 pt-1">
             JUNCTION = PROJECT <span className="size-2.5 rounded-full border border-star bg-void" />
           </div>
+          <button
+            type="button"
+            aria-pressed={showVc}
+            onClick={() => setShowVc((v) => !v)}
+            className="mt-1 inline-flex items-center gap-2 rounded-full border border-star/15 bg-void/60 px-2.5 py-1 text-[9.5px] tracking-[0.12em] text-starblue uppercase transition-colors hover:border-cyan/50 hover:text-cyan"
+          >
+            <span className={cn("flex h-3 w-5 items-center rounded-full p-0.5 transition-colors", showVc ? "bg-cyan" : "bg-star/20")}>
+              <span className={cn("size-2 rounded-full bg-void transition-transform", showVc && "translate-x-2")} />
+            </span>
+            Colour by V/C
+          </button>
           <div className="pt-1 text-dim/70">{selected ? "ESC TO CLOSE" : "CLICK A JUNCTION"}</div>
         </div>
 

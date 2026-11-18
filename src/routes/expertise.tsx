@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { CorridorSimulator } from "@/components/site/CorridorSimulator";
 import { PageIntro } from "@/components/site/PageIntro";
-import { TechRadar } from "@/components/site/TechRadar";
+import { ToolJunction } from "@/components/site/ToolJunction";
 
 export const Route = createFileRoute("/expertise")({
   head: () => ({
@@ -39,7 +39,7 @@ function ExpertisePage() {
         Strategic assignment, variable demand, microsimulation, appraisal and GIS — the tools behind the projects.
       </PageIntro>
       <div className="mt-10">
-        <TechRadar />
+        <ToolJunction />
       </div>
 
       <section className="mt-20" aria-labelledby="sim">

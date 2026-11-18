@@ -68,6 +68,8 @@ export interface Project {
   role?: string;
   /** When the work took place, where known. */
   years?: string;
+  /** What the model or study was used for — the decision it supported. */
+  usedFor?: string;
   publication?: Publication;
   tools?: string[];
   locationIds: string[];
@@ -76,6 +78,7 @@ export interface Project {
 export const PROJECTS: Project[] = [
   {
     slug: "nta-national-demand-model",
+    usedFor: "Used by the NTA to appraise future transport and land-use alternatives at national and regional level.",
     role: "Managed the development and calibration of the NDFM; developed the National Trip End Model",
     code: "IE-01",
     title: "National Demand Forecasting Model",
@@ -106,6 +109,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "nta-long-distance-model",
+    usedFor: "Testing long-distance rail changes such as more trains, higher capacity or new fares.",
     role: "Developed the Long Distance Demand Model; co-presenter at ETC 2019",
     years: "2019",
     code: "IE-02",
@@ -136,6 +140,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "glasgow-m74-evaluation",
+    usedFor: "Checking whether the new motorway delivered the expected traffic relief five years after it opened.",
     role: "Co-author of the five-year post-opening evaluation",
     years: "2016–2017",
     code: "UK-01",
@@ -166,6 +171,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "road-safety-traffic-conflicts",
+    usedFor: "Showing whether microsimulation can flag risky junctions before accidents happen.",
     role: "Co-author",
     years: "2014",
     code: "RS-01",
@@ -198,6 +204,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "commonwealth-games",
+    usedFor: "Planning how visitors would travel to the venues during the Games.",
     role: "Involved in modelling visitor demand",
     years: "2014 · 2022",
     code: "EV-01",
@@ -221,6 +228,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "sydney-lane-cove-tunnel",
+    usedFor: "Assessing traffic management plans for the tunnel construction period.",
     role: "Involved in developing the microsimulation model",
     years: "2006–2007",
     code: "AU-01",
@@ -245,6 +253,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "melbourne-dandenong",
+    usedFor: "Testing revitalisation options for the town centre.",
     role: "Responsible for the model and option testing",
     years: "2006–2007",
     code: "AU-02",

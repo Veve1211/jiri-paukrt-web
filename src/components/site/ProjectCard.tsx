@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 
 import { domainLabel, type Project } from "@/data/portfolio";
+import { ProjectCover } from "./ProjectCover";
 import { spotlightMove } from "@/hooks/use-spotlight";
 
 export function ProjectCard({ project }: { project: Project }) {
@@ -13,6 +14,9 @@ export function ProjectCard({ project }: { project: Project }) {
       onMouseMove={spotlightMove}
       className="group glass spotlight reveal flex h-full flex-col rounded-[20px] p-6 transition-transform duration-300 hover:-translate-y-1"
     >
+      <div className="-mx-6 -mt-6 mb-5 overflow-hidden rounded-t-[20px] border-b border-star/10">
+        <ProjectCover slug={project.slug} className="transition-transform duration-500 group-hover:scale-[1.03]" />
+      </div>
       <div className="flex items-center justify-between">
         <span className="telemetry text-[10px] text-cyan">{project.location}</span>
         

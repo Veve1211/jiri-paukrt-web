@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, MapPin } from "lucide-react";
 
 import { InquiryDialog } from "@/components/site/InquiryDialog";
+import { ProjectCover } from "@/components/site/ProjectCover";
 import type { TopicValue } from "@/components/site/InquiryForm";
 import { Button } from "@/components/ui/button";
 import { domainLabel, getProject, PROJECTS, type DomainKey } from "@/data/portfolio";
@@ -82,6 +83,12 @@ function ProjectPage() {
             </p>
           )}
           <p className="mt-6 max-w-[580px] text-[15px] leading-relaxed text-dim">{p.summary}</p>
+          {p.usedFor && (
+            <p className="mt-4 max-w-[580px] text-[15px] leading-relaxed text-star">
+              <span className="telemetry mr-2 text-[10px] text-cyan">Used for</span>
+              {p.usedFor}
+            </p>
+          )}
 
           <div className="mt-8 grid max-w-[560px] grid-cols-2 gap-2.5 sm:grid-cols-3">
             {p.metrics.map((m, i) => (
@@ -119,6 +126,9 @@ function ProjectPage() {
         </div>
 
         <aside className="space-y-4 lg:col-span-5">
+          <div className="glass overflow-hidden rounded-[20px]">
+            <ProjectCover slug={p.slug} />
+          </div>
           <div className="glass rounded-[20px] p-5">
             <div className="telemetry text-[10px] text-cyan">{isTownList ? "Towns modelled" : "Key points"}</div>
             <ul className={isTownList ? "mt-4 grid grid-cols-2 gap-x-4 gap-y-2" : "mt-4 space-y-3"}>
