@@ -28,7 +28,7 @@ export function CorridorSimulator() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-12">
-      <div className="glass rounded-[14px] p-5 lg:col-span-4">
+      <div className="glass rounded-[20px] p-5 lg:col-span-4">
         <div className="telemetry text-[10px] text-cyan">Inputs</div>
         <div className="mt-5">
           <div className="flex items-baseline justify-between">
@@ -53,7 +53,7 @@ export function CorridorSimulator() {
         </div>
         <div className="mt-6 space-y-3">
           {MEASURES.map((m) => (
-            <label key={m.key} className="flex cursor-pointer items-center justify-between gap-3 rounded-[12px] border border-star/10 bg-star/[0.03] p-3">
+            <label key={m.key} className="flex cursor-pointer items-center justify-between gap-3 rounded-[14px] border border-star/10 bg-star/[0.03] p-3">
               <span>
                 <span className="block text-sm">{m.label}</span>
                 <span className="telemetry block text-[9px] text-dim">{m.detail}</span>
@@ -73,7 +73,7 @@ export function CorridorSimulator() {
       </div>
 
       <div className="space-y-4 lg:col-span-8">
-        <div className="glass overflow-hidden rounded-[14px]">
+        <div className="glass overflow-hidden rounded-[20px]">
           <div className="flex items-center justify-between px-4 pt-3 font-mono text-[10px] tracking-wider text-dim">
             <span className="flex items-center gap-1.5 text-cyan">
               <span className="size-1 rounded-full bg-cyan" /> SCENARIO
@@ -114,7 +114,7 @@ function Readout({
   const flat = Math.abs(delta) < 0.05;
   const good = flat ? null : goodWhenUp ? delta > 0 : delta < 0;
   return (
-    <div className={cn("rounded-[12px] border p-3", highlight ? "border-cyan/30 bg-cyan/[0.06]" : "border-star/10 bg-star/[0.03]")}>
+    <div className={cn("rounded-[14px] border p-3", highlight ? "border-cyan/30 bg-cyan/[0.06]" : "border-star/10 bg-star/[0.03]")}>
       <div className="flex items-baseline gap-1">
         <span className={cn("text-2xl font-bold", highlight && "text-cyan")}>{value}</span>
         <span className="font-mono text-[10px] text-dim">{unit}</span>

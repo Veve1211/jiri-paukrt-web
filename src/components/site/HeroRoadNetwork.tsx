@@ -318,7 +318,7 @@ export function HeroRoadNetwork() {
         {node && project && (
           <div
             style={cardStyle}
-            className="glass-strong z-20 mt-3 w-full rounded-[12px] p-4 shadow-glow md:absolute md:top-[var(--y)] md:left-[var(--x)] md:mt-0 md:w-[270px] md:[transform:var(--t)] animate-in fade-in-0 zoom-in-95"
+            className="glass-strong z-20 mt-3 w-full rounded-[14px] p-4 shadow-glow md:absolute md:top-[var(--y)] md:left-[var(--x)] md:mt-0 md:w-[270px] md:[transform:var(--t)] animate-in fade-in-0 zoom-in-95"
             role="dialog"
             aria-label={`${project.title} — summary`}
           >

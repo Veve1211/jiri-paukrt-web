@@ -38,7 +38,7 @@ type Status =
   | { kind: "error"; message: string };
 
 const fieldClass =
-  "w-full rounded-[12px] border border-star/10 bg-star/[0.03] px-3.5 py-2.5 text-sm text-star placeholder:text-dim/60 outline-none transition-colors focus:border-cyan/50 focus:bg-cyan/[0.04] aria-[invalid=true]:border-alert/60";
+  "w-full rounded-[14px] border border-star/10 bg-star/[0.03] px-3.5 py-2.5 text-sm text-star placeholder:text-dim/60 outline-none transition-colors focus:border-cyan/50 focus:bg-cyan/[0.04] aria-[invalid=true]:border-alert/60";
 
 export function InquiryForm({
   defaultTopic = "other",
@@ -209,7 +209,7 @@ export function InquiryForm({
         onChange={(e) => setHoneypot(e.target.value)}
       />
       {status.kind === "error" && (
-        <p role="alert" className="rounded-[12px] border border-alert/40 bg-alert/10 px-3.5 py-2.5 text-sm text-star">
+        <p role="alert" className="rounded-[14px] border border-alert/40 bg-alert/10 px-3.5 py-2.5 text-sm text-star">
           {status.message}
         </p>
       )}

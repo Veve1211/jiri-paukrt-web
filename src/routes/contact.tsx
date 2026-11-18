@@ -45,7 +45,7 @@ function ContactPage() {
             or connect on LinkedIn.
           </PageIntro>
 
-          <div className="glass mt-10 flex items-center gap-5 rounded-[14px] p-5">
+          <div className="glass mt-10 flex items-center gap-5 rounded-[20px] p-5">
             <MonogramBadge className="size-24 shrink-0" />
             <div>
               <div className="telemetry text-[10px] text-cyan">Based in Dublin</div>
@@ -66,7 +66,7 @@ function ContactPage() {
           </Button>
         </div>
 
-        <section className="glass rounded-[14px] p-5 md:p-7 lg:col-span-7" aria-labelledby="form-title">
+        <section className="glass rounded-[20px] p-5 md:p-7 lg:col-span-7" aria-labelledby="form-title">
           <div className="telemetry text-[10px] text-cyan">Message</div>
           <h2 id="form-title" className="mt-2 mb-6 text-2xl font-light tracking-tight">
             Send Jiri a <span className="font-bold">message</span>

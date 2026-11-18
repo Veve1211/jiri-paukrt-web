@@ -18,7 +18,7 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 px-4 pt-4 md:px-8 md:pt-5">
-      <div className="glass flex h-12 items-center justify-between rounded-[14px] px-4 md:px-5">
+      <div className="glass mx-auto flex h-14 max-w-7xl items-center justify-between rounded-full pr-2 pl-5 md:pr-2.5 md:pl-6">
         <Link to="/" aria-label="Jiri Paukrt — home" className="shrink-0">
           <BrandMark />
         </Link>

@@ -39,7 +39,7 @@ export function TechRadar() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-12">
-      <div className="glass rounded-[14px] p-4 lg:col-span-7">
+      <div className="glass rounded-[20px] p-4 lg:col-span-7">
         <div className="flex flex-wrap gap-2" role="group" aria-label="Radar sector">
           {[null, ...QUADRANTS].map((q) => (
             <button
@@ -116,7 +116,7 @@ export function TechRadar() {
         </svg>
       </div>
 
-      <div className="glass rounded-[14px] p-5 lg:col-span-5" aria-live="polite">
+      <div className="glass rounded-[20px] p-5 lg:col-span-5" aria-live="polite">
         <div className="telemetry text-[10px] text-cyan">{tech.quadrant}</div>
         <h3 className="mt-2 text-2xl font-medium">{tech.name}</h3>
         <p className="mt-2 text-sm leading-relaxed text-dim">{tech.blurb}</p>

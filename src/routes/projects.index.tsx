@@ -74,7 +74,7 @@ function ProjectsPage() {
           ))}
         </div>
       ) : (
-        <div className="glass mt-4 rounded-[14px] p-10 text-center">
+        <div className="glass mt-4 rounded-[20px] p-10 text-center">
           <p className="text-dim">No projects in this category.</p>
           <Link to="/projects" className="mt-3 inline-block text-sm text-cyan hover:underline">
             Show all projects

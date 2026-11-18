@@ -8,7 +8,7 @@ import { NAV } from "./SiteHeader";
 export function SiteFooter() {
   return (
     <footer className="relative z-10 mx-4 mt-24 mb-6 md:mx-8">
-      <div className="glass grid gap-8 rounded-[14px] px-6 py-8 md:grid-cols-3 md:px-8">
+      <div className="glass grid gap-8 rounded-[24px] px-6 py-8 md:grid-cols-3 md:px-8">
         <div>
           <BrandMark />
           <p className="mt-4 max-w-xs text-sm text-dim">

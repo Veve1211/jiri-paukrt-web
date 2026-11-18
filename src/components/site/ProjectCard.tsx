@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 
 import { domainLabel, type Project } from "@/data/portfolio";
+import { spotlightMove } from "@/hooks/use-spotlight";
 
 export function ProjectCard({ project }: { project: Project }) {
   const lead = project.metrics[0] ?? { value: project.code, label: project.region };
@@ -9,7 +10,8 @@ export function ProjectCard({ project }: { project: Project }) {
     <Link
       to="/projects/$slug"
       params={{ slug: project.slug }}
-      className="group glass flex h-full flex-col rounded-[14px] p-5 transition-all hover:-translate-y-0.5 hover:border-cyan/40"
+      onMouseMove={spotlightMove}
+      className="group glass spotlight reveal flex h-full flex-col rounded-[20px] p-6 transition-transform duration-300 hover:-translate-y-1"
     >
       <div className="flex items-center justify-between">
         <span className="telemetry text-[10px] text-cyan">{project.location}</span>

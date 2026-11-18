@@ -52,7 +52,7 @@ function CareerPage() {
               )}
             />
             <div className="font-mono text-[12px] tracking-wider text-cyan md:pt-1 md:text-right">{c.years.toUpperCase()}</div>
-            <div className="glass rounded-[14px] p-5 md:ml-8">
+            <div className="glass reveal rounded-[20px] p-6 md:ml-8">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <h2 className="text-xl font-medium">{c.role}</h2>
                 {c.current && <span className="telemetry text-[9.5px] text-cyan">Current role</span>}
@@ -87,7 +87,7 @@ function CareerPage() {
       </ol>
 
       <section className="mt-6 max-w-4xl md:pl-[198px]" aria-labelledby="edu">
-        <div className="rounded-[12px] border border-star/10 bg-star/[0.03] p-6">
+        <div className="rounded-[14px] border border-star/10 bg-star/[0.03] p-6">
           <div className="telemetry flex items-center gap-2 text-[10px] text-cyan">
             <GraduationCap className="size-4" /> Education
           </div>

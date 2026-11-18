@@ -88,7 +88,7 @@ function NetworkPage() {
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-12">
-        <div className="glass relative overflow-hidden rounded-[14px] lg:col-span-8">
+        <div className="glass relative overflow-hidden rounded-[20px] lg:col-span-8">
           <div className="aspect-[5/3] w-full">
             <NetworkMap selected={node} region={region} onSelect={select} />
           </div>
@@ -101,7 +101,7 @@ function NetworkPage() {
           </div>
         </div>
 
-        <aside className="glass rounded-[14px] p-5 lg:col-span-4" aria-live="polite">
+        <aside className="glass rounded-[20px] p-5 lg:col-span-4" aria-live="polite">
           {loc ? <LocationPanel id={loc.id} onClose={() => select(undefined)} /> : <Overview region={region} onSelect={select} />}
         </aside>
       </div>
@@ -180,7 +180,7 @@ function LocationPanel({ id, onClose }: { id: string; onClose: () => void }) {
       </div>
 
       {roles.map((r) => (
-        <div key={r.company} className="mt-4 rounded-[12px] border border-volt/30 bg-volt/[0.08] p-3">
+        <div key={r.company} className="mt-4 rounded-[14px] border border-volt/30 bg-volt/[0.08] p-3">
           <div className="telemetry text-[9.5px] text-starblue">{r.years}</div>
           <div className="mt-1 text-sm font-medium">{r.role}</div>
           <div className="text-xs text-dim">{r.company}</div>
@@ -199,7 +199,7 @@ function LocationPanel({ id, onClose }: { id: string; onClose: () => void }) {
                 <Link
                   to="/projects/$slug"
                   params={{ slug: p.slug }}
-                  className="group flex items-center justify-between gap-3 rounded-[12px] border border-star/10 bg-star/[0.03] p-3 hover:border-cyan/40"
+                  className="group flex items-center justify-between gap-3 rounded-[14px] border border-star/10 bg-star/[0.03] p-3 hover:border-cyan/40"
                 >
                   <span>
                     <span className="telemetry block text-[9px] text-cyan">{p.code}</span>

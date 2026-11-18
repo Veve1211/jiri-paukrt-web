@@ -1,7 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, ArrowUpRight, BookOpen, GraduationCap } from "lucide-react";
+import type { ReactNode } from "react";
 
 import { HeroRoadNetwork } from "@/components/site/HeroRoadNetwork";
 import { Button } from "@/components/ui/button";
+import { EDUCATION, PROJECTS, TECH, UK_MICROSIM_TOWNS } from "@/data/portfolio";
+import { spotlightMove } from "@/hooks/use-spotlight";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -34,13 +39,24 @@ const FACTS = [
 
 function Index() {
   return (
-    <div className="grid grid-cols-1 gap-8 px-4 pt-10 pb-10 md:px-8 lg:min-h-[calc(100vh-68px)] lg:grid-cols-12">
+    <>
+      <Hero />
+      <Bento />
+    </>
+  );
+}
+
+function Hero() {
+  return (
+    <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 pt-10 pb-10 md:px-8 lg:min-h-[calc(100vh-90px)] lg:grid-cols-12">
       <section className="flex flex-col justify-center lg:col-span-5">
-        <p className="mb-5 font-mono text-[11px] tracking-[0.22em] text-cyan">
-          PRINCIPAL TRANSPORTATION ENGINEER · SYSTRA, DUBLIN
+        <p className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-cyan/30 bg-cyan/[0.08] py-1.5 pr-4 pl-2 font-mono text-[10.5px] tracking-[0.16em] text-cyan uppercase">
+          <span className="rounded-full bg-cyan px-2 py-0.5 font-semibold text-void">SYSTRA</span>
+          Principal Transportation Engineer · Dublin
         </p>
-        <h1 className="text-[48px] leading-[1] font-semibold tracking-tight text-balance sm:text-[64px]">
-          Jiri Paukrt<span className="font-light text-dim">, Ing.</span>
+        <h1 className="text-[56px] leading-[0.95] font-semibold tracking-[-0.04em] text-balance sm:text-[84px]">
+          <span className="text-gradient">Jiri Paukrt</span>
+          <span className="text-[0.55em] font-light tracking-[-0.02em] text-dim">, Ing.</span>
         </h1>
         <p className="mt-6 max-w-[460px] text-[16px] leading-relaxed text-starblue">
           27 years of transport modelling across Ireland, the UK, Australia and Central Europe — from national demand
@@ -48,7 +64,7 @@ function Index() {
         </p>
         <dl className="mt-8 grid max-w-[500px] grid-cols-2 gap-2.5 sm:grid-cols-4">
           {FACTS.map((f) => (
-            <div key={f.label} className="rounded-[10px] border border-star/10 bg-star/[0.03] p-3">
+            <div key={f.label} className="glass rounded-[16px] p-3.5">
               <dt className="sr-only">{f.label}</dt>
               <dd className="text-2xl font-semibold font-display text-star">{f.value}</dd>
               <dd className="mt-1 font-mono text-[9.5px] leading-snug tracking-wider text-dim uppercase">{f.label}</dd>
@@ -67,6 +83,152 @@ function Index() {
       <section className="relative flex items-center lg:col-span-7">
         <HeroRoadNetwork />
       </section>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Bento overview: the CV at a glance, one tile per part of the site.
+
+function Tile({
+  to,
+  className,
+  children,
+  label,
+}: {
+  to: "/career" | "/projects" | "/expertise" | "/contact" | "/network";
+  className?: string;
+  children: ReactNode;
+  label: string;
+}) {
+  return (
+    <Link
+      to={to}
+      onMouseMove={spotlightMove}
+      className={cn(
+        "group glass spotlight reveal flex flex-col rounded-[24px] p-6 transition-transform duration-300 hover:-translate-y-1",
+        className,
+      )}
+    >
+      <div className="flex items-center justify-between">
+        <span className="telemetry text-[10px] text-cyan">{label}</span>
+        <ArrowUpRight className="size-4 text-dim transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-cyan" />
+      </div>
+      {children}
+    </Link>
+  );
+}
+
+function Bento() {
+  const pubs = PROJECTS.filter((p) => p.publication);
+  const tools = TECH.map((t) => t.name);
+  return (
+    <section aria-labelledby="overview" className="pt-6 pb-4">
+      <div className="mx-auto max-w-7xl px-4 md:px-8">
+        <p className="telemetry text-[11px] text-cyan">At a glance</p>
+        <h2 id="overview" className="mt-3 text-4xl font-light md:text-5xl">
+          The work, <span className="font-semibold">in brief</span>
+        </h2>
+
+        <div className="mt-10 grid auto-rows-[minmax(190px,auto)] gap-4 md:grid-cols-6">
+          <Tile to="/career" label="Current role" className="md:col-span-4">
+            <h3 className="mt-6 text-3xl font-semibold md:text-4xl">Principal Transportation Engineer</h3>
+            <p className="mt-2 text-starblue">SYSTRA · Dublin · since 2008</p>
+            <div className="mt-auto flex flex-wrap items-center gap-2 pt-6 font-mono text-[10.5px] tracking-wider text-dim uppercase">
+              {["Prague 1999", "Leeds 2004", "Melbourne 2006", "Dublin 2008"].map((stop, i) => (
+                <span key={stop} className="flex items-center gap-2">
+                  {i > 0 && <span className="h-px w-6 bg-cyan/50" />}
+                  <span className={cn("rounded-full border px-2.5 py-1", i === 3 ? "border-cyan/50 text-cyan" : "border-star/15")}>
+                    {stop}
+                  </span>
+                </span>
+              ))}
+            </div>
+          </Tile>
+
+          <Tile to="/contact" label="Contact" className="bg-cyan/[0.06] md:col-span-2">
+            <p className="mt-6 text-xl leading-snug font-medium">
+              Working on a demand model, a junction or transport for a major event?
+            </p>
+            <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-cyan">
+              Send a message <ArrowRight className="size-4" />
+            </span>
+          </Tile>
+
+          <Tile to="/projects" label="Strategic models" className="md:col-span-3">
+            <h3 className="mt-6 text-2xl font-semibold">NTA Regional Modelling System</h3>
+            <p className="mt-2 text-sm leading-relaxed text-dim">
+              The National Demand Forecasting Model and five regional multi-modal models behind transport planning in
+              Ireland — plus the Long Distance Model for Ireland and Northern Ireland.
+            </p>
+            <div className="mt-auto flex gap-6 pt-6">
+              <Stat value="5" label="Regional models" />
+              <Stat value="~20k" label="Diary records (2022)" />
+            </div>
+          </Tile>
+
+          <Tile to="/projects" label="Microsimulation" className="md:col-span-3">
+            <h3 className="mt-6 text-2xl font-semibold">From one tunnel to eleven towns</h3>
+            <p className="mt-2 text-sm leading-relaxed text-dim">
+              Sydney's Lane Cove Tunnel, Dandenong in Melbourne and town models across England and the Isle of Man.
+            </p>
+            <div className="mt-auto flex flex-wrap gap-1.5 pt-6">
+              {UK_MICROSIM_TOWNS.slice(0, 6).map((t) => (
+                <span key={t} className="rounded-full border border-star/10 px-2.5 py-1 text-xs text-dim">
+                  {t}
+                </span>
+              ))}
+              <span className="rounded-full border border-cyan/30 px-2.5 py-1 text-xs text-cyan">
+                +{UK_MICROSIM_TOWNS.length - 6}
+              </span>
+            </div>
+          </Tile>
+
+          <Tile to="/projects" label="Publications" className="md:col-span-2">
+            <div className="mt-6 flex items-baseline gap-2">
+              <span className="font-display text-6xl font-semibold">{pubs.length}</span>
+              <span className="text-sm text-dim">papers &amp; talks</span>
+            </div>
+            <ul className="mt-auto space-y-2 pt-6">
+              {pubs.slice(0, 3).map((p) => (
+                <li key={p.slug} className="flex gap-2 text-xs leading-snug text-starblue">
+                  <BookOpen className="mt-0.5 size-3.5 shrink-0 text-cyan" />
+                  <span className="line-clamp-1">{p.publication!.venue}</span>
+                </li>
+              ))}
+            </ul>
+          </Tile>
+
+          <Tile to="/expertise" label="Tools" className="overflow-hidden md:col-span-2">
+            <h3 className="mt-6 text-2xl font-semibold">{tools.length} modelling tools</h3>
+            <p className="mt-2 text-sm text-dim">Strategic assignment, microsimulation, appraisal, GIS and code.</p>
+            <div className="relative mt-auto -mx-6 overflow-hidden pt-6 [mask-image:linear-gradient(90deg,transparent,black_15%,black_85%,transparent)]">
+              <div className="marquee flex w-max gap-2">
+                {[...tools, ...tools].map((t, i) => (
+                  <span key={`${t}-${i}`} className="rounded-full border border-star/10 bg-star/[0.04] px-3 py-1.5 font-mono text-[11px] whitespace-nowrap text-starblue">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </Tile>
+
+          <Tile to="/career" label="Education" className="md:col-span-2">
+            <GraduationCap className="mt-6 size-7 text-cyan" />
+            <h3 className="mt-3 text-lg leading-snug font-semibold">{EDUCATION.school}</h3>
+            <p className="mt-auto pt-4 text-sm text-dim">Ing. — Transport Planning and Traffic Engineering</p>
+          </Tile>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Stat({ value, label }: { value: string; label: string }) {
+  return (
+    <div>
+      <div className="font-display text-3xl font-semibold text-star">{value}</div>
+      <div className="mt-0.5 font-mono text-[10px] tracking-wider text-dim uppercase">{label}</div>
     </div>
   );
 }

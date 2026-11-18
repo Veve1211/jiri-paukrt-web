@@ -82,8 +82,8 @@ function ProjectPage() {
                 key={m.label}
                 className={
                   i === 0
-                    ? "rounded-[12px] border border-cyan/30 bg-cyan/[0.06] p-3"
-                    : "rounded-[12px] border border-star/10 bg-star/[0.03] p-3"
+                    ? "rounded-[14px] border border-cyan/30 bg-cyan/[0.06] p-3"
+                    : "rounded-[14px] border border-star/10 bg-star/[0.03] p-3"
                 }
               >
                 <div className={i === 0 ? "text-2xl font-bold text-cyan" : "text-2xl font-bold"}>{m.value}</div>
@@ -112,7 +112,7 @@ function ProjectPage() {
         </div>
 
         <aside className="space-y-4 lg:col-span-5">
-          <div className="glass rounded-[14px] p-5">
+          <div className="glass rounded-[20px] p-5">
             <div className="telemetry text-[10px] text-cyan">{isTownList ? "Towns modelled" : "Key points"}</div>
             <ul className={isTownList ? "mt-4 grid grid-cols-2 gap-x-4 gap-y-2" : "mt-4 space-y-3"}>
               {p.highlights.map((h) => (
@@ -125,7 +125,7 @@ function ProjectPage() {
           </div>
 
           {p.publication && (
-            <div className="glass rounded-[14px] p-5">
+            <div className="glass rounded-[20px] p-5">
               <div className="telemetry flex items-center gap-2 text-[10px] text-cyan">
                 <BookOpen className="size-3.5" /> Publication
               </div>
@@ -145,7 +145,7 @@ function ProjectPage() {
             </div>
           )}
 
-          <div className="glass rounded-[14px] p-5">
+          <div className="glass rounded-[20px] p-5">
             <div className="telemetry text-[10px] text-dim">Domains</div>
             <div className="mt-3 flex flex-wrap gap-1.5">
               {p.domains.map((d) => (
@@ -169,13 +169,13 @@ function ProjectPage() {
       </div>
 
       <nav aria-label="More projects" className="mt-16 grid gap-3 border-t border-star/10 pt-6 sm:grid-cols-2">
-        <Link to="/projects/$slug" params={{ slug: prev.slug }} className="group glass rounded-[14px] p-4 hover:border-cyan/40">
+        <Link to="/projects/$slug" params={{ slug: prev.slug }} className="group glass rounded-[20px] p-4 hover:border-cyan/40">
           <span className="telemetry flex items-center gap-1.5 text-[10px] text-dim">
             <ArrowLeft className="size-3" /> Previous
           </span>
           <span className="mt-1 block font-medium group-hover:text-cyan">{prev.title}</span>
         </Link>
-        <Link to="/projects/$slug" params={{ slug: next.slug }} className="group glass rounded-[14px] p-4 text-right hover:border-cyan/40">
+        <Link to="/projects/$slug" params={{ slug: next.slug }} className="group glass rounded-[20px] p-4 text-right hover:border-cyan/40">
           <span className="telemetry flex items-center justify-end gap-1.5 text-[10px] text-dim">
             Next <ArrowRight className="size-3" />
           </span>

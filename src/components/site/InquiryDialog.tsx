@@ -17,7 +17,7 @@ export function InquiryDialog({
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="glass-strong max-h-[90vh] overflow-y-auto rounded-[14px] border-star/10 bg-ink/95 sm:max-w-lg">
+      <DialogContent className="glass-strong max-h-[90vh] overflow-y-auto rounded-[20px] border-star/10 bg-ink/95 sm:max-w-lg">
         <div className="telemetry text-[10px] text-cyan">Message to Jiri</div>
         <DialogTitle className="text-2xl font-light tracking-tight">
           {subject ? (
