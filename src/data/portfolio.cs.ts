@@ -181,7 +181,7 @@ export const PROJECTS_CS: Record<string, ProjectCs> = {
 
 export const CAREER_CS: Record<string, { years?: string; role?: string; location?: string; duties: string[] }> = {
   SYSTRA: {
-    years: "led 2008 – dosud",
+    years: "01/2008 – dosud",
     location: "Dublin, Irsko",
     duties: [
       "Vývoj, kalibrace a validace velkých strategických modelů poptávky.",
@@ -195,7 +195,7 @@ export const CAREER_CS: Record<string, { years?: string; role?: string; location
     ],
   },
   "Hyder Consulting": {
-    years: "říj 2006 – pro 2007",
+    years: "10/2006 – 12/2007",
     location: "Melbourne, Austrálie",
     duties: [
       "Odpovídal za mikrosimulační model Dandenongu v Melbourne a za testování variant revitalizace — využití území, silniční sítě a veřejné dopravy — u jednoho z tehdy největších revitalizačních projektů v Austrálii.",
@@ -203,7 +203,7 @@ export const CAREER_CS: Record<string, { years?: string; role?: string; location
     ],
   },
   "Jacobs Babtie": {
-    years: "čvc 2004 – zář 2006",
+    years: "07/2004 – 09/2006",
     location: "Leeds, Velká Británie",
     duties: [
       "Vývoj strategických modelů v SATURNu.",
@@ -213,7 +213,7 @@ export const CAREER_CS: Record<string, { years?: string; role?: string; location
     ],
   },
   CityPlan: {
-    years: "čvc 1999 – čer 2004",
+    years: "07/1999 – 06/2004",
     location: "Praha, Česko",
     duties: [
       "Ekonomická hodnocení v programu HDM-4.",
