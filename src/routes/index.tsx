@@ -75,21 +75,14 @@ function Hero() {
             </div>
           ))}
         </dl>
-        <p className="mt-8 inline-flex items-center gap-2 text-sm text-starblue">
-          <span className="relative flex size-2.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-go opacity-60 motion-reduce:animate-none" />
-            <span className="relative inline-flex size-2.5 rounded-full bg-go" />
-          </span>
-          {PERSON.openTo}
-        </p>
-        <div className="mt-4 flex flex-wrap gap-3">
+        <div className="mt-8 flex flex-wrap gap-3">
           <Button asChild variant="glow" size="pill" className="font-medium">
             <a href="/Jiri-Paukrt-CV.pdf" download>
               Download CV (PDF)
             </a>
           </Button>
           <Button asChild variant="glass" size="pill" className="font-normal">
-            <Link to="/contact">Discuss a role →</Link>
+            <Link to="/contact">Get in touch →</Link>
           </Button>
         </div>
       </section>
@@ -160,7 +153,7 @@ function Bento() {
           </Tile>
 
           <Tile to="/contact" label="Contact" className="bg-cyan/[0.06] md:col-span-2">
-            <p className="mt-6 text-xl leading-snug font-medium">Hiring a senior transport modeller?</p>
+            <p className="mt-6 text-xl leading-snug font-medium">Questions about a model, a project or a paper?</p>
             <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-cyan">
               Send a message <ArrowRight className="size-4" />
             </span>
@@ -239,9 +232,9 @@ function Strengths() {
   return (
     <section aria-labelledby="strengths" className="pt-10 pb-6">
       <div className="mx-auto max-w-7xl px-4 md:px-8">
-        <p className="telemetry text-[11px] text-cyan">For employers</p>
+        <p className="telemetry text-[11px] text-cyan">Strengths</p>
         <h2 id="strengths" className="mt-3 text-4xl font-light md:text-5xl">
-          What Jiri brings <span className="font-semibold">to a team</span>
+          What Jiri <span className="font-semibold">brings</span>
         </h2>
         <ol className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {PERSON.strengths.map((s, i) => (

@@ -18,8 +18,6 @@ export const PERSON = {
     { name: "Czech", level: "Native" },
     { name: "English", level: "Professional working proficiency" },
   ],
-  /** Shown on the home and contact pages — the purpose of the site. */
-  openTo: "Open to senior and principal transport modelling roles",
   strengths: [
     {
       title: "National-scale models, end to end",

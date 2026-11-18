@@ -7,11 +7,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 
 export const TOPICS = [
-  { value: "role", label: "A role or job opportunity" },
   { value: "national-models", label: "National / strategic demand model" },
   { value: "microsimulation", label: "Microsimulation" },
   { value: "mega-events", label: "Major-event transport" },
   { value: "gis-safety", label: "GIS & road safety" },
+  { value: "role", label: "Working together" },
   { value: "other", label: "Something else" },
 ] as const;
 
@@ -271,7 +271,7 @@ export function InquiryForm({
           onChange={(e) => set("message", e.target.value)}
           aria-invalid={!!errors.message}
           maxLength={2000}
-          placeholder="The role or project, where it is based and the timeline…"
+          placeholder="What you would like to discuss…"
         />
       </Field>
       <input
