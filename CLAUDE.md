@@ -18,7 +18,8 @@
 * Zákaz: secrets a `.env` hodnoty nikdy do repa.
 
 ## Jazyk
-* Web VÝHRADNĚ anglicky. Žádný přepínač jazyků, žádná česká verze v UI.
+* Web je dvojjazyčný: angličtina výchozí, čeština přes přepínač EN/CZ v hlavičce.
+* Každý nový nebo změněný text musí mít obě verze (`t("en", "cs")`, `portfolio.cs.ts`). Žádný text jen v jednom jazyce.
 * Kód, komentáře a commity anglicky.
 
 ## Styl
@@ -46,4 +47,4 @@
 
 ## Před publikováním
 * Test na mobilu, tabletu i počítači.
-* Kontrola: žádný text o hledání práce, žádný přepínač jazyků, odkazy fungují.
+* Kontrola: žádný text o hledání práce, přepínač EN/CZ funguje a česká verze je kompletní, odkazy fungují.
