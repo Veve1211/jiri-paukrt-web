@@ -67,6 +67,11 @@ const MIN_FILL_MS = 4000;
 const COOLDOWN_MS = 10 * 60 * 1000;
 const COOLDOWN_KEY = "inquiry-last-sent";
 
+// Web3Forms delivers each message by email to the address registered with this key.
+// The key is public by design: it can only send to that one address.
+const WEB3FORMS_URL = "https://api.web3forms.com/submit";
+const WEB3FORMS_ACCESS_KEY = "2af56a55-b560-40c4-9611-91686b856483";
+
 function looksLikeGibberish(text: string): boolean {
   const letters = (text.match(/\p{L}/gu) ?? []).length;
   if (letters < text.replace(/\s/g, "").length * 0.6) return true; // mostly symbols or digits
@@ -182,16 +187,45 @@ export function InquiryForm({
     }
     setStatus({ kind: "sending" });
     const id = crypto.randomUUID();
-    const { error } = await supabase.from("contact_inquiries").insert({
-      id,
-      name: parsed.data.name,
-      email: parsed.data.email,
-      organisation: parsed.data.organisation || null,
-      topic: parsed.data.topic,
-      message: parsed.data.message,
-      source: source ?? null,
-    });
-    if (error) {
+    const reference = `MSG-${id.slice(0, 8).toUpperCase()}`;
+    const topicLabel = TOPICS.find((x) => x.value === parsed.data.topic)?.label ?? parsed.data.topic;
+
+    // Two channels in parallel (approved by the site owner): an email to Jiri via
+    // Web3Forms, and a copy in the site's database. Sent if either succeeds.
+    const [emailed, stored] = await Promise.all([
+      fetch(WEB3FORMS_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: `Website message: ${topicLabel}`,
+          from_name: "paukrt.lovable.app",
+          name: parsed.data.name,
+          email: parsed.data.email,
+          organisation: parsed.data.organisation || "-",
+          topic: topicLabel,
+          message: parsed.data.message,
+          page: source ?? "site",
+          reference,
+        }),
+      })
+        .then(async (r) => r.ok && Boolean(((await r.json()) as { success?: boolean }).success))
+        .catch(() => false),
+      Promise.resolve(
+        supabase.from("contact_inquiries").insert({
+          id,
+          name: parsed.data.name,
+          email: parsed.data.email,
+          organisation: parsed.data.organisation || null,
+          topic: parsed.data.topic,
+          message: parsed.data.message,
+          source: source ?? null,
+        }),
+      )
+        .then(({ error }) => !error)
+        .catch(() => false),
+    ]);
+    if (!emailed && !stored) {
       setStatus({
         kind: "error",
         message: "The message didn't go through. Check your connection and try again.",
@@ -203,7 +237,7 @@ export function InquiryForm({
     } catch {
       // storage unavailable — nothing to remember
     }
-    setStatus({ kind: "sent", reference: `MSG-${id.slice(0, 8).toUpperCase()}` });
+    setStatus({ kind: "sent", reference });
   }
 
   if (status.kind === "sent") {
@@ -216,7 +250,7 @@ export function InquiryForm({
           <div className="telemetry text-[10px] text-cyan">{t("Message received", "Zpráva přijata")} · {status.reference}</div>
           <h3 className="mt-2 text-xl font-medium">{t("Thanks", "Děkujeme")}, {values.name.split(" ")[0]}.</h3>
           <p className="mt-1 max-w-sm text-sm text-dim">
-            {t(`Your message has been received. Any reply will go to ${values.email}.`, `Vaše zpráva byla přijata. Případná odpověď přijde na ${values.email}.`)}
+            {t(`Your message has been sent to Jiri. He will reply to ${values.email}.`, `Zpráva odešla Jiřímu. Odpoví na ${values.email}.`)}
           </p>
         </div>
         <Button

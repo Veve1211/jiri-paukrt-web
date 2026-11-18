@@ -32,7 +32,7 @@ export function InquiryDialog({
           )}
         </DialogTitle>
         <DialogDescription className="text-sm text-dim">
-          {t("All fields except organisation are required.", "Vyplňte všechna pole kromě organizace.")}
+          {t("Your message goes straight to Jiri by email. All fields except organisation are required.", "Zpráva přijde Jiřímu přímo e-mailem. Vyplňte všechna pole kromě organizace.")}
         </DialogDescription>
         <InquiryForm
           compact

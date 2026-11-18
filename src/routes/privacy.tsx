@@ -40,8 +40,8 @@ const ITEMS: { title: string; titleCs: string; body: string; bodyCs: string }[] 
   {
     title: "Where it is kept and for how long",
     titleCs: "Kde a jak dlouho se uchovává",
-    body: "Messages are stored in the database of the website's hosting provider and kept only as long as needed to deal with your enquiry.",
-    bodyCs: "Zprávy se ukládají v databázi poskytovatele hostingu webu a uchovávají se jen po dobu nutnou k vyřízení dotazu.",
+    body: "Messages are delivered to Jiri by email through the form service Web3Forms, and a copy is stored in the database of the website's hosting provider. They are kept only as long as needed to deal with your enquiry.",
+    bodyCs: "Zprávy se doručují Jiřímu e-mailem přes formulářovou službu Web3Forms a kopie se ukládá v databázi poskytovatele hostingu webu. Uchovávají se jen po dobu nutnou k vyřízení dotazu.",
   },
   {
     title: "Your rights",
