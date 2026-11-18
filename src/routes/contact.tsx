@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowUpRight, MapPin } from "lucide-react";
 
 import { MonogramBadge } from "@/components/site/BrandMark";
-import { EmailLink } from "@/components/site/EmailLink";
 import { InquiryForm } from "@/components/site/InquiryForm";
 import { PageIntro } from "@/components/site/PageIntro";
 import { Button } from "@/components/ui/button";
@@ -42,8 +41,8 @@ function ContactPage() {
               </>
             }
           >
-            Questions about a project, a paper or working together? Send a message, email Jiri directly or connect
-            on LinkedIn.
+            Questions about transport modelling, one of the projects or a paper? Send a message or connect on
+            LinkedIn.
           </PageIntro>
 
           <div className="glass mt-10 flex items-center gap-5 rounded-[20px] p-5">
@@ -57,7 +56,6 @@ function ContactPage() {
               <div className="mt-3 flex items-center gap-1.5 font-mono text-[10.5px] tracking-wider text-dim uppercase">
                 <MapPin className="size-3 text-cyan" /> Dublin, Ireland
               </div>
-              <EmailLink className="mt-3" />
             </div>
           </div>
 

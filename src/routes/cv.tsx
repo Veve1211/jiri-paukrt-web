@@ -54,7 +54,7 @@ function CvPage() {
             {PERSON.role} · {PERSON.company}, {PERSON.city}, Ireland
           </p>
           <p className="mt-2 text-[12px] text-[#4a5a70]">
-            paukrt@yahoo.com · linkedin.com/in/jiri-paukrt · paukrt.lovable.app
+            linkedin.com/in/jiri-paukrt · paukrt.lovable.app
           </p>
         </header>
 

@@ -10,14 +10,14 @@ import { Button } from "@/components/ui/button";
 import { domainLabel, getProject, PROJECTS, type DomainKey } from "@/data/portfolio";
 
 const GALLERY: Record<string, Method[]> = {
-  "nta-national-demand-model": ["matrix", "calibration"],
-  "nta-long-distance-model": ["matrix", "bandwidth"],
-  "glasgow-m74-evaluation": ["beforeAfter", "calibration"],
-  "road-safety-traffic-conflicts": ["junction", "calibration"],
-  "commonwealth-games": ["profile", "bandwidth"],
-  "sydney-lane-cove-tunnel": ["junction", "bandwidth"],
-  "melbourne-dandenong": ["junction", "beforeAfter"],
-  "uk-microsimulation-models": ["junction", "calibration"],
+  "nta-national-demand-model": ["matrix", "calibration", "bandwidth"],
+  "nta-long-distance-model": ["matrix", "bandwidth", "profile"],
+  "glasgow-m74-evaluation": ["beforeAfter", "bandwidth", "calibration"],
+  "road-safety-traffic-conflicts": ["junction", "calibration", "bandwidth"],
+  "commonwealth-games": ["profile", "bandwidth", "junction"],
+  "sydney-lane-cove-tunnel": ["junction", "bandwidth", "calibration"],
+  "melbourne-dandenong": ["junction", "beforeAfter", "bandwidth"],
+  "uk-microsimulation-models": ["junction", "calibration", "bandwidth"],
 };
 
 const TOPIC_FOR: Record<DomainKey, TopicValue> = {
@@ -204,7 +204,7 @@ function ProjectPage() {
           <h2 id="how" className="mt-3 text-2xl font-light md:text-3xl">
             The method, <span className="font-semibold">in pictures</span>
           </h2>
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
             {GALLERY[p.slug]!.map((m) => (
               <figure key={m} className="glass reveal overflow-hidden rounded-[20px]">
                 <MethodIllustration method={m} />

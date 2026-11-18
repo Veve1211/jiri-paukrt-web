@@ -11,7 +11,6 @@ export const TOPICS = [
   { value: "microsimulation", label: "Microsimulation" },
   { value: "mega-events", label: "Major-event transport" },
   { value: "gis-safety", label: "GIS & road safety" },
-  { value: "role", label: "Working together" },
   { value: "other", label: "Something else" },
 ] as const;
 
@@ -69,7 +68,7 @@ const schema = z.object({
       "Please use a permanent email address so Jiri can reply",
     ),
   organisation: z.string().trim().max(120, "Keep it under 120 characters").optional(),
-  topic: z.enum(["role", "national-models", "microsimulation", "mega-events", "gis-safety", "other"]),
+  topic: z.enum(["national-models", "microsimulation", "mega-events", "gis-safety", "other"]),
   message: z
     .string()
     .trim()
@@ -159,11 +158,9 @@ export function InquiryForm({
       name: parsed.data.name,
       email: parsed.data.email,
       organisation: parsed.data.organisation || null,
-      // The database only accepts the original topics, so job enquiries are stored
-      // as "other" and tagged in `source`.
-      topic: parsed.data.topic === "role" ? "other" : parsed.data.topic,
+      topic: parsed.data.topic,
       message: parsed.data.message,
-      source: parsed.data.topic === "role" ? `role:${source ?? "site"}`.slice(0, 120) : (source ?? null),
+      source: source ?? null,
     });
     if (error) {
       setStatus({

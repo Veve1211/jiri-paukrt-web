@@ -3,6 +3,7 @@ import { ArrowRight, ArrowUpRight, BookOpen, GraduationCap } from "lucide-react"
 import type { ReactNode } from "react";
 
 import { HeroRoadNetwork } from "@/components/site/HeroRoadNetwork";
+import { ProjectCover } from "@/components/site/ProjectCover";
 import { Button } from "@/components/ui/button";
 import { EDUCATION, PERSON, PROJECTS, TECH, UK_MICROSIM_TOWNS } from "@/data/portfolio";
 import { spotlightMove } from "@/hooks/use-spotlight";
@@ -153,13 +154,16 @@ function Bento() {
           </Tile>
 
           <Tile to="/contact" label="Contact" className="bg-cyan/[0.06] md:col-span-2">
-            <p className="mt-6 text-xl leading-snug font-medium">Questions about a model, a project or a paper?</p>
+            <p className="mt-6 text-xl leading-snug font-medium">Curious about one of the models or papers?</p>
             <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-cyan">
               Send a message <ArrowRight className="size-4" />
             </span>
           </Tile>
 
           <Tile to="/projects" label="Strategic models" className="md:col-span-3">
+            <div className="-mx-6 mt-4 border-y border-star/10">
+              <ProjectCover slug="nta-long-distance-model" />
+            </div>
             <h3 className="mt-6 text-2xl font-semibold">NTA Regional Modelling System</h3>
             <p className="mt-2 text-sm leading-relaxed text-dim">
               The National Demand Forecasting Model and five regional multi-modal models behind transport planning in
@@ -172,6 +176,9 @@ function Bento() {
           </Tile>
 
           <Tile to="/projects" label="Microsimulation" className="md:col-span-3">
+            <div className="-mx-6 mt-4 border-y border-star/10">
+              <ProjectCover slug="sydney-lane-cove-tunnel" />
+            </div>
             <h3 className="mt-6 text-2xl font-semibold">From one tunnel to eleven towns</h3>
             <p className="mt-2 text-sm leading-relaxed text-dim">
               Sydney's Lane Cove Tunnel, Dandenong in Melbourne and town models across England and the Isle of Man.
