@@ -14,7 +14,13 @@ Poslední kontrola: 18. 11. 2026. Postup podle bezpečnostní matice z manuálu 
 1. **`.env` je v repu.** Soubor obsahuje jen *veřejné* údaje Supabase (URL a publishable key), které stejně dostává každý prohlížeč. Soubor spravuje Lovable, proto zůstává.
 2. **klíč Web3Forms je v kódu.** Je veřejný záměrně: umí jen poslat zprávu na jednu předem registrovanou adresu. Riziko je nanejvýš spam, proti kterému má Web3Forms vlastní ochranu.
 
-## K řešení
+## Závislosti
 
-1. **zranitelné balíčky.** `bun audit` hlásí 30 nálezů (1 kritický, 15 vysokých). Většina jsou vývojové nástroje (vite, esbuild, launch-editor, shell-quote), které na produkčním webu neběží. Za běhu webu se týká jen `seroval` (přes TanStack Router; střední závažnost) a `zod`. Řešení: `bun audit fix`, potom `npx tsc --noEmit`, `npx vitest run` a kontrola webu, než to půjde do `main`.
-2. **historie commitů.** Jedna zpráva commitu zmiňuje odstranění textu o hledání práce. Dokud je to tak, repo by mělo zůstat soukromé a přístup se dává pozváním jako collaborator.
+1. **opraveno 18. 11. 2026.** `bun audit fix` a aktualizace vite (8.1.6) a vitest (4.1.12) snížily počet nálezů z 30 (1 kritický, 15 vysokých) na 4. Opravený je i kritický `shell-quote` a `seroval`, který běží přímo na webu. Po aktualizaci prošly typy, testy i build.
+2. **zbývá 4 (2 vysoké, 2 střední), vědomě ponecháno:**
+   1. `esbuild`, `minimatch` a `picomatch` jsou nástroje pro build a vývojový server, na živém webu neběží.
+   2. `zod` 3.x (validace kontaktního formuláře) nemá opravu ve verzi 3, oprava vyžaduje přechod na zod 4. Chyba se týká validace obřích kolekcí; formulář validuje jen krátké texty s pevným limitem délky, takže praktické riziko je nízké. Přechod na zod 4 je samostatný úkol.
+
+## Vědomé rozhodnutí
+
+1. **repo je veřejné (od 18. 11. 2026).** Jedna zpráva commitu v historii zmiňuje odstranění textu o hledání práce. Historie se nepřepisuje (rozbilo by to synchronizaci s Lovable), riziko je tedy vědomě přijaté.
