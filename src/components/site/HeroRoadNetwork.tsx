@@ -115,9 +115,11 @@ function FlowLink({
   const dur = (Math.max(4, len / 40) + (seed % 3) * 0.8) * (slow ? 1.8 : 1);
   // Two lanes, offset either side of the centreline: headlights travel a→b,
   // tail-lights travel b→a — like traffic seen from above at night.
+  // Traffic keeps LEFT (Ireland, UK, Australia), so the a→b lane sits on the
+  // left of the direction of travel (left normal in SVG's y-down space).
   const off = Math.min(3.2, bandWidth(flow) / 2 - 0.6);
-  const nx = (-(b.y - a.y) / (len || 1)) * off;
-  const ny = ((b.x - a.x) / (len || 1)) * off;
+  const nx = ((b.y - a.y) / (len || 1)) * off;
+  const ny = (-(b.x - a.x) / (len || 1)) * off;
   const lane1 = `M${a.x + nx} ${a.y + ny} L${b.x + nx} ${b.y + ny}`;
   const lane2 = `M${b.x - nx} ${b.y - ny} L${a.x - nx} ${a.y - ny}`;
   const cars = flow > 2500 ? 2 : 1;
