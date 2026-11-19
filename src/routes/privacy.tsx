@@ -8,9 +8,15 @@ export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
       { title: "Privacy notice — Jiri Paukrt" },
-      { name: "description", content: "How personal data sent through the contact form on this website is used." },
+      {
+        name: "description",
+        content: "How personal data sent through the contact form on this website is used.",
+      },
       { property: "og:title", content: "Privacy notice — Jiri Paukrt" },
-      { property: "og:description", content: "How personal data sent through the contact form is used." },
+      {
+        property: "og:description",
+        content: "How personal data sent through the contact form is used.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -29,25 +35,29 @@ const ITEMS: { title: string; titleCs: string; body: string; bodyCs: string }[] 
     title: "What is collected",
     titleCs: "Co se shromažďuje",
     body: "Only what you type into the contact form: your name, email address, optional organisation, the topic you choose and your message.",
-    bodyCs: "Jen to, co zadáte do kontaktního formuláře: jméno, e-mail, případně organizaci, zvolené téma a text zprávy.",
+    bodyCs:
+      "Jen to, co zadáte do kontaktního formuláře: jméno, e-mail, případně organizaci, zvolené téma a text zprávy.",
   },
   {
     title: "Why it is used",
     titleCs: "K čemu se používá",
     body: "Solely to read and reply to your message. It is not used for marketing, not sold and not shared with anyone else.",
-    bodyCs: "Výhradně k přečtení zprávy a odpovědi na ni. Údaje se nepoužívají k marketingu, neprodávají se a nikomu dalšímu se nepředávají.",
+    bodyCs:
+      "Výhradně k přečtení zprávy a odpovědi na ni. Údaje se nepoužívají k marketingu, neprodávají se a nikomu dalšímu se nepředávají.",
   },
   {
     title: "Where it is kept and for how long",
     titleCs: "Kde a jak dlouho se uchovává",
     body: "Messages are delivered to Jiri by email through the form service Web3Forms, and a copy is stored in the database of the website's hosting provider. They are kept only as long as needed to deal with your enquiry.",
-    bodyCs: "Zprávy se doručují Jiřímu e-mailem přes formulářovou službu Web3Forms a kopie se ukládá v databázi poskytovatele hostingu webu. Uchovávají se jen po dobu nutnou k vyřízení dotazu.",
+    bodyCs:
+      "Zprávy se doručují Jiřímu e-mailem přes formulářovou službu Web3Forms a kopie se ukládá v databázi poskytovatele hostingu webu. Uchovávají se jen po dobu nutnou k vyřízení dotazu.",
   },
   {
     title: "Your rights",
     titleCs: "Vaše práva",
     body: "Under the GDPR you can ask to see, correct or delete your data at any time — send a message through the contact form or on LinkedIn. You can also complain to a data protection authority, such as the Czech Office for Personal Data Protection (ÚOOÚ).",
-    bodyCs: "Podle GDPR můžete kdykoli požádat o přístup ke svým údajům, jejich opravu nebo výmaz — napište přes kontaktní formulář nebo LinkedIn. Stížnost můžete podat také u dozorového úřadu, například u Úřadu pro ochranu osobních údajů (ÚOOÚ).",
+    bodyCs:
+      "Podle GDPR můžete kdykoli požádat o přístup ke svým údajům, jejich opravu nebo výmaz — napište přes kontaktní formulář nebo LinkedIn. Stížnost můžete podat také u dozorového úřadu, například u Úřadu pro ochranu osobních údajů (ÚOOÚ).",
   },
 ];
 
@@ -64,7 +74,10 @@ function PrivacyPage() {
           </>
         }
       >
-        {t("A short, plain explanation of how the contact form works.", "Krátké a srozumitelné vysvětlení, jak funguje kontaktní formulář.")}
+        {t(
+          "A short, plain explanation of how the contact form works.",
+          "Krátké a srozumitelné vysvětlení, jak funguje kontaktní formulář.",
+        )}
       </PageIntro>
       <div className="mt-10 grid max-w-3xl gap-4">
         {ITEMS.map((i) => (

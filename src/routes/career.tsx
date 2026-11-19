@@ -18,7 +18,8 @@ export const Route = createFileRoute("/career")({
       { property: "og:title", content: "Career Timeline — Jiri Paukrt" },
       {
         property: "og:description",
-        content: "Prague → Leeds → Melbourne → Dublin: 27+ years of transport planning and modelling.",
+        content:
+          "Prague → Leeds → Melbourne → Dublin: 27+ years of transport planning and modelling.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -56,9 +57,15 @@ function CareerPage() {
       </a>
 
       <ol className="relative mt-12 max-w-4xl">
-        <span aria-hidden="true" className="absolute top-2 bottom-2 left-[6px] w-[3px] rounded-full bg-[repeating-linear-gradient(to_bottom,var(--cyan)_0_14px,transparent_14px_24px)] opacity-70 md:left-[166px]" />
+        <span
+          aria-hidden="true"
+          className="absolute top-2 bottom-2 left-[6px] w-[3px] rounded-full bg-[repeating-linear-gradient(to_bottom,var(--cyan)_0_14px,transparent_14px_24px)] opacity-70 md:left-[166px]"
+        />
         {career.map((c) => (
-          <li key={c.company} className="relative grid gap-3 pb-10 pl-8 md:grid-cols-[150px_1fr] md:gap-10 md:pl-0">
+          <li
+            key={c.company}
+            className="relative grid gap-3 pb-10 pl-8 md:grid-cols-[150px_1fr] md:gap-10 md:pl-0"
+          >
             <span
               aria-hidden="true"
               className={cn(
@@ -66,11 +73,17 @@ function CareerPage() {
                 c.current ? "border-cyan bg-cyan shadow-dot" : "border-star/50 bg-void",
               )}
             />
-            <div className="font-mono text-[12px] tracking-wider text-cyan md:pt-1 md:text-right">{c.years.toUpperCase()}</div>
+            <div className="font-mono text-[12px] tracking-wider text-cyan md:pt-1 md:text-right">
+              {c.years.toUpperCase()}
+            </div>
             <div className="glass reveal rounded-[20px] p-6 md:ml-8">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <h2 className="text-xl font-medium">{c.role}</h2>
-                {c.current && <span className="telemetry text-[9.5px] text-cyan">{t("Current role", "Současná pozice")}</span>}
+                {c.current && (
+                  <span className="telemetry text-[9.5px] text-cyan">
+                    {t("Current role", "Současná pozice")}
+                  </span>
+                )}
               </div>
               <p className="mt-1 text-sm text-star">
                 {c.company} <span className="text-dim">· {c.location}</span>
@@ -114,14 +127,19 @@ function CareerPage() {
           <div className="telemetry flex items-center gap-2 text-[10px] text-cyan">
             <GraduationCap className="size-4" /> {t("Education", "Vzdělání")}
           </div>
-          <h2 id="edu" className="mt-3 text-xl font-medium">{education.degree}</h2>
+          <h2 id="edu" className="mt-3 text-xl font-medium">
+            {education.degree}
+          </h2>
           <p className="mt-1 text-sm text-dim">
             {education.school} · {education.location} · {education.years}
           </p>
         </div>
       </section>
 
-      <section className="mt-4 grid max-w-4xl gap-4 md:grid-cols-2 md:pl-[198px] md:[grid-template-columns:1fr_1fr]" aria-label={t("Languages and ways of working", "Jazyky a způsob práce")}>
+      <section
+        className="mt-4 grid max-w-4xl gap-4 md:grid-cols-2 md:pl-[198px] md:[grid-template-columns:1fr_1fr]"
+        aria-label={t("Languages and ways of working", "Jazyky a způsob práce")}
+      >
         <div className="glass reveal rounded-[20px] p-6">
           <div className="telemetry flex items-center gap-2 text-[10px] text-cyan">
             <Languages className="size-4" /> {t("Languages", "Jazyky")}
