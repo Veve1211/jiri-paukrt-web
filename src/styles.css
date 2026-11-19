@@ -328,7 +328,7 @@
     box-shadow: 0 0 0 0 color-mix(in srgb, var(--cyan) 0%, transparent);
   }
   50% {
-    box-shadow: 0 0 0 7px color-mix(in srgb, var(--cyan) 35%, transparent);
+    box-shadow: 0 0 0 12px color-mix(in srgb, var(--cyan) 45%, transparent);
   }
 }
 
