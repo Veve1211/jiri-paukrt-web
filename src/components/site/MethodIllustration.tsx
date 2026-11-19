@@ -262,12 +262,13 @@ export function MethodIllustration({ method, className }: { method: Method; clas
   return (
     <div className="relative">
       {svg}
-      <div className="absolute top-2 right-2 flex flex-col items-end gap-1 font-mono text-[9px] tracking-[0.12em] text-dim">
+      <div className="absolute top-2 right-2 hidden flex-col items-end gap-1 font-mono text-[11px] tracking-[0.1em] text-dim sm:flex">
         <button
           type="button"
           aria-pressed={showVc}
           onClick={() => setShowVc((v) => !v)}
-          className="inline-flex items-center gap-2 rounded-full border border-star/15 bg-void/70 px-2.5 py-1 text-starblue uppercase transition-colors hover:border-cyan/50 hover:text-cyan"
+          title={t("Colour roads by volume-to-capacity ratio", "Obarvit silnice podle poměru intenzity a kapacity")}
+          className="inline-flex items-center gap-2 rounded-full border border-cyan/50 bg-void/80 px-3 py-1.5 text-cyan uppercase shadow-[0_0_12px_-2px_var(--cyan)] transition-colors hover:border-cyan hover:bg-cyan/10"
         >
           <span className={cn("flex h-3 w-5 items-center rounded-full p-0.5 transition-colors", showVc ? "bg-cyan" : "bg-star/20")}>
             <span className={cn("size-2 rounded-full bg-void transition-transform", showVc && "translate-x-2")} />
@@ -276,15 +277,16 @@ export function MethodIllustration({ method, className }: { method: Method; clas
         </button>
       </div>
       {showVc && (
-        <div className="absolute right-2 bottom-2 flex items-center gap-2.5 rounded-md bg-void/70 px-2 py-1 font-mono text-[9px] tracking-[0.1em] text-dim animate-in fade-in-0">
+        <div className="absolute right-2 bottom-2 flex max-w-[calc(100%-1rem)] flex-wrap items-center justify-end gap-x-3 gap-y-1 rounded-md bg-void/80 px-2.5 py-1.5 font-mono text-[11px] tracking-[0.08em] text-starblue animate-in fade-in-0">
+          <span className="text-star">{t("V/C = VOLUME / CAPACITY", "V/C = INTENZITA / KAPACITA")}</span>
           <span className="flex items-center gap-1">
-            <span className="h-1 w-3 bg-go" /> {t("<0.70", "<0,70")}
+            <span className="h-1.5 w-4 bg-go" /> {t("<0.70", "<0,70")}
           </span>
           <span className="flex items-center gap-1">
-            <span className="h-1 w-3 bg-amber" /> {t("0.70–0.90", "0,70–0,90")}
+            <span className="h-1.5 w-4 bg-amber" /> {t("0.70–0.90", "0,70–0,90")}
           </span>
           <span className="flex items-center gap-1">
-            <span className="h-1 w-3 bg-alert" /> {t(">0.90", ">0,90")}
+            <span className="h-1.5 w-4 bg-alert" /> {t(">0.90", ">0,90")}
           </span>
         </div>
       )}
