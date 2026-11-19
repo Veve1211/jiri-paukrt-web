@@ -43,15 +43,6 @@ export const Route = createFileRoute("/network")({
 
 const KIND_LABEL = { hq: "Current employer", project: "Project", base: "Career base", town: "Town model" } as const;
 const KIND_LABEL_CS = { hq: "Současný zaměstnavatel", project: "Projekt", base: "Kariérní zastávka", town: "Model města" } as const;
-const COUNTRY_CS: Record<string, string> = {
-  Ireland: "Irsko",
-  "Scotland, UK": "Skotsko, Velká Británie",
-  "England, UK": "Anglie, Velká Británie",
-  "Czech Republic": "Česko",
-  Australia: "Austrálie",
-  "Isle of Man": "Ostrov Man",
-};
-
 function NetworkPage() {
   const { node } = Route.useSearch();
   const navigate = Route.useNavigate();
@@ -62,7 +53,7 @@ function NetworkPage() {
 
   const loc = node ? getLocation(node) : undefined;
   const { t } = useLang();
-  const { regionLabel } = useContent();
+  const { regionLabel, countryLabel, cityLabel } = useContent();
 
   return (
     <div className="px-4 pt-10 md:px-8">
@@ -127,9 +118,9 @@ function NetworkPage() {
 
 function Overview({ region, onSelect }: { region?: Region | undefined; onSelect: (id: string) => void }) {
   const { t, lang } = useLang();
-  const { regionLabel } = useContent();
+  const { regionLabel, countryLabel, cityLabel } = useContent();
   const kind = lang === "cs" ? KIND_LABEL_CS : KIND_LABEL;
-  const country = (c: string) => (lang === "cs" ? (COUNTRY_CS[c] ?? c) : c);
+  const country = countryLabel;
   const list = LOCATIONS.filter((l) => (!region || l.region === region) && l.kind !== "town");
   const towns = LOCATIONS.filter((l) => (!region || l.region === region) && l.kind === "town");
   return (
@@ -146,7 +137,7 @@ function Overview({ region, onSelect }: { region?: Region | undefined; onSelect:
               className="flex w-full items-center justify-between gap-3 py-3 text-left hover:text-cyan"
             >
               <span>
-                <span className="block text-sm font-medium">{l.name}</span>
+                <span className="block text-sm font-medium">{cityLabel(l.name)}</span>
                 <span className="telemetry block text-[9.5px] text-dim">{kind[l.kind]} · {country(l.country)}</span>
               </span>
               <span className="font-mono text-[10px] text-dim">
@@ -183,11 +174,11 @@ function Overview({ region, onSelect }: { region?: Region | undefined; onSelect:
 function LocationPanel({ id, onClose }: { id: string; onClose: () => void }) {
   const loc = getLocation(id)!;
   const { t, lang } = useLang();
-  const { career, getProject, regionLabel } = useContent();
+  const { career, getProject, regionLabel, countryLabel, cityLabel } = useContent();
   const projects = projectsAt(id).map((p) => getProject(p.slug) ?? p);
   const roles = career.filter((c) => c.locationId === id);
   const kind = lang === "cs" ? KIND_LABEL_CS : KIND_LABEL;
-  const country = (c: string) => (lang === "cs" ? (COUNTRY_CS[c] ?? c) : c);
+  const country = countryLabel;
   return (
     <div className="animate-in fade-in-0">
       <div className="flex items-start justify-between">
@@ -196,7 +187,7 @@ function LocationPanel({ id, onClose }: { id: string; onClose: () => void }) {
           <X className="size-4" />
         </button>
       </div>
-      <h2 className="mt-2 text-2xl font-medium">{loc.name}</h2>
+      <h2 className="mt-2 text-2xl font-medium">{cityLabel(loc.name)}</h2>
       <p className="text-sm text-dim">{country(loc.country)}</p>
       <div className="mt-4 inline-flex items-baseline gap-2 rounded-[10px] border border-cyan/30 bg-cyan/[0.06] px-3 py-2">
         <span className="text-xl font-bold text-cyan">{projects.length}</span>

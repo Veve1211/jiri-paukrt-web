@@ -21,11 +21,11 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 px-4 pt-4 md:px-8 md:pt-5">
       <div className="glass mx-auto flex h-14 max-w-7xl items-center justify-between rounded-full pr-2 pl-5 md:pr-2.5 md:pl-6">
-        <Link to="/" aria-label="Jiri Paukrt — home" className="shrink-0">
-          <BrandMark />
+        <Link to="/" aria-label={t("Jiri Paukrt — home", "Jiří Paukrt — úvod")} className="shrink-0">
+          <BrandMark compactTagline />
         </Link>
 
-        <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
+        <nav aria-label={t("Main", "Hlavní menu")} className="hidden items-center gap-1 md:flex">
           {NAV.map((item) => (
             <Link
               key={item.to}
@@ -57,11 +57,11 @@ export function SiteHeader() {
             <Menu className="size-4" />
           </SheetTrigger>
           <SheetContent side="right" className="glass-strong w-[82%] border-l-star/10 bg-ink/95">
-            <SheetTitle className="sr-only">Menu</SheetTitle>
+            <SheetTitle className="sr-only">{t("Menu", "Menu")}</SheetTitle>
             <div className="mt-2">
               <BrandMark />
             </div>
-            <nav aria-label="Mobile" className="mt-10 flex flex-col gap-1">
+            <nav aria-label={t("Mobile menu", "Mobilní menu")} className="mt-10 flex flex-col gap-1">
               {NAV.map((item, i) => (
                 <Link
                   key={item.to}

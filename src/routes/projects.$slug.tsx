@@ -70,7 +70,7 @@ function ProjectNotFound() {
 function ProjectPage() {
   const { project: base } = Route.useLoaderData();
   const { t, lang } = useLang();
-  const { projects, domainLabel, regionLabel } = useContent();
+  const { projects, domainLabel, regionLabel, techLabel } = useContent();
   const p = projects.find((x) => x.slug === base.slug) ?? base;
   const idx = projects.findIndex((x) => x.slug === p.slug);
   const prev = projects[(idx - 1 + projects.length) % projects.length] ?? p;
@@ -196,7 +196,7 @@ function ProjectPage() {
               ))}
               {p.tools?.map((tool) => (
                 <span key={tool} className="rounded-full border border-volt/40 bg-volt/10 px-3 py-1 font-mono text-[10px] tracking-wider text-starblue uppercase">
-                  {tool}
+                  {techLabel(tool)}
                 </span>
               ))}
             </div>

@@ -70,13 +70,8 @@ function Hero() {
           <span className="text-gradient">{t("Jiri Paukrt", "Jiří Paukrt")}</span>
           {lang === "en" && <span className="text-[0.55em] font-light tracking-[-0.02em] text-dim">, Ing.</span>}
           <span className="text-glow mt-4 block text-[26px] leading-tight font-semibold tracking-[-0.02em] sm:text-[38px]">
-            Principal Transportation Engineer
+            {t("Principal Transportation Engineer", "Hlavní dopravní inženýr")}
           </span>
-          {lang === "cs" && (
-            <span className="mt-2 block text-[18px] leading-snug font-normal tracking-normal text-starblue sm:text-[22px]">
-              hlavní dopravní inženýr
-            </span>
-          )}
         </h1>
         <p className="mt-6 max-w-[460px] text-[16px] leading-relaxed text-starblue">
           {t(
@@ -145,9 +140,10 @@ function Tile({
 
 function Bento() {
   const { t, lang } = useLang();
-  const { projects, tech, education } = useContent();
+  const { projects, tech, education, techLabel, getProject } = useContent();
+  const ukTowns = getProject("uk-microsimulation-models")?.highlights ?? UK_MICROSIM_TOWNS;
   const pubs = projects.filter((p) => p.publication);
-  const tools = tech.map((x) => x.name);
+  const tools = tech.map((x) => techLabel(x.name));
   return (
     <section aria-labelledby="overview" className="pt-6 pb-4">
       <div className="mx-auto max-w-7xl px-4 md:px-8">
@@ -159,8 +155,7 @@ function Bento() {
 
         <div className="mt-10 grid auto-rows-[minmax(190px,auto)] gap-4 md:grid-cols-6">
           <Tile to="/career" label={t("Current role", "Současná pozice")} className="md:col-span-4">
-            <h3 className="mt-6 text-3xl font-semibold md:text-4xl">Principal Transportation Engineer</h3>
-            {lang === "cs" && <p className="mt-1 text-lg text-starblue">hlavní dopravní inženýr</p>}
+            <h3 className="mt-6 text-3xl font-semibold md:text-4xl">{t("Principal Transportation Engineer", "Hlavní dopravní inženýr")}</h3>
             <p className="mt-2 text-starblue">{t("SYSTRA Dublin · since 2008 · based in the Czech Republic", "SYSTRA Dublin · od roku 2008 · žije v Česku")}</p>
             <div className="mt-auto flex flex-wrap items-center gap-2 pt-6 font-mono text-[10.5px] tracking-wider text-dim uppercase">
               {[t("Prague 1999", "Praha 1999"), "Leeds 2004", "Melbourne 2006", "Dublin 2008"].map((stop, i) => (
@@ -185,7 +180,7 @@ function Bento() {
             <div className="-mx-6 mt-4 border-y border-star/10">
               <ProjectCover slug="nta-long-distance-model" />
             </div>
-            <h3 className="mt-6 text-2xl font-semibold">NTA Regional Modelling System</h3>
+            <h3 className="mt-6 text-2xl font-semibold">{t("NTA Regional Modelling System", "Regionální modelový systém NTA")}</h3>
             <p className="mt-2 text-sm leading-relaxed text-dim">
               {t(
                 "The National Demand Forecasting Model and five regional multi-modal models behind transport planning in Ireland — plus the Long Distance Model for Ireland and Northern Ireland.",
@@ -210,13 +205,13 @@ function Bento() {
               )}
             </p>
             <div className="mt-auto flex flex-wrap gap-1.5 pt-6">
-              {UK_MICROSIM_TOWNS.slice(0, 6).map((town) => (
+              {ukTowns.slice(0, 6).map((town) => (
                 <span key={town} className="rounded-full border border-star/10 px-2.5 py-1 text-xs text-dim">
                   {town}
                 </span>
               ))}
               <span className="rounded-full border border-cyan/30 px-2.5 py-1 text-xs text-cyan">
-                +{UK_MICROSIM_TOWNS.length - 6}
+                +{ukTowns.length - 6}
               </span>
             </div>
           </Tile>
