@@ -267,6 +267,7 @@ export function MethodIllustration({ method, className }: { method: Method; clas
           type="button"
           aria-pressed={showVc}
           onClick={() => setShowVc((v) => !v)}
+          title={t("Colour roads by volume-to-capacity ratio", "Obarvit silnice podle poměru intenzity a kapacity")}
           className="inline-flex items-center gap-2 rounded-full border border-star/15 bg-void/70 px-2.5 py-1 text-starblue uppercase transition-colors hover:border-cyan/50 hover:text-cyan"
         >
           <span className={cn("flex h-3 w-5 items-center rounded-full p-0.5 transition-colors", showVc ? "bg-cyan" : "bg-star/20")}>
@@ -276,7 +277,8 @@ export function MethodIllustration({ method, className }: { method: Method; clas
         </button>
       </div>
       {showVc && (
-        <div className="absolute right-2 bottom-2 flex items-center gap-2.5 rounded-md bg-void/70 px-2 py-1 font-mono text-[9px] tracking-[0.1em] text-dim animate-in fade-in-0">
+        <div className="absolute right-2 bottom-2 left-2 flex flex-wrap items-center justify-end gap-x-2.5 gap-y-1 rounded-md bg-void/70 px-2 py-1 font-mono text-[9px] tracking-[0.1em] text-dim animate-in fade-in-0">
+          <span className="text-star/80">{t("V/C = VOLUME / CAPACITY", "V/C = INTENZITA / KAPACITA")}</span>
           <span className="flex items-center gap-1">
             <span className="h-1 w-3 bg-go" /> {t("<0.70", "<0,70")}
           </span>
