@@ -169,10 +169,26 @@
 /* Blueprint drawing grid for the page background. */
 @utility road-lines {
   background-image:
-    linear-gradient(to right, color-mix(in oklab, var(--cyan) 7%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in oklab, var(--cyan) 7%, transparent) 1px, transparent 1px),
-    linear-gradient(to right, color-mix(in oklab, var(--cyan) 3%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in oklab, var(--cyan) 3%, transparent) 1px, transparent 1px);
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--cyan) 7%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--cyan) 7%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--cyan) 3%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--cyan) 3%, transparent) 1px,
+      transparent 1px
+    );
   background-size:
     120px 120px,
     120px 120px,
@@ -183,7 +199,11 @@
 /* Frosted panel with a light top edge and a soft gradient hairline border. */
 @utility glass {
   background:
-    linear-gradient(180deg, color-mix(in oklab, var(--star) 6%, transparent), color-mix(in oklab, var(--star) 2.5%, transparent))
+    linear-gradient(
+        180deg,
+        color-mix(in oklab, var(--star) 6%, transparent),
+        color-mix(in oklab, var(--star) 2.5%, transparent)
+      )
       padding-box,
     linear-gradient(
         160deg,
@@ -299,6 +319,16 @@
   50% {
     transform: scale(1.35);
     opacity: 0.4;
+  }
+}
+
+@keyframes vc-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--cyan) 0%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 7px color-mix(in srgb, var(--cyan) 35%, transparent);
   }
 }
 
