@@ -35,7 +35,14 @@ function Junction({ active }: { active: Quadrant | null }) {
       {/* roundabout */}
       <circle cx="100" cy="100" r="40" strokeWidth="1.4" className="stroke-star/50" />
       <circle cx="100" cy="100" r="18" strokeWidth="1.4" className="fill-cyan/10 stroke-cyan" />
-      <text x="100" y="104" textAnchor="middle" fontSize="10" letterSpacing="1" className="fill-cyan font-mono">
+      <text
+        x="100"
+        y="104"
+        textAnchor="middle"
+        fontSize="10"
+        letterSpacing="1"
+        className="fill-cyan font-mono"
+      >
         TOOLS
       </text>
     </svg>
@@ -105,7 +112,12 @@ export function ToolJunction() {
             {tech.projects.map((slug) => {
               const p = getProject(slug)!;
               return (
-                <Link key={slug} to="/projects/$slug" params={{ slug }} className="mt-1 block text-sm text-cyan hover:underline">
+                <Link
+                  key={slug}
+                  to="/projects/$slug"
+                  params={{ slug }}
+                  className="mt-1 block text-sm text-cyan hover:underline"
+                >
                   {p.title} →
                 </Link>
               );
@@ -113,7 +125,10 @@ export function ToolJunction() {
           </div>
         )}
         <p className="mt-6 border-t border-star/10 pt-4 text-xs leading-relaxed text-dim">
-          {t("Choose a tool on one of the direction signs to read what it is used for.", "Vyberte nástroj na některé ze směrových cedulí a přečtěte si, k čemu slouží.")}
+          {t(
+            "Choose a tool on one of the direction signs to read what it is used for.",
+            "Vyberte nástroj na některé ze směrových cedulí a přečtěte si, k čemu slouží.",
+          )}
         </p>
       </div>
     </div>

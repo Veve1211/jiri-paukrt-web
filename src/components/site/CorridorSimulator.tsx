@@ -15,7 +15,13 @@ import {
 import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
-const MEASURES: { key: keyof Measures; label: string; labelCs: string; detail: string; detailCs: string }[] = [
+const MEASURES: {
+  key: keyof Measures;
+  label: string;
+  labelCs: string;
+  detail: string;
+  detailCs: string;
+}[] = [
   {
     key: "adaptiveSignals",
     label: "Adaptive signal control",
@@ -42,7 +48,11 @@ const MEASURES: { key: keyof Measures; label: string; labelCs: string; detail: s
 export function CorridorSimulator() {
   const { t } = useLang();
   const [demand, setDemand] = useState(3200);
-  const [measures, setMeasures] = useState<Measures>({ adaptiveSignals: true, rampMetering: false, conflictRedesign: true });
+  const [measures, setMeasures] = useState<Measures>({
+    adaptiveSignals: true,
+    rampMetering: false,
+    conflictRedesign: true,
+  });
   const result = useMemo(() => compare(demand, measures), [demand, measures]);
   const { baseline, scenario } = result;
 
@@ -52,8 +62,12 @@ export function CorridorSimulator() {
         <div className="telemetry text-[10px] text-cyan">{t("Inputs", "Vstupy")}</div>
         <div className="mt-5">
           <div className="flex items-baseline justify-between">
-            <label htmlFor="sim-demand" className="text-sm">{t("Peak-hour demand", "Poptávka ve špičce")}</label>
-            <span className="font-mono text-sm text-cyan">{demand.toLocaleString("en-IE")} veh/h</span>
+            <label htmlFor="sim-demand" className="text-sm">
+              {t("Peak-hour demand", "Poptávka ve špičce")}
+            </label>
+            <span className="font-mono text-sm text-cyan">
+              {demand.toLocaleString("en-IE")} veh/h
+            </span>
           </div>
           <Slider
             id="sim-demand"
@@ -63,7 +77,10 @@ export function CorridorSimulator() {
             step={100}
             value={[demand]}
             onValueChange={(v) => setDemand(v[0] ?? 400)}
-            aria-label={t("Peak-hour demand in vehicles per hour", "Poptávka ve špičce ve vozidlech za hodinu")}
+            aria-label={t(
+              "Peak-hour demand in vehicles per hour",
+              "Poptávka ve špičce ve vozidlech za hodinu",
+            )}
           />
           <div className="mt-1.5 flex justify-between font-mono text-[9.5px] text-dim">
             <span>400</span>
@@ -73,10 +90,15 @@ export function CorridorSimulator() {
         </div>
         <div className="mt-6 space-y-3">
           {MEASURES.map((m) => (
-            <label key={m.key} className="flex cursor-pointer items-center justify-between gap-3 rounded-[14px] border border-star/10 bg-star/[0.03] p-3">
+            <label
+              key={m.key}
+              className="flex cursor-pointer items-center justify-between gap-3 rounded-[14px] border border-star/10 bg-star/[0.03] p-3"
+            >
               <span>
                 <span className="block text-sm">{t(m.label, m.labelCs)}</span>
-                <span className="telemetry block text-[9px] text-dim">{t(m.detail, m.detailCs)}</span>
+                <span className="telemetry block text-[9px] text-dim">
+                  {t(m.detail, m.detailCs)}
+                </span>
               </span>
               <Switch
                 checked={measures[m.key]}
@@ -102,14 +124,50 @@ export function CorridorSimulator() {
             </span>
             <span>V/C {scenario.vc.toFixed(2)}</span>
           </div>
-          <CorridorCanvas speedKmh={scenario.speedKmh} demand={demand} conflictsPerHour={scenario.conflictsPerHour} />
+          <CorridorCanvas
+            speedKmh={scenario.speedKmh}
+            demand={demand}
+            conflictsPerHour={scenario.conflictsPerHour}
+          />
         </div>
 
         <div className="grid grid-cols-2 gap-2.5 md:grid-cols-4">
-          <Readout baseLabel={t("BASE", "VÝCHOZÍ")} label={t("Flow speed", "Rychlost")} value={`${scenario.speedKmh.toFixed(1)}`} unit="km/h" base={`${baseline.speedKmh.toFixed(1)}`} delta={result.speedGainPct} goodWhenUp highlight />
-          <Readout baseLabel={t("BASE", "VÝCHOZÍ")} label={t("Travel time", "Doba jízdy")} value={scenario.travelTimeMin.toFixed(1)} unit="min" base={baseline.travelTimeMin.toFixed(1)} delta={((scenario.travelTimeMin - baseline.travelTimeMin) / baseline.travelTimeMin) * 100} />
-          <Readout baseLabel={t("BASE", "VÝCHOZÍ")} label={t("Volume / capacity", "Intenzita / kapacita")} value={scenario.vc.toFixed(2)} unit="" base={baseline.vc.toFixed(2)} delta={((scenario.vc - baseline.vc) / (baseline.vc || 1)) * 100} />
-          <Readout baseLabel={t("BASE", "VÝCHOZÍ")} label={t("Conflicts", "Konflikty")} value={scenario.conflictsPerHour.toFixed(1)} unit="/h" base={baseline.conflictsPerHour.toFixed(1)} delta={-result.conflictReductionPct} />
+          <Readout
+            baseLabel={t("BASE", "VÝCHOZÍ")}
+            label={t("Flow speed", "Rychlost")}
+            value={`${scenario.speedKmh.toFixed(1)}`}
+            unit="km/h"
+            base={`${baseline.speedKmh.toFixed(1)}`}
+            delta={result.speedGainPct}
+            goodWhenUp
+            highlight
+          />
+          <Readout
+            baseLabel={t("BASE", "VÝCHOZÍ")}
+            label={t("Travel time", "Doba jízdy")}
+            value={scenario.travelTimeMin.toFixed(1)}
+            unit="min"
+            base={baseline.travelTimeMin.toFixed(1)}
+            delta={
+              ((scenario.travelTimeMin - baseline.travelTimeMin) / baseline.travelTimeMin) * 100
+            }
+          />
+          <Readout
+            baseLabel={t("BASE", "VÝCHOZÍ")}
+            label={t("Volume / capacity", "Intenzita / kapacita")}
+            value={scenario.vc.toFixed(2)}
+            unit=""
+            base={baseline.vc.toFixed(2)}
+            delta={((scenario.vc - baseline.vc) / (baseline.vc || 1)) * 100}
+          />
+          <Readout
+            baseLabel={t("BASE", "VÝCHOZÍ")}
+            label={t("Conflicts", "Konflikty")}
+            value={scenario.conflictsPerHour.toFixed(1)}
+            unit="/h"
+            base={baseline.conflictsPerHour.toFixed(1)}
+            delta={-result.conflictReductionPct}
+          />
         </div>
       </div>
     </div>
@@ -138,14 +196,21 @@ function Readout({
   const flat = Math.abs(delta) < 0.05;
   const good = flat ? null : goodWhenUp ? delta > 0 : delta < 0;
   return (
-    <div className={cn("rounded-[14px] border p-3", highlight ? "border-cyan/30 bg-cyan/[0.06]" : "border-star/10 bg-star/[0.03]")}>
+    <div
+      className={cn(
+        "rounded-[14px] border p-3",
+        highlight ? "border-cyan/30 bg-cyan/[0.06]" : "border-star/10 bg-star/[0.03]",
+      )}
+    >
       <div className="flex items-baseline gap-1">
         <span className={cn("text-2xl font-bold", highlight && "text-cyan")}>{value}</span>
         <span className="font-mono text-[10px] text-dim">{unit}</span>
       </div>
       <div className="telemetry mt-1 text-[9.5px] text-dim">{label}</div>
       <div className="mt-2 flex items-center justify-between font-mono text-[9.5px]">
-        <span className="text-dim/70">{baseLabel} {base}</span>
+        <span className="text-dim/70">
+          {baseLabel} {base}
+        </span>
         <span className={cn(good === null ? "text-dim" : good ? "text-go" : "text-alert")}>
           {flat ? "±0%" : `${delta > 0 ? "+" : ""}${delta.toFixed(1)}%`}
         </span>
@@ -159,7 +224,15 @@ function hash(n: number) {
   return x - Math.floor(x);
 }
 
-function CorridorCanvas({ speedKmh, demand, conflictsPerHour }: { speedKmh: number; demand: number; conflictsPerHour: number }) {
+function CorridorCanvas({
+  speedKmh,
+  demand,
+  conflictsPerHour,
+}: {
+  speedKmh: number;
+  demand: number;
+  conflictsPerHour: number;
+}) {
   const ref = useRef<HTMLCanvasElement>(null);
   const params = useRef({ speedKmh, demand, conflictsPerHour });
   params.current = { speedKmh, demand, conflictsPerHour };
@@ -231,7 +304,12 @@ function CorridorCanvas({ speedKmh, demand, conflictsPerHour }: { speedKmh: numb
       laneY.forEach((y, lane) => {
         for (let k = 0; k < perLane + 1; k++) {
           const jitter = (hash(k * 7 + lane * 131) - 0.5) * spacing * 0.6;
-          const x = (((offset * (lane ? 0.94 : 1) + k * spacing + jitter) % (width + spacing)) + width + spacing) % (width + spacing) - spacing / 2;
+          const x =
+            ((((offset * (lane ? 0.94 : 1) + k * spacing + jitter) % (width + spacing)) +
+              width +
+              spacing) %
+              (width + spacing)) -
+            spacing / 2;
           ctx.fillStyle = lane ? star : cyan;
           ctx.shadowColor = lane ? volt : cyan;
           ctx.shadowBlur = 8;
@@ -275,11 +353,22 @@ function CorridorCanvas({ speedKmh, demand, conflictsPerHour }: { speedKmh: numb
 
   return (
     <div className="relative">
-      <canvas ref={ref} className="block h-40 w-full md:h-48" aria-label={t("Animated corridor showing simulated traffic flow", "Animovaný koridor se simulovanou dopravou")} role="img" />
+      <canvas
+        ref={ref}
+        className="block h-40 w-full md:h-48"
+        aria-label={t(
+          "Animated corridor showing simulated traffic flow",
+          "Animovaný koridor se simulovanou dopravou",
+        )}
+        role="img"
+      />
       <div className="absolute right-4 bottom-2 font-mono text-[9.5px] tracking-wider text-dim">
-        {t("CONFLICTS FLAGGED", "ZAZNAMENANÉ KONFLIKTY")} <span className="text-alert">{String(flagged).padStart(3, "0")}</span>
+        {t("CONFLICTS FLAGGED", "ZAZNAMENANÉ KONFLIKTY")}{" "}
+        <span className="text-alert">{String(flagged).padStart(3, "0")}</span>
       </div>
-      <div className="absolute bottom-2 left-4 font-mono text-[9.5px] tracking-wider text-dim">{t("1 SIM-HOUR = 30 S", "1 SIMULOVANÁ HODINA = 30 S")}</div>
+      <div className="absolute bottom-2 left-4 font-mono text-[9.5px] tracking-wider text-dim">
+        {t("1 SIM-HOUR = 30 S", "1 SIMULOVANÁ HODINA = 30 S")}
+      </div>
     </div>
   );
 }

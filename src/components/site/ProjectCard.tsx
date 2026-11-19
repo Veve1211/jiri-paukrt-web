@@ -25,11 +25,14 @@ export function ProjectCard({ project }: { project: Project }) {
       className="group glass spotlight reveal flex h-full flex-col rounded-[20px] p-6 transition-transform duration-300 hover:-translate-y-1"
     >
       <div className="-mx-6 -mt-6 mb-5 overflow-hidden rounded-t-[20px] border-b border-star/10">
-        <ProjectCover slug={project.slug} animate={hover} className="transition-transform duration-500 group-hover:scale-[1.03]" />
+        <ProjectCover
+          slug={project.slug}
+          animate={hover}
+          className="transition-transform duration-500 group-hover:scale-[1.03]"
+        />
       </div>
       <div className="flex items-center justify-between">
         <span className="telemetry text-[10px] text-cyan">{project.location}</span>
-        
       </div>
       <h3 className="mt-4 text-xl leading-snug font-medium">{project.title}</h3>
       <p className="mt-1 text-xs text-dim">
@@ -50,12 +53,16 @@ export function ProjectCard({ project }: { project: Project }) {
             <div className="telemetry text-[9px] text-dim">{lead.label}</div>
           </div>
           <span className="inline-flex items-center gap-1 text-sm text-cyan">
-            {t("Details", "Detail")} <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+            {t("Details", "Detail")}{" "}
+            <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
           </span>
         </div>
         <div className="mt-3 flex flex-wrap gap-1.5">
           {project.domains.map((d) => (
-            <span key={d} className="rounded-full border border-star/10 px-2 py-0.5 font-mono text-[9.5px] tracking-wider text-dim uppercase">
+            <span
+              key={d}
+              className="rounded-full border border-star/10 px-2 py-0.5 font-mono text-[9.5px] tracking-wider text-dim uppercase"
+            >
               {domainLabel(d)}
             </span>
           ))}

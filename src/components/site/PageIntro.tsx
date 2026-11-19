@@ -15,7 +15,9 @@ export function PageIntro({
       <h1 className="text-[44px] leading-[1] font-light tracking-tight text-balance md:text-[72px]">
         {title}
       </h1>
-      {children && <div className="mt-6 max-w-[560px] text-[15px] leading-relaxed text-dim">{children}</div>}
+      {children && (
+        <div className="mt-6 max-w-[560px] text-[15px] leading-relaxed text-dim">{children}</div>
+      )}
     </div>
   );
 }

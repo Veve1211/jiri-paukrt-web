@@ -100,7 +100,8 @@ export interface Project {
 export const PROJECTS: Project[] = [
   {
     slug: "nta-national-demand-model",
-    usedFor: "Used by the NTA to appraise future transport and land-use alternatives at national and regional level.",
+    usedFor:
+      "Used by the NTA to appraise future transport and land-use alternatives at national and regional level.",
     role: "Managed the development and calibration of the NDFM; developed the National Trip End Model",
     code: "IE-01",
     title: "National Demand Forecasting Model",
@@ -132,7 +133,8 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "nta-long-distance-model",
-    usedFor: "Testing long-distance rail changes such as more trains, higher capacity or new fares.",
+    usedFor:
+      "Testing long-distance rail changes such as more trains, higher capacity or new fares.",
     role: "Developed the Long Distance Demand Model; co-presenter at ETC 2019",
     years: "2019",
     code: "IE-02",
@@ -163,7 +165,8 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "glasgow-m74-evaluation",
-    usedFor: "Checking whether the new motorway delivered the expected traffic relief five years after it opened.",
+    usedFor:
+      "Checking whether the new motorway delivered the expected traffic relief five years after it opened.",
     role: "Co-author of the five-year post-opening evaluation",
     years: "2016–2017",
     code: "UK-01",
@@ -185,7 +188,8 @@ export const PROJECTS: Project[] = [
       { value: "5 yrs", label: "After opening" },
     ],
     publication: {
-      title: "Scottish Trunk Road Infrastructure Project Evaluation (STRIPE): M74 Completion Scheme — 5 Years After Opening",
+      title:
+        "Scottish Trunk Road Infrastructure Project Evaluation (STRIPE): M74 Completion Scheme — 5 Years After Opening",
       venue: "STAR Conference 2017, Glasgow",
       authors: "Robert Allan, Iain Clement, Jiri Paukrt",
       url: "https://starconference.org.uk/star/2017/Allan.pdf",
@@ -304,7 +308,8 @@ export const PROJECTS: Project[] = [
     location: "England & Isle of Man",
     region: "UK",
     domains: ["microsim"],
-    summary: "Eleven microsimulation models for towns across England and the Isle of Man, alongside variable demand models of Plymouth and Chippenham.",
+    summary:
+      "Eleven microsimulation models for towns across England and the Isle of Man, alongside variable demand models of Plymouth and Chippenham.",
     highlights: [
       "Gillingham",
       "Douglas (Isle of Man)",
@@ -336,8 +341,9 @@ export const PROJECTS: Project[] = [
   },
 ];
 
-export const UK_MICROSIM_TOWNS = PROJECTS.find((p) => p.slug === "uk-microsimulation-models")!
-  .highlights;
+export const UK_MICROSIM_TOWNS = PROJECTS.find(
+  (p) => p.slug === "uk-microsimulation-models",
+)!.highlights;
 
 export function getProject(slug: string): Project | undefined {
   return PROJECTS.find((p) => p.slug === slug);
@@ -369,25 +375,181 @@ export interface NetworkLocation {
 }
 
 export const LOCATIONS: NetworkLocation[] = [
-  { id: "dublin", name: "Dublin", country: "Ireland", region: "Ireland", lat: 53.3498, lon: -6.2603, kind: "hq", note: "SYSTRA · 2008–present" },
-  { id: "glasgow", name: "Glasgow", country: "Scotland, UK", region: "UK", lat: 55.8642, lon: -4.2518, kind: "project" },
-  { id: "birmingham", name: "Birmingham", country: "England, UK", region: "UK", lat: 52.4862, lon: -1.8904, kind: "project" },
-  { id: "leeds", name: "Leeds", country: "England, UK", region: "UK", lat: 53.8008, lon: -1.5491, kind: "base", note: "Jacobs Babtie · 2004–2006" },
-  { id: "prague", name: "Prague", country: "Czech Republic", region: "Czech Republic", lat: 50.0755, lon: 14.4378, kind: "base", note: "CityPlan · 1999–2004 · ČVUT" },
-  { id: "brno", name: "Brno", country: "Czech Republic", region: "Czech Republic", lat: 49.1951, lon: 16.6068, kind: "project" },
-  { id: "melbourne", name: "Melbourne", country: "Australia", region: "Australia", lat: -37.8136, lon: 144.9631, kind: "base", note: "Hyder Consulting · 2006–2007" },
-  { id: "sydney", name: "Sydney", country: "Australia", region: "Australia", lat: -33.8688, lon: 151.2093, kind: "project" },
-  { id: "gillingham", name: "Gillingham", country: "England, UK", region: "UK", lat: 51.389, lon: 0.5486, kind: "town" },
-  { id: "douglas", name: "Douglas", country: "Isle of Man", region: "UK", lat: 54.1523, lon: -4.4861, kind: "town" },
-  { id: "blackpool", name: "Blackpool", country: "England, UK", region: "UK", lat: 53.8175, lon: -3.0357, kind: "town" },
-  { id: "plymouth", name: "Plymouth", country: "England, UK", region: "UK", lat: 50.3755, lon: -4.1427, kind: "town" },
-  { id: "weymouth", name: "Weymouth", country: "England, UK", region: "UK", lat: 50.6144, lon: -2.4576, kind: "town" },
-  { id: "chippenham", name: "Chippenham", country: "England, UK", region: "UK", lat: 51.4585, lon: -2.1158, kind: "town" },
-  { id: "new-barnet", name: "New Barnet", country: "England, UK", region: "UK", lat: 51.6488, lon: -0.1729, kind: "town" },
-  { id: "nuneaton", name: "Nuneaton", country: "England, UK", region: "UK", lat: 52.523, lon: -1.4652, kind: "town" },
-  { id: "coalville", name: "Coalville", country: "England, UK", region: "UK", lat: 52.723, lon: -1.37, kind: "town" },
-  { id: "derriford", name: "Derriford", country: "England, UK", region: "UK", lat: 50.4167, lon: -4.1167, kind: "town" },
-  { id: "hinckley", name: "Hinckley", country: "England, UK", region: "UK", lat: 52.5413, lon: -1.3725, kind: "town" },
+  {
+    id: "dublin",
+    name: "Dublin",
+    country: "Ireland",
+    region: "Ireland",
+    lat: 53.3498,
+    lon: -6.2603,
+    kind: "hq",
+    note: "SYSTRA · 2008–present",
+  },
+  {
+    id: "glasgow",
+    name: "Glasgow",
+    country: "Scotland, UK",
+    region: "UK",
+    lat: 55.8642,
+    lon: -4.2518,
+    kind: "project",
+  },
+  {
+    id: "birmingham",
+    name: "Birmingham",
+    country: "England, UK",
+    region: "UK",
+    lat: 52.4862,
+    lon: -1.8904,
+    kind: "project",
+  },
+  {
+    id: "leeds",
+    name: "Leeds",
+    country: "England, UK",
+    region: "UK",
+    lat: 53.8008,
+    lon: -1.5491,
+    kind: "base",
+    note: "Jacobs Babtie · 2004–2006",
+  },
+  {
+    id: "prague",
+    name: "Prague",
+    country: "Czech Republic",
+    region: "Czech Republic",
+    lat: 50.0755,
+    lon: 14.4378,
+    kind: "base",
+    note: "CityPlan · 1999–2004 · ČVUT",
+  },
+  {
+    id: "brno",
+    name: "Brno",
+    country: "Czech Republic",
+    region: "Czech Republic",
+    lat: 49.1951,
+    lon: 16.6068,
+    kind: "project",
+  },
+  {
+    id: "melbourne",
+    name: "Melbourne",
+    country: "Australia",
+    region: "Australia",
+    lat: -37.8136,
+    lon: 144.9631,
+    kind: "base",
+    note: "Hyder Consulting · 2006–2007",
+  },
+  {
+    id: "sydney",
+    name: "Sydney",
+    country: "Australia",
+    region: "Australia",
+    lat: -33.8688,
+    lon: 151.2093,
+    kind: "project",
+  },
+  {
+    id: "gillingham",
+    name: "Gillingham",
+    country: "England, UK",
+    region: "UK",
+    lat: 51.389,
+    lon: 0.5486,
+    kind: "town",
+  },
+  {
+    id: "douglas",
+    name: "Douglas",
+    country: "Isle of Man",
+    region: "UK",
+    lat: 54.1523,
+    lon: -4.4861,
+    kind: "town",
+  },
+  {
+    id: "blackpool",
+    name: "Blackpool",
+    country: "England, UK",
+    region: "UK",
+    lat: 53.8175,
+    lon: -3.0357,
+    kind: "town",
+  },
+  {
+    id: "plymouth",
+    name: "Plymouth",
+    country: "England, UK",
+    region: "UK",
+    lat: 50.3755,
+    lon: -4.1427,
+    kind: "town",
+  },
+  {
+    id: "weymouth",
+    name: "Weymouth",
+    country: "England, UK",
+    region: "UK",
+    lat: 50.6144,
+    lon: -2.4576,
+    kind: "town",
+  },
+  {
+    id: "chippenham",
+    name: "Chippenham",
+    country: "England, UK",
+    region: "UK",
+    lat: 51.4585,
+    lon: -2.1158,
+    kind: "town",
+  },
+  {
+    id: "new-barnet",
+    name: "New Barnet",
+    country: "England, UK",
+    region: "UK",
+    lat: 51.6488,
+    lon: -0.1729,
+    kind: "town",
+  },
+  {
+    id: "nuneaton",
+    name: "Nuneaton",
+    country: "England, UK",
+    region: "UK",
+    lat: 52.523,
+    lon: -1.4652,
+    kind: "town",
+  },
+  {
+    id: "coalville",
+    name: "Coalville",
+    country: "England, UK",
+    region: "UK",
+    lat: 52.723,
+    lon: -1.37,
+    kind: "town",
+  },
+  {
+    id: "derriford",
+    name: "Derriford",
+    country: "England, UK",
+    region: "UK",
+    lat: 50.4167,
+    lon: -4.1167,
+    kind: "town",
+  },
+  {
+    id: "hinckley",
+    name: "Hinckley",
+    country: "England, UK",
+    region: "UK",
+    lat: 52.5413,
+    lon: -1.3725,
+    kind: "town",
+  },
 ];
 
 export const REGIONS: Region[] = ["Ireland", "UK", "Australia", "Czech Republic"];
@@ -499,7 +661,12 @@ export const EDUCATION = {
 
 export type Quadrant = "Microsimulation" | "Strategic Demand" | "Appraisal" | "GIS & Code";
 
-export const QUADRANTS: Quadrant[] = ["Microsimulation", "Strategic Demand", "Appraisal", "GIS & Code"];
+export const QUADRANTS: Quadrant[] = [
+  "Microsimulation",
+  "Strategic Demand",
+  "Appraisal",
+  "GIS & Code",
+];
 
 export interface Tech {
   name: string;
@@ -509,18 +676,71 @@ export interface Tech {
 }
 
 export const TECH: Tech[] = [
-  { name: "3D visualisation", quadrant: "Microsimulation", blurb: "Three-dimensional visualisation of simulated traffic to explain schemes to clients and the public." },
-  { name: "Paramics Discovery", quadrant: "Microsimulation", blurb: "Microscopic traffic simulation of junctions, corridors and town networks, vehicle by vehicle." },
-  { name: "S-Paramics", quadrant: "Microsimulation", blurb: "Microsimulation platform used for the traffic-conflict road-safety pilot.", projects: ["road-safety-traffic-conflicts"] },
-  { name: "SATURN", quadrant: "Strategic Demand", blurb: "Strategic highway assignment for network-wide route choice and congestion." },
-  { name: "Variable Demand Modeling", quadrant: "Strategic Demand", blurb: "Demand that responds to changing travel costs — frequency, mode, destination and time of day." },
+  {
+    name: "3D visualisation",
+    quadrant: "Microsimulation",
+    blurb:
+      "Three-dimensional visualisation of simulated traffic to explain schemes to clients and the public.",
+  },
+  {
+    name: "Paramics Discovery",
+    quadrant: "Microsimulation",
+    blurb:
+      "Microscopic traffic simulation of junctions, corridors and town networks, vehicle by vehicle.",
+  },
+  {
+    name: "S-Paramics",
+    quadrant: "Microsimulation",
+    blurb: "Microsimulation platform used for the traffic-conflict road-safety pilot.",
+    projects: ["road-safety-traffic-conflicts"],
+  },
+  {
+    name: "SATURN",
+    quadrant: "Strategic Demand",
+    blurb: "Strategic highway assignment for network-wide route choice and congestion.",
+  },
+  {
+    name: "Variable Demand Modeling",
+    quadrant: "Strategic Demand",
+    blurb:
+      "Demand that responds to changing travel costs — frequency, mode, destination and time of day.",
+  },
   { name: "COBA", quadrant: "Appraisal", blurb: "UK cost–benefit analysis for road schemes." },
-  { name: "HDM-4", quadrant: "Appraisal", blurb: "Highway Development and Management model for road investment appraisal." },
-  { name: "QGIS", quadrant: "GIS & Code", blurb: "Open-source spatial analysis: accident analysis, accessibility studies and network mapping." },
-  { name: "ArcGIS", quadrant: "GIS & Code", blurb: "Spatial analysis, geodatabases and cartographic outputs." },
-  { name: "Python", quadrant: "GIS & Code", blurb: "Model automation, data pipelines and analysis." },
+  {
+    name: "HDM-4",
+    quadrant: "Appraisal",
+    blurb: "Highway Development and Management model for road investment appraisal.",
+  },
+  {
+    name: "QGIS",
+    quadrant: "GIS & Code",
+    blurb:
+      "Open-source spatial analysis: accident analysis, accessibility studies and network mapping.",
+  },
+  {
+    name: "ArcGIS",
+    quadrant: "GIS & Code",
+    blurb: "Spatial analysis, geodatabases and cartographic outputs.",
+  },
+  {
+    name: "Python",
+    quadrant: "GIS & Code",
+    blurb: "Model automation, data pipelines and analysis.",
+  },
   { name: "Ruby", quadrant: "GIS & Code", blurb: "Scripting for data processing and automation." },
-  { name: "Google Maps & OpenStreetMap APIs", quadrant: "GIS & Code", blurb: "Web mapping data for accessibility studies and network analysis." },
-  { name: "SQL", quadrant: "GIS & Code", blurb: "Querying large survey, count and model datasets." },
-  { name: "VB/VBA", quadrant: "GIS & Code", blurb: "Automation of spreadsheet-based model processing and reporting." },
+  {
+    name: "Google Maps & OpenStreetMap APIs",
+    quadrant: "GIS & Code",
+    blurb: "Web mapping data for accessibility studies and network analysis.",
+  },
+  {
+    name: "SQL",
+    quadrant: "GIS & Code",
+    blurb: "Querying large survey, count and model datasets.",
+  },
+  {
+    name: "VB/VBA",
+    quadrant: "GIS & Code",
+    blurb: "Automation of spreadsheet-based model processing and reporting.",
+  },
 ];

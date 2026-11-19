@@ -34,13 +34,80 @@ const W = 700;
 const H = 600;
 
 const JUNCTIONS: Junction[] = [
-  { id: "ireland", x: 210, y: 170, slug: "nta-national-demand-model", label: "IRELAND · NTA", labelCs: "IRSKO · NTA", sub: "NATIONAL DEMAND MODEL", subCs: "NÁRODNÍ MODEL POPTÁVKY", major: true },
-  { id: "cwg", x: 380, y: 300, slug: "commonwealth-games", label: "COMMONWEALTH GAMES", labelCs: "HRY COMMONWEALTHU", sub: "VISITOR DEMAND", subCs: "POPTÁVKA NÁVŠTĚVNÍKŮ", major: true },
-  { id: "sydney", x: 560, y: 450, slug: "sydney-lane-cove-tunnel", label: "SYDNEY", sub: "LANE COVE TUNNEL", subCs: "TUNEL LANE COVE", major: true },
-  { id: "uk", x: 500, y: 140, slug: "uk-microsimulation-models", label: "UK TOWNS", labelCs: "MĚSTA V UK", sub: "11 MICROSIMULATIONS", subCs: "11 MIKROSIMULACÍ", major: false },
-  { id: "melbourne", x: 610, y: 290, slug: "melbourne-dandenong", label: "MELBOURNE", sub: "DANDENONG MICROSIM", subCs: "MIKROSIMULACE DANDENONG", major: false },
-  { id: "glasgow", x: 140, y: 370, slug: "glasgow-m74-evaluation", label: "GLASGOW M74", sub: "5-YEAR EVALUATION", subCs: "HODNOCENÍ PO 5 LETECH", major: false },
-  { id: "safety", x: 290, y: 480, slug: "road-safety-traffic-conflicts", label: "BRNO · ROAD SAFETY", labelCs: "BRNO · BEZPEČNOST", sub: "TRAFFIC CONFLICTS", subCs: "DOPRAVNÍ KONFLIKTY", major: false },
+  {
+    id: "ireland",
+    x: 210,
+    y: 170,
+    slug: "nta-national-demand-model",
+    label: "IRELAND · NTA",
+    labelCs: "IRSKO · NTA",
+    sub: "NATIONAL DEMAND MODEL",
+    subCs: "NÁRODNÍ MODEL POPTÁVKY",
+    major: true,
+  },
+  {
+    id: "cwg",
+    x: 380,
+    y: 300,
+    slug: "commonwealth-games",
+    label: "COMMONWEALTH GAMES",
+    labelCs: "HRY COMMONWEALTHU",
+    sub: "VISITOR DEMAND",
+    subCs: "POPTÁVKA NÁVŠTĚVNÍKŮ",
+    major: true,
+  },
+  {
+    id: "sydney",
+    x: 560,
+    y: 450,
+    slug: "sydney-lane-cove-tunnel",
+    label: "SYDNEY",
+    sub: "LANE COVE TUNNEL",
+    subCs: "TUNEL LANE COVE",
+    major: true,
+  },
+  {
+    id: "uk",
+    x: 500,
+    y: 140,
+    slug: "uk-microsimulation-models",
+    label: "UK TOWNS",
+    labelCs: "MĚSTA V UK",
+    sub: "11 MICROSIMULATIONS",
+    subCs: "11 MIKROSIMULACÍ",
+    major: false,
+  },
+  {
+    id: "melbourne",
+    x: 610,
+    y: 290,
+    slug: "melbourne-dandenong",
+    label: "MELBOURNE",
+    sub: "DANDENONG MICROSIM",
+    subCs: "MIKROSIMULACE DANDENONG",
+    major: false,
+  },
+  {
+    id: "glasgow",
+    x: 140,
+    y: 370,
+    slug: "glasgow-m74-evaluation",
+    label: "GLASGOW M74",
+    sub: "5-YEAR EVALUATION",
+    subCs: "HODNOCENÍ PO 5 LETECH",
+    major: false,
+  },
+  {
+    id: "safety",
+    x: 290,
+    y: 480,
+    slug: "road-safety-traffic-conflicts",
+    label: "BRNO · ROAD SAFETY",
+    labelCs: "BRNO · BEZPEČNOST",
+    sub: "TRAFFIC CONFLICTS",
+    subCs: "DOPRAVNÍ KONFLIKTY",
+    major: false,
+  },
 ];
 
 /** Roads between project junctions, with illustrative two-way flow (veh/h) and volume/capacity. */
@@ -137,7 +204,10 @@ function FlowLink({
           y2={b.y}
           strokeWidth={bandWidth(flow) + 8}
           filter="url(#glow)"
-          className={cn("stroke-cyan transition-opacity duration-500", lit ? "opacity-90" : "opacity-20")}
+          className={cn(
+            "stroke-cyan transition-opacity duration-500",
+            lit ? "opacity-90" : "opacity-20",
+          )}
         />
       )}
       {/* flow bandwidth, coloured by volume / capacity */}
@@ -148,7 +218,11 @@ function FlowLink({
         y2={b.y}
         strokeWidth={bandWidth(flow) + (lit ? 2 : 0)}
         strokeLinecap="butt"
-        className={cn(c.stroke, "transition-all duration-500", lit ? "opacity-100" : showVc ? "opacity-75" : "opacity-60")}
+        className={cn(
+          c.stroke,
+          "transition-all duration-500",
+          lit ? "opacity-100" : showVc ? "opacity-75" : "opacity-60",
+        )}
       />
       {/* link centreline — a bright lit core when glowing, a dark lane line when coloured */}
       <line
@@ -166,11 +240,33 @@ function FlowLink({
           return (
             <g key={k}>
               {/* headlights: a pair of small white lights */}
-              <rect x="-2.6" y="-1.1" width="5.2" height="2.2" rx="1.1" className="fill-white" filter="url(#glow-small)">
-                <animateMotion dur={`${dur}s`} begin={`${-phase * dur}s`} repeatCount="indefinite" path={lane1} rotate="auto" />
+              <rect
+                x="-2.6"
+                y="-1.1"
+                width="5.2"
+                height="2.2"
+                rx="1.1"
+                className="fill-white"
+                filter="url(#glow-small)"
+              >
+                <animateMotion
+                  dur={`${dur}s`}
+                  begin={`${-phase * dur}s`}
+                  repeatCount="indefinite"
+                  path={lane1}
+                  rotate="auto"
+                />
               </rect>
               {/* tail-lights on the opposite lane */}
-              <rect x="-2.2" y="-0.9" width="4.4" height="1.8" rx="0.9" className="fill-alert" filter="url(#glow-small)">
+              <rect
+                x="-2.2"
+                y="-0.9"
+                width="4.4"
+                height="1.8"
+                rx="0.9"
+                className="fill-alert"
+                filter="url(#glow-small)"
+              >
                 <animateMotion
                   dur={`${dur * 1.1}s`}
                   begin={`${-((phase + 0.37) % 1) * dur}s`}
@@ -184,7 +280,14 @@ function FlowLink({
         })}
       {lit && (
         <g className="font-mono" fontSize="9.5" letterSpacing="0.8">
-          <rect x={mx - 40} y={my - 9} width="80" height="18" rx="3" className="fill-void stroke-star/20" />
+          <rect
+            x={mx - 40}
+            y={my - 9}
+            width="80"
+            height="18"
+            rx="3"
+            className="fill-void stroke-star/20"
+          />
           <text x={mx} y={my + 3.5} textAnchor="middle" className={c.label}>
             {flow.toLocaleString("en-IE")} veh/h
           </text>
@@ -248,7 +351,10 @@ export function HeroRoadNetwork() {
           className="absolute inset-0 h-full w-full"
           fill="none"
           role="group"
-          aria-label={t("Traffic-model style network of selected projects — each junction opens a project", "Síť vybraných projektů ve stylu dopravního modelu — každá křižovatka otevře projekt")}
+          aria-label={t(
+            "Traffic-model style network of selected projects — each junction opens a project",
+            "Síť vybraných projektů ve stylu dopravního modelu — každá křižovatka otevře projekt",
+          )}
           onClick={(e) => {
             if (e.target === e.currentTarget) setSelected(null);
           }}
@@ -292,9 +398,31 @@ export function HeroRoadNetwork() {
                   const b = byId(r.b);
                   return (
                     <g key={`torch-${r.a}-${r.b}`}>
-                      <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} strokeWidth={bandWidth(r.flow) + 10} filter="url(#glow)" className="stroke-cyan opacity-70" />
-                      <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} strokeWidth={bandWidth(r.flow)} className="stroke-[#9fd0ff]" />
-                      <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} strokeWidth="1.2" className="stroke-white/80" />
+                      <line
+                        x1={a.x}
+                        y1={a.y}
+                        x2={b.x}
+                        y2={b.y}
+                        strokeWidth={bandWidth(r.flow) + 10}
+                        filter="url(#glow)"
+                        className="stroke-cyan opacity-70"
+                      />
+                      <line
+                        x1={a.x}
+                        y1={a.y}
+                        x2={b.x}
+                        y2={b.y}
+                        strokeWidth={bandWidth(r.flow)}
+                        className="stroke-[#9fd0ff]"
+                      />
+                      <line
+                        x1={a.x}
+                        y1={a.y}
+                        x2={b.x}
+                        y2={b.y}
+                        strokeWidth="1.2"
+                        className="stroke-white/80"
+                      />
                     </g>
                   );
                 })}
@@ -338,7 +466,6 @@ export function HeroRoadNetwork() {
             })}
           </g>
 
-
           {JUNCTIONS.map((j) => {
             const isActive = active === j.id;
             const isSel = selected === j.id;
@@ -359,9 +486,21 @@ export function HeroRoadNetwork() {
                 onFocus={() => setHovered(j.id)}
                 onBlur={() => setHovered(null)}
               >
-                <circle cx={j.x} cy={j.y} r={isActive ? 40 : j.major ? 28 : 22} fill="url(#junction-light)" className="transition-all duration-300" />
+                <circle
+                  cx={j.x}
+                  cy={j.y}
+                  r={isActive ? 40 : j.major ? 28 : 22}
+                  fill="url(#junction-light)"
+                  className="transition-all duration-300"
+                />
                 <circle cx={j.x} cy={j.y} r="24" className="fill-transparent" />
-                <circle cx={j.x} cy={j.y} r="20" className="focus-ring stroke-cyan opacity-0 transition-opacity" strokeDasharray="3 3" />
+                <circle
+                  cx={j.x}
+                  cy={j.y}
+                  r="20"
+                  className="focus-ring stroke-cyan opacity-0 transition-opacity"
+                  strokeDasharray="3 3"
+                />
                 {/* junction drawn as a technical node symbol: ring, crosshair ticks, centre point */}
                 {(isActive || j.major) && (
                   <circle
@@ -383,12 +522,33 @@ export function HeroRoadNetwork() {
                   cy={j.y}
                   r={j.major ? 9 : 7}
                   strokeWidth="1.4"
-                  className={cn("fill-void transition-colors", isActive ? "stroke-cyan" : "stroke-star")}
+                  className={cn(
+                    "fill-void transition-colors",
+                    isActive ? "stroke-cyan" : "stroke-star",
+                  )}
                 />
-                <circle cx={j.x} cy={j.y} r={isActive ? 4 : 2.5} className={cn("transition-all", isActive ? "fill-cyan" : "fill-star")} />
+                <circle
+                  cx={j.x}
+                  cy={j.y}
+                  r={isActive ? 4 : 2.5}
+                  className={cn("transition-all", isActive ? "fill-cyan" : "fill-star")}
+                />
                 {showLabel && (
-                  <g className="font-mono" letterSpacing="1.4" textAnchor={pos.anchor} stroke="var(--void)" strokeWidth="4" paintOrder="stroke" strokeLinejoin="round">
-                    <text x={pos.x} y={pos.y} fontSize="11" className={isActive ? "fill-cyan" : "fill-star"}>
+                  <g
+                    className="font-mono"
+                    letterSpacing="1.4"
+                    textAnchor={pos.anchor}
+                    stroke="var(--void)"
+                    strokeWidth="4"
+                    paintOrder="stroke"
+                    strokeLinejoin="round"
+                  >
+                    <text
+                      x={pos.x}
+                      y={pos.y}
+                      fontSize="11"
+                      className={isActive ? "fill-cyan" : "fill-star"}
+                    >
                       {t(j.label, j.labelCs ?? j.label)}
                     </text>
                     <text x={pos.x} y={pos.y + 15} fontSize="9" className="fill-dim">
@@ -401,18 +561,24 @@ export function HeroRoadNetwork() {
           })}
 
           <text x="24" y="584" fontSize="9" letterSpacing="1.4" className="fill-dim/80 font-mono">
-            {t("ILLUSTRATIVE FLOWS · NOT PROJECT DATA", "ILUSTRATIVNÍ INTENZITY · NE DATA PROJEKTŮ")}
+            {t(
+              "ILLUSTRATIVE FLOWS · NOT PROJECT DATA",
+              "ILUSTRATIVNÍ INTENZITY · NE DATA PROJEKTŮ",
+            )}
           </text>
         </svg>
 
         {/* legend */}
         <div className="absolute top-1 right-1 hidden space-y-1.5 rounded-lg bg-void/55 px-3 py-2 text-right font-mono text-[11px] leading-relaxed tracking-[0.1em] text-starblue backdrop-blur-sm sm:block">
           <div className="flex items-center justify-end gap-2 text-star">
-            {t("FLOW BANDWIDTH", "INTENZITA DOPRAVY")} <span className="h-0.5 w-3 bg-cyan" /><span className="h-2 w-3 bg-cyan" />
+            {t("FLOW BANDWIDTH", "INTENZITA DOPRAVY")} <span className="h-0.5 w-3 bg-cyan" />
+            <span className="h-2 w-3 bg-cyan" />
           </div>
           {showVc && (
             <div className="space-y-1 animate-in fade-in-0">
-              <div className="text-star">{t("V/C = VOLUME / CAPACITY", "V/C = INTENZITA / KAPACITA")}</div>
+              <div className="text-star">
+                {t("V/C = VOLUME / CAPACITY", "V/C = INTENZITA / KAPACITA")}
+              </div>
               <div className="flex items-center justify-end gap-2">
                 {t("V/C UNDER 0.70", "V/C POD 0,70")} <span className="h-1.5 w-5 bg-go" />
               </div>
@@ -425,21 +591,39 @@ export function HeroRoadNetwork() {
             </div>
           )}
           <div className="flex items-center justify-end gap-2">
-            {t("JUNCTION = PROJECT", "KŘIŽOVATKA = PROJEKT")} <span className="size-2.5 rounded-full border border-star bg-void" />
+            {t("JUNCTION = PROJECT", "KŘIŽOVATKA = PROJEKT")}{" "}
+            <span className="size-2.5 rounded-full border border-star bg-void" />
           </div>
           <button
             type="button"
             aria-pressed={showVc}
             onClick={() => setShowVc((v) => !v)}
-            title={t("Colour roads by volume-to-capacity ratio", "Obarvit silnice podle poměru intenzity a kapacity")}
+            title={t(
+              "Colour roads by volume-to-capacity ratio",
+              "Obarvit silnice podle poměru intenzity a kapacity",
+            )}
             className="mt-1 inline-flex items-center gap-2 rounded-full border border-cyan/50 bg-void/80 px-3 py-1.5 text-[11px] tracking-[0.1em] text-cyan uppercase shadow-[0_0_12px_-2px_var(--cyan)] transition-colors hover:border-cyan hover:bg-cyan/10"
           >
-            <span className={cn("flex h-3 w-5 items-center rounded-full p-0.5 transition-colors", showVc ? "bg-cyan" : "bg-star/20")}>
-              <span className={cn("size-2 rounded-full bg-void transition-transform", showVc && "translate-x-2")} />
+            <span
+              className={cn(
+                "flex h-3 w-5 items-center rounded-full p-0.5 transition-colors",
+                showVc ? "bg-cyan" : "bg-star/20",
+              )}
+            >
+              <span
+                className={cn(
+                  "size-2 rounded-full bg-void transition-transform",
+                  showVc && "translate-x-2",
+                )}
+              />
             </span>
             {t("Colour by V/C", "Barvy podle V/C")}
           </button>
-          <div className="pt-1 text-dim">{selected ? t("ESC TO CLOSE", "ESC ZAVŘE") : t("CLICK A JUNCTION", "KLIKNĚTE NA KŘIŽOVATKU")}</div>
+          <div className="pt-1 text-dim">
+            {selected
+              ? t("ESC TO CLOSE", "ESC ZAVŘE")
+              : t("CLICK A JUNCTION", "KLIKNĚTE NA KŘIŽOVATKU")}
+          </div>
         </div>
 
         {node && project && (
@@ -450,9 +634,7 @@ export function HeroRoadNetwork() {
             aria-label={`${project.title} — ${t("summary", "shrnutí")}`}
           >
             <div className="flex items-start justify-between gap-3">
-              <div className="telemetry text-[9px] text-cyan">
-                {project.location}
-              </div>
+              <div className="telemetry text-[9px] text-cyan">{project.location}</div>
               <button
                 type="button"
                 onClick={() => setSelected(null)}
@@ -466,9 +648,14 @@ export function HeroRoadNetwork() {
             <p className="mt-1 text-xs text-dim">{project.client}</p>
             <div className="mt-3 grid grid-cols-2 gap-2">
               {project.metrics.slice(0, 2).map((m) => (
-                <div key={m.label} className="rounded-[8px] border border-star/10 bg-star/[0.03] p-2">
+                <div
+                  key={m.label}
+                  className="rounded-[8px] border border-star/10 bg-star/[0.03] p-2"
+                >
                   <div className="text-lg font-bold text-star">{m.value}</div>
-                  <div className="telemetry mt-0.5 text-[8.5px] leading-tight text-dim">{m.label}</div>
+                  <div className="telemetry mt-0.5 text-[8.5px] leading-tight text-dim">
+                    {m.label}
+                  </div>
                 </div>
               ))}
             </div>

@@ -53,7 +53,9 @@ function CvPage() {
 
       <article className="cv-sheet mx-auto max-w-[860px] rounded-[20px] bg-white px-10 py-12 text-[12.5px] leading-[1.55] text-[#1d2a3d] shadow-2xl md:px-14 print:max-w-none print:rounded-none print:px-0 print:py-0 print:shadow-none">
         <header className="border-b-2 border-[#1f5fad] pb-5">
-          <h1 className="text-[34px] leading-tight font-semibold tracking-tight text-[#0f2443]">{t(`${person.name}, Ing.`, `Ing. ${person.name}`)}</h1>
+          <h1 className="text-[34px] leading-tight font-semibold tracking-tight text-[#0f2443]">
+            {t(`${person.name}, Ing.`, `Ing. ${person.name}`)}
+          </h1>
           <p className="mt-1 text-[15px] font-medium text-[#1f5fad]">
             {t(
               `${person.role} · ${PERSON.company} (${PERSON.city}, Ireland) · based in the ${PERSON.home}`,
@@ -101,7 +103,9 @@ function CvPage() {
                   {p.years ? `, ${p.years}` : ""}
                 </span>
                 <br />
-                <span>{t("Role", "Role")}: {p.role}</span>
+                <span>
+                  {t("Role", "Role")}: {p.role}
+                </span>
               </li>
             ))}
           </ul>
@@ -112,7 +116,9 @@ function CvPage() {
             {pubs.map((p) => (
               <li key={p.slug} className="break-inside-avoid">
                 <span className="font-medium text-[#0f2443]">{p.publication!.title}</span>
-                {p.publication!.titleCs && <span className="text-[#0f2443]"> ({p.publication!.titleCs})</span>}
+                {p.publication!.titleCs && (
+                  <span className="text-[#0f2443]"> ({p.publication!.titleCs})</span>
+                )}
                 <span className="font-medium text-[#0f2443]">.</span>{" "}
                 <span className="text-[#4a5a70]">
                   {p.publication!.authors ? `${p.publication!.authors}. ` : ""}
@@ -130,7 +136,8 @@ function CvPage() {
                 <div key={q}>
                   <dt className="inline font-semibold text-[#0f2443]">{quadrantLabel(q)}: </dt>
                   <dd className="inline">
-                    {tech.filter((x) => x.quadrant === q)
+                    {tech
+                      .filter((x) => x.quadrant === q)
                       .map((x) => techLabel(x.name))
                       .join(", ")}
                   </dd>
@@ -146,7 +153,9 @@ function CvPage() {
               </p>
             </Section>
             <Section title={t("Languages", "Jazyky")}>
-              <p>{person.languages.map((l) => `${l.name} (${l.level.toLowerCase()})`).join(" · ")}</p>
+              <p>
+                {person.languages.map((l) => `${l.name} (${l.level.toLowerCase()})`).join(" · ")}
+              </p>
             </Section>
           </div>
         </div>
@@ -158,7 +167,9 @@ function CvPage() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mt-6">
-      <h2 className="mb-2 break-after-avoid font-mono text-[11px] font-medium tracking-[0.16em] text-[#1f5fad] uppercase">{title}</h2>
+      <h2 className="mb-2 break-after-avoid font-mono text-[11px] font-medium tracking-[0.16em] text-[#1f5fad] uppercase">
+        {title}
+      </h2>
       {children}
     </section>
   );

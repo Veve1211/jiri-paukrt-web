@@ -107,7 +107,10 @@ const schema = z.object({
     .min(30, "Please describe your question in a sentence or two (at least 30 characters)")
     .max(2000, "Keep it under 2,000 characters")
     .refine((v) => (v.match(URL_RE) ?? []).length <= 2, "Please include no more than two links")
-    .refine((v) => !looksLikeGibberish(v), "This doesn't look like a question yet — please write it in a few words"),
+    .refine(
+      (v) => !looksLikeGibberish(v),
+      "This doesn't look like a question yet — please write it in a few words",
+    ),
 });
 
 type Values = z.infer<typeof schema>;
@@ -188,7 +191,8 @@ export function InquiryForm({
     setStatus({ kind: "sending" });
     const id = crypto.randomUUID();
     const reference = `MSG-${id.slice(0, 8).toUpperCase()}`;
-    const topicLabel = TOPICS.find((x) => x.value === parsed.data.topic)?.label ?? parsed.data.topic;
+    const topicLabel =
+      TOPICS.find((x) => x.value === parsed.data.topic)?.label ?? parsed.data.topic;
 
     // Two channels in parallel (approved by the site owner): an email to Jiri via
     // Web3Forms, and a copy in the site's database. Sent if either succeeds.
@@ -247,10 +251,17 @@ export function InquiryForm({
           <CheckCircle2 className="size-5" />
         </div>
         <div>
-          <div className="telemetry text-[10px] text-cyan">{t("Message received", "Zpráva přijata")} · {status.reference}</div>
-          <h3 className="mt-2 text-xl font-medium">{t("Thanks", "Děkujeme")}, {values.name.split(" ")[0]}.</h3>
+          <div className="telemetry text-[10px] text-cyan">
+            {t("Message received", "Zpráva přijata")} · {status.reference}
+          </div>
+          <h3 className="mt-2 text-xl font-medium">
+            {t("Thanks", "Děkujeme")}, {values.name.split(" ")[0]}.
+          </h3>
           <p className="mt-1 max-w-sm text-sm text-dim">
-            {t(`Your message has been sent to Jiri. He will reply to ${values.email}.`, `Zpráva odešla Jiřímu. Odpoví na ${values.email}.`)}
+            {t(
+              `Your message has been sent to Jiri. He will reply to ${values.email}.`,
+              `Zpráva odešla Jiřímu. Odpoví na ${values.email}.`,
+            )}
           </p>
         </div>
         <Button
@@ -283,7 +294,11 @@ export function InquiryForm({
             maxLength={100}
           />
         </Field>
-        <Field label={t("Email", "E-mail")} error={errors.email && tr(errors.email)} htmlFor="inq-email">
+        <Field
+          label={t("Email", "E-mail")}
+          error={errors.email && tr(errors.email)}
+          htmlFor="inq-email"
+        >
           <input
             id="inq-email"
             type="email"
@@ -297,7 +312,11 @@ export function InquiryForm({
         </Field>
       </div>
       <div className={cn("grid gap-4", !compact && "sm:grid-cols-2")}>
-        <Field label={t("Organisation (optional)", "Organizace (nepovinné)")} error={errors.organisation && tr(errors.organisation)} htmlFor="inq-org">
+        <Field
+          label={t("Organisation (optional)", "Organizace (nepovinné)")}
+          error={errors.organisation && tr(errors.organisation)}
+          htmlFor="inq-org"
+        >
           <input
             id="inq-org"
             className={fieldClass}
@@ -322,7 +341,12 @@ export function InquiryForm({
           </select>
         </Field>
       </div>
-      <Field label={t("Message", "Zpráva")} error={errors.message && tr(errors.message)} htmlFor="inq-message" hint={`${values.message.length}/2000`}>
+      <Field
+        label={t("Message", "Zpráva")}
+        error={errors.message && tr(errors.message)}
+        htmlFor="inq-message"
+        hint={`${values.message.length}/2000`}
+      >
         <textarea
           id="inq-message"
           rows={compact ? 4 : 5}
@@ -345,17 +369,29 @@ export function InquiryForm({
         onChange={(e) => setHoneypot(e.target.value)}
       />
       {status.kind === "error" && (
-        <p role="alert" className="rounded-[14px] border border-alert/40 bg-alert/10 px-3.5 py-2.5 text-sm text-star">
+        <p
+          role="alert"
+          className="rounded-[14px] border border-alert/40 bg-alert/10 px-3.5 py-2.5 text-sm text-star"
+        >
           {tr(status.message)}
         </p>
       )}
       <p className="text-xs leading-relaxed text-dim">
-        {t("Your details are used only to reply to your message.", "Vaše údaje použijeme jen k odpovědi na zprávu.")}{" "}
+        {t(
+          "Your details are used only to reply to your message.",
+          "Vaše údaje použijeme jen k odpovědi na zprávu.",
+        )}{" "}
         <a href="/privacy" className="text-cyan underline-offset-2 hover:underline">
           {t("Privacy notice", "Ochrana osobních údajů")}
         </a>
       </p>
-      <Button type="submit" variant="glow" size="pill" disabled={sending} className="w-full font-medium sm:w-auto">
+      <Button
+        type="submit"
+        variant="glow"
+        size="pill"
+        disabled={sending}
+        className="w-full font-medium sm:w-auto"
+      >
         {sending ? (
           <>
             <Loader2 className="animate-spin" /> {t("Sending…", "Odesílám…")}
