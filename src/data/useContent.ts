@@ -16,6 +16,8 @@ import {
 } from "./portfolio";
 import {
   CAREER_CS,
+  CITY_CS,
+  COUNTRY_CS,
   DOMAINS_CS,
   EDUCATION_CS,
   PERSON_CS,
@@ -23,6 +25,7 @@ import {
   QUADRANT_CS,
   REGION_CS,
   TECH_BLURB_CS,
+  TECH_NAME_CS,
 } from "./portfolio.cs";
 
 function localizeProject(p: Project): Project {
@@ -39,7 +42,10 @@ function localizeProject(p: Project): Project {
   };
   if (cs.role) out.role = cs.role;
   if (cs.usedFor) out.usedFor = cs.usedFor;
-  if (p.publication && cs.venue) out.publication = { ...p.publication, venue: cs.venue };
+  if (p.publication && (cs.venue || cs.publicationTitle)) {
+    out.publication = { ...p.publication, venue: cs.venue ?? p.publication.venue };
+    if (cs.publicationTitle) out.publication.titleCs = cs.publicationTitle;
+  }
   return out;
 }
 
@@ -58,6 +64,8 @@ export function useContent() {
     const person = cs
       ? {
           ...PERSON,
+          name: PERSON_CS.name,
+          role: PERSON_CS.role,
           home: PERSON_CS.home,
           summary: PERSON_CS.summary,
           languages: PERSON_CS.languages,
@@ -76,7 +84,11 @@ export function useContent() {
       getProject: (slug: string) => projects.find((p) => p.slug === slug),
       domainLabel: (k: DomainKey) => (cs ? DOMAINS_CS[k] : (DOMAINS.find((d) => d.key === k)?.label ?? k)),
       quadrantLabel: (q: Quadrant) => (cs ? QUADRANT_CS[q] : q),
+      /** Display name of a tool (the `name` stays the stable key). */
+      techLabel: (name: string) => (cs ? (TECH_NAME_CS[name] ?? name) : name),
       regionLabel: (r: string) => (cs ? (REGION_CS[r] ?? r) : r),
+      countryLabel: (c: string) => (cs ? (COUNTRY_CS[c] ?? c) : c),
+      cityLabel: (c: string) => (cs ? (CITY_CS[c] ?? c) : c),
     };
   }, [lang]);
 }

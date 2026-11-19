@@ -4,7 +4,8 @@
 import type { DomainKey, Quadrant } from "./portfolio";
 
 export const PERSON_CS = {
-  role: "Principal Transportation Engineer (hlavní dopravní inženýr)",
+  role: "Hlavní dopravní inženýr",
+  name: "Jiří Paukrt",
   home: "Česká republika",
   summary:
     "Dopravní modelář s 27 lety praxe v Irsku, Velké Británii, Austrálii a České republice. Řídil vývoj a kalibraci irského národního modelu prognózy poptávky (National Demand Forecasting Model) pro National Transport Authority a opírá se o více než deset let mikrosimulačního modelování, modelů proměnné poptávky, GIS analýz a programování.",
@@ -62,6 +63,7 @@ interface ProjectCs {
   usedFor?: string;
   metricLabels?: string[];
   venue?: string;
+  publicationTitle?: string;
 }
 
 export const PROJECTS_CS: Record<string, ProjectCs> = {
@@ -73,15 +75,16 @@ export const PROJECTS_CS: Record<string, ProjectCs> = {
       "Regional Modelling System irské NTA je strategický nástroj, o který se opírá plánování dopravy v celém Irsku: národní model prognózy poptávky zásobuje pět regionálních multimodálních modelů, které dohromady pokrývají celou Irskou republiku.",
     highlights: [
       "Řídil vývoj a kalibraci národního modelu prognózy poptávky (NDFM)",
-      "Vytvořil model zdrojů a cílů cest (National Trip End Model) a model poptávky pro hlavní přístavy a letiště v Irsku a Severním Irsku",
+      "Vytvořil národní model zdrojů a cílů cest (National Trip End Model) a model poptávky pro hlavní přístavy a letiště v Irsku a Severním Irsku",
       "Podílel se na vývoji a kalibraci pěti regionálních modelů: východ, západ, středozápad, jihovýchod a jihozápad",
       "Aktualizace na rok 2022: první míry tvorby cest v Irsku po covidu, z asi 20 000 záznamů cestovních deníků",
       "Prezentováno na European Transport Conference 2025 v Antverpách",
     ],
-    role: "Řídil vývoj a kalibraci NDFM; vytvořil National Trip End Model",
+    role: "Řídil vývoj a kalibraci NDFM; vytvořil národní model zdrojů a cílů cest",
     usedFor: "NTA podle něj posuzuje budoucí varianty dopravy a využití území na národní i regionální úrovni.",
     metricLabels: ["Regionální multimodální modely", "Záznamy cestovních deníků (2022)"],
     venue: "NTA, září 2025 · prezentováno na ETC 2025, Antverpy",
+    publicationTitle: "Odhad míry tvorby cest v Irsku po covidu-19",
   },
   "nta-long-distance-model": {
     title: "Model dálkové dopravy NTA",
@@ -98,6 +101,8 @@ export const PROJECTS_CS: Record<string, ProjectCs> = {
     role: "Vytvořil model dálkové poptávky; spoluprezentující na ETC 2019",
     usedFor: "Testování změn na dálkové železnici — víc vlaků, vyšší kapacita nebo nové jízdné.",
     metricLabels: ["Modelované druhy dopravy", "ETC Dublin"],
+    venue: "Evropská dopravní konference (ETC 2019), Dublin",
+    publicationTitle: "Model dálkové dopravy irského Národního dopravního úřadu",
   },
   "glasgow-m74-evaluation": {
     title: "Dostavba dálnice M74 — 5 let po otevření",
@@ -113,6 +118,8 @@ export const PROJECTS_CS: Record<string, ProjectCs> = {
     role: "Spoluautor hodnocení pět let po otevření",
     usedFor: "Ověření, zda nová dálnice pět let po otevření přinesla očekávané odlehčení dopravy.",
     metricLabels: ["Nová dálnice", "Po otevření"],
+    venue: "Konference STAR 2017, Glasgow",
+    publicationTitle: "Hodnocení projektů skotské páteřní silniční sítě (STRIPE): dostavba dálnice M74 — 5 let po otevření",
   },
   "road-safety-traffic-conflicts": {
     title: "Bezpečnost provozu pomocí dopravních konfliktů",
@@ -129,6 +136,8 @@ export const PROJECTS_CS: Record<string, ProjectCs> = {
     role: "Spoluautor",
     usedFor: "Ověření, zda mikrosimulace dokáže odhalit rizikové křižovatky dřív, než dojde k nehodám.",
     metricLabels: ["Porovnané metody", "ICTTE Bělehrad"],
+    venue: "ICTTE 2014, Bělehrad",
+    publicationTitle: "Hodnocení bezpečnosti silničního provozu pomocí dopravních konfliktů: pilotní srovnání mikrosimulace a pozorování",
   },
   "commonwealth-games": {
     title: "Poptávka návštěvníků Her Commonwealthu",
@@ -167,6 +176,7 @@ export const PROJECTS_CS: Record<string, ProjectCs> = {
     ],
     role: "Odpovídal za model a testování variant",
     usedFor: "Testování variant revitalizace centra města.",
+    metricLabels: ["Hyder Consulting"],
   },
   "uk-microsimulation-models": {
     title: "Mikrosimulační modely britských měst",
@@ -174,6 +184,19 @@ export const PROJECTS_CS: Record<string, ProjectCs> = {
     location: "Anglie a ostrov Man",
     summary:
       "Jedenáct mikrosimulačních modelů měst v Anglii a na ostrově Man a k tomu modely proměnné poptávky Plymouthu a Chippenhamu.",
+    highlights: [
+      "Gillingham",
+      "Douglas (ostrov Man)",
+      "Blackpool",
+      "Plymouth",
+      "Weymouth",
+      "Chippenham",
+      "New Barnet",
+      "Nuneaton",
+      "Coalville",
+      "Derriford",
+      "Hinckley",
+    ],
     role: "Vytvořil mikrosimulační modely",
     metricLabels: ["Modely měst"],
   },
@@ -182,11 +205,12 @@ export const PROJECTS_CS: Record<string, ProjectCs> = {
 export const CAREER_CS: Record<string, { years?: string; role?: string; location?: string; duties: string[] }> = {
   SYSTRA: {
     years: "01/2008 – dosud",
+    role: "Hlavní dopravní inženýr",
     location: "Dublin, Irsko",
     duties: [
       "Vývoj, kalibrace a validace velkých strategických modelů poptávky.",
       "Řídil vývoj a kalibraci národního modelu prognózy poptávky pro National Transport Authority; podílel se na vývoji a kalibraci jeho pěti regionálních modelů, které dohromady pokrývají Irskou republiku.",
-      "Vytvořil National Trip End Model, model dálkové poptávky Irska a model poptávky pro hlavní přístavy a letiště v Irsku a Severním Irsku.",
+      "Vytvořil národní model zdrojů a cílů cest (National Trip End Model), model dálkové poptávky Irska a model poptávky pro hlavní přístavy a letiště v Irsku a Severním Irsku.",
       "Mikrosimulační modely 11 britských měst, mimo jiné Plymouthu, Blackpoolu, Nuneatonu a Douglasu (ostrov Man); modely proměnné poptávky Plymouthu a Chippenhamu.",
       "Modelování poptávky návštěvníků pro Hry Commonwealthu v Glasgow 2014 a Birminghamu 2022.",
       "Samostatné programy ve VB, VBA a Pythonu, které přidávají funkce, zvyšují efektivitu a zlepšují reporting.",
@@ -196,6 +220,7 @@ export const CAREER_CS: Record<string, { years?: string; role?: string; location
   },
   "Hyder Consulting": {
     years: "10/2006 – 12/2007",
+    role: "Senior dopravní modelář",
     location: "Melbourne, Austrálie",
     duties: [
       "Odpovídal za mikrosimulační model Dandenongu v Melbourne a za testování variant revitalizace — využití území, silniční sítě a veřejné dopravy — u jednoho z tehdy největších revitalizačních projektů v Austrálii.",
@@ -204,6 +229,7 @@ export const CAREER_CS: Record<string, { years?: string; role?: string; location
   },
   "Jacobs Babtie": {
     years: "07/2004 – 09/2006",
+    role: "Dopravní plánovač",
     location: "Leeds, Velká Británie",
     duties: [
       "Vývoj strategických modelů v SATURNu.",
@@ -214,6 +240,7 @@ export const CAREER_CS: Record<string, { years?: string; role?: string; location
   },
   CityPlan: {
     years: "07/1999 – 06/2004",
+    role: "Dopravní plánovač",
     location: "Praha, Česko",
     duties: [
       "Ekonomická hodnocení v programu HDM-4.",
@@ -251,4 +278,24 @@ export const TECH_BLURB_CS: Record<string, string> = {
   "Google Maps & OpenStreetMap APIs": "Webová mapová data pro studie dostupnosti a analýzy sítí.",
   SQL: "Dotazy nad velkými soubory průzkumů, sčítání a modelových dat.",
   "VB/VBA": "Automatizace zpracování modelů v tabulkách a reportingu.",
+};
+
+/** Country names for the project map. City names stay as they are. */
+export const COUNTRY_CS: Record<string, string> = {
+  Ireland: "Irsko",
+  "Scotland, UK": "Skotsko, Velká Británie",
+  "England, UK": "Anglie, Velká Británie",
+  "Czech Republic": "Česko",
+  Australia: "Austrálie",
+  "Isle of Man": "Ostrov Man",
+};
+
+/** Czech city names where Czech uses its own form. */
+export const CITY_CS: Record<string, string> = { Prague: "Praha" };
+
+/** Czech display names for tools; product names (SATURN, QGIS, Python…) stay as they are. */
+export const TECH_NAME_CS: Record<string, string> = {
+  "3D visualisation": "3D vizualizace",
+  "Variable Demand Modeling": "Modelování proměnné poptávky",
+  "Google Maps & OpenStreetMap APIs": "API Google Maps a OpenStreetMap",
 };

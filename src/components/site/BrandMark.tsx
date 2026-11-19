@@ -12,7 +12,8 @@ export function JunctionGlyph({ className }: { className?: string }) {
   );
 }
 
-export function BrandMark({ showTagline = true }: { showTagline?: boolean }) {
+/** `compactTagline` hides the tagline on phones and tablets so the header fits. */
+export function BrandMark({ showTagline = true, compactTagline = false }: { showTagline?: boolean; compactTagline?: boolean }) {
   const { t } = useLang();
   return (
     <span className="flex items-center gap-2.5">
@@ -20,7 +21,7 @@ export function BrandMark({ showTagline = true }: { showTagline?: boolean }) {
       <span className="flex flex-col leading-none">
         <span className="font-display text-[15px] font-semibold tracking-wide">{t("Jiri Paukrt", "Jiří Paukrt")}</span>
         {showTagline && (
-          <span className="mt-1 font-mono text-[9px] tracking-wider text-dim uppercase">{t("Transport modelling · Dublin & CZ", "Dopravní modelování · Dublin a ČR")}</span>
+          <span className={cn("mt-1 font-mono text-[9px] tracking-wider text-dim uppercase", compactTagline && "hidden lg:block")}>{t("Transport modelling · Dublin & CZ", "Dopravní modelování · Dublin a ČR")}</span>
         )}
       </span>
     </span>

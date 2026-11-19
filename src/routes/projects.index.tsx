@@ -110,6 +110,7 @@ function ProjectsPage() {
                 </span>
                 <span className="md:col-span-7">
                   <span className="block text-base font-medium group-hover:text-cyan">{p.publication!.title}</span>
+                  {p.publication!.titleCs && <span className="mt-0.5 block text-sm text-dim">({p.publication!.titleCs})</span>}
                   {p.publication!.authors && <span className="mt-0.5 block text-sm text-dim">{p.publication!.authors}</span>}
                 </span>
                 <span className="hidden justify-end md:col-span-2 md:flex">

@@ -154,6 +154,7 @@ function LongDistance() {
 }
 
 function Motorway() {
+  const { t } = useLang();
   return (
     <Frame label="M74 COMPLETION · ABOUT 8 KM · OPENED 2011">
       {/* existing M8 */}
@@ -180,7 +181,7 @@ function Motorway() {
         </g>
       ))}
       <text x="96" y="176" fontSize="8.5" className="fill-dim font-mono">M74</text>
-      <text x="200" y="168" fontSize="8.5" letterSpacing="1" className="fill-cyan font-mono">NEW SECTION</text>
+      <text x="200" y="168" fontSize="8.5" letterSpacing="1" className="fill-cyan font-mono">{t("NEW SECTION", "NOVÝ ÚSEK")}</text>
     </Frame>
   );
 }
@@ -227,12 +228,13 @@ function ConflictJunction() {
 }
 
 function EventDemand() {
+  const { t } = useLang();
   const bars = [4, 7, 12, 22, 38, 58, 74, 66, 40, 18, 9, 5, 9, 26, 52, 70, 48, 20];
   return (
     <Frame label="VISITOR ARRIVALS AND DEPARTURES · EVENT DAY">
       <ellipse cx="300" cy="78" rx="78" ry="44" className="stroke-star/60" strokeWidth="1.4" />
       <ellipse cx="300" cy="78" rx="52" ry="26" className="stroke-cyan/70" strokeWidth="1.2" />
-      <text x="300" y="82" textAnchor="middle" fontSize="8.5" letterSpacing="1" className="fill-cyan font-mono">VENUE</text>
+      <text x="300" y="82" textAnchor="middle" fontSize="8.5" letterSpacing="1" className="fill-cyan font-mono">{t("VENUE", "SPORTOVIŠTĚ")}</text>
       {bars.map((h, i) => (
         <rect key={i} x={22 + i * 12} y={184 - h * 1.6} width="8" height={h * 1.6} rx="1.5" className={i < 11 ? "fill-cyan/70" : "fill-starblue/50"} />
       ))}
@@ -243,6 +245,7 @@ function EventDemand() {
 }
 
 function Tunnel() {
+  const { t } = useLang();
   return (
     <Frame label="SURFACE NETWORK ALONG THE TUNNEL CORRIDOR">
       {/* surface street network */}
@@ -261,7 +264,7 @@ function Tunnel() {
       <Cars d="M400 70 C260 74 120 66 0 70" kind="tail" n={2} dur={7.5} offset={0.6} />
       <rect x="30" y="104" width="20" height="10" className="fill-void stroke-star" />
       <rect x="350" y="104" width="20" height="10" className="fill-void stroke-star" />
-      <text x="200" y="168" textAnchor="middle" fontSize="8.5" letterSpacing="1" className="fill-starblue font-mono">TWIN TUBES · 3.6 KM</text>
+      <text x="200" y="168" textAnchor="middle" fontSize="8.5" letterSpacing="1" className="fill-starblue font-mono">{t("TWIN TUBES · 3.6 KM", "DVA TUBUSY · 3,6 KM")}</text>
     </Frame>
   );
 }
@@ -326,11 +329,12 @@ const COVERS: Record<string, () => ReactNode> = {
 };
 
 export function ProjectCover({ slug, className, animate = false }: { slug: string; className?: string; animate?: boolean }) {
+  const { t } = useLang();
   const Cover = COVERS[slug];
   if (!Cover) return null;
   return (
     <AnimateCtx.Provider value={animate}>
-      <svg viewBox={`0 0 ${W} ${H}`} className={cn("block h-auto w-full bg-void/40", className)} fill="none" role="img" aria-label="Schematic illustration of the project">
+      <svg viewBox={`0 0 ${W} ${H}`} className={cn("block h-auto w-full bg-void/40", className)} fill="none" role="img" aria-label={t("Schematic illustration of the project", "Schematická ilustrace projektu")}>
         <Cover />
       </svg>
     </AnimateCtx.Provider>
