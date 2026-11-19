@@ -406,13 +406,13 @@ export function HeroRoadNetwork() {
         </svg>
 
         {/* legend */}
-        <div className="absolute top-1 right-1 space-y-1 text-right font-mono text-[9.5px] leading-relaxed tracking-[0.12em] text-dim">
-          <div className="hidden items-center justify-end gap-2 text-star/80 sm:flex">
+        <div className="absolute top-1 right-1 hidden space-y-1.5 rounded-lg bg-void/55 px-3 py-2 text-right font-mono text-[11px] leading-relaxed tracking-[0.1em] text-starblue backdrop-blur-sm sm:block">
+          <div className="flex items-center justify-end gap-2 text-star">
             {t("FLOW BANDWIDTH", "INTENZITA DOPRAVY")} <span className="h-0.5 w-3 bg-cyan" /><span className="h-2 w-3 bg-cyan" />
           </div>
           {showVc && (
             <div className="space-y-1 animate-in fade-in-0">
-              <div className="text-star/80">{t("V/C = VOLUME / CAPACITY", "V/C = INTENZITA / KAPACITA")}</div>
+              <div className="text-star">{t("V/C = VOLUME / CAPACITY", "V/C = INTENZITA / KAPACITA")}</div>
               <div className="flex items-center justify-end gap-2">
                 {t("V/C UNDER 0.70", "V/C POD 0,70")} <span className="h-1.5 w-5 bg-go" />
               </div>
@@ -424,7 +424,7 @@ export function HeroRoadNetwork() {
               </div>
             </div>
           )}
-          <div className="hidden items-center justify-end gap-2 sm:flex">
+          <div className="flex items-center justify-end gap-2">
             {t("JUNCTION = PROJECT", "KŘIŽOVATKA = PROJEKT")} <span className="size-2.5 rounded-full border border-star bg-void" />
           </div>
           <button
@@ -432,14 +432,14 @@ export function HeroRoadNetwork() {
             aria-pressed={showVc}
             onClick={() => setShowVc((v) => !v)}
             title={t("Colour roads by volume-to-capacity ratio", "Obarvit silnice podle poměru intenzity a kapacity")}
-            className="mt-1 inline-flex items-center gap-2 rounded-full border border-star/15 bg-void/60 px-2.5 py-1 text-[9.5px] tracking-[0.12em] text-starblue uppercase transition-colors hover:border-cyan/50 hover:text-cyan"
+            className="mt-1 inline-flex items-center gap-2 rounded-full border border-cyan/50 bg-void/80 px-3 py-1.5 text-[11px] tracking-[0.1em] text-cyan uppercase shadow-[0_0_12px_-2px_var(--cyan)] transition-colors hover:border-cyan hover:bg-cyan/10"
           >
             <span className={cn("flex h-3 w-5 items-center rounded-full p-0.5 transition-colors", showVc ? "bg-cyan" : "bg-star/20")}>
               <span className={cn("size-2 rounded-full bg-void transition-transform", showVc && "translate-x-2")} />
             </span>
             {t("Colour by V/C", "Barvy podle V/C")}
           </button>
-          <div className="hidden pt-1 text-dim/70 sm:block">{selected ? t("ESC TO CLOSE", "ESC ZAVŘE") : t("CLICK A JUNCTION", "KLIKNĚTE NA KŘIŽOVATKU")}</div>
+          <div className="pt-1 text-dim">{selected ? t("ESC TO CLOSE", "ESC ZAVŘE") : t("CLICK A JUNCTION", "KLIKNĚTE NA KŘIŽOVATKU")}</div>
         </div>
 
         {node && project && (
