@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, X } from "lucide-react";
-import { useEffect, useState, type CSSProperties, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 
 import { useContent } from "@/data/useContent";
 import { useLang } from "@/lib/i18n";
@@ -313,9 +313,54 @@ export function HeroRoadNetwork() {
     setMouse({ x: p.x, y: p.y });
   };
   const [showVc, setShowVc] = useState(false);
+  const [pulse, setPulse] = useState(false);
+  const touched = useRef(false);
+  const wrapRef = useRef<HTMLDivElement>(null);
   const reducedMotion = usePrefersReducedMotion();
   const { t } = useLang();
   const { getProject } = useContent();
+
+  const chooseVc = (on: boolean) => {
+    touched.current = true;
+    setPulse(false);
+    setShowVc(on);
+  };
+
+  // intro: once the map scrolls into view, it "lights up" into V/C colours and the
+  // switch pulses, so visitors notice the map has a congestion view
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const run = () => {
+      timer = setTimeout(
+        () => {
+          if (touched.current) return;
+          setShowVc(true);
+          if (!reducedMotion) setPulse(true);
+        },
+        reducedMotion ? 0 : 1200,
+      );
+    };
+    if (typeof IntersectionObserver === "undefined") {
+      run();
+      return () => clearTimeout(timer);
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          io.disconnect();
+          run();
+        }
+      },
+      { threshold: 0.4 },
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      clearTimeout(timer);
+    };
+  }, [reducedMotion]);
 
   useEffect(() => {
     if (!selected) return;
@@ -345,7 +390,7 @@ export function HeroRoadNetwork() {
 
   return (
     <div className="relative w-full">
-      <div className="relative mx-auto aspect-[7/6] w-full max-w-[760px]">
+      <div ref={wrapRef} className="relative mx-auto aspect-[7/6] w-full max-w-[760px]">
         <svg
           viewBox={`0 0 ${W} ${H}`}
           className="absolute inset-0 h-full w-full"
@@ -568,63 +613,84 @@ export function HeroRoadNetwork() {
           </text>
         </svg>
 
+        {/* view switch: plain network vs. congestion (V/C) colours */}
+        <div
+          role="radiogroup"
+          aria-label={t("Map view", "Zobrazení mapy")}
+          onAnimationEnd={() => setPulse(false)}
+          className={cn(
+            "absolute top-1 left-1 z-10 inline-flex gap-0.5 rounded-full border border-cyan/50 bg-void/85 p-0.5 font-mono text-[10px] tracking-[0.1em] uppercase backdrop-blur-sm sm:text-[11px]",
+            pulse && "animate-[vc-pulse_1s_ease-in-out_2]",
+          )}
+        >
+          {[
+            { on: false, label: t("Network", "Síť") },
+            { on: true, label: t("Congestion (V/C)", "Vytížení (V/C)") },
+          ].map((o) => (
+            <button
+              key={String(o.on)}
+              type="button"
+              role="radio"
+              aria-checked={showVc === o.on}
+              onClick={() => chooseVc(o.on)}
+              title={
+                o.on
+                  ? t(
+                      "Colour roads by volume-to-capacity ratio",
+                      "Obarvit silnice podle poměru intenzity a kapacity",
+                    )
+                  : undefined
+              }
+              className={cn(
+                "rounded-full px-3 py-1.5 transition-colors",
+                showVc === o.on
+                  ? "bg-cyan text-void"
+                  : "text-starblue hover:bg-cyan/10 hover:text-cyan",
+              )}
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
+
         {/* legend */}
         <div className="absolute top-1 right-1 hidden space-y-1.5 rounded-lg bg-void/55 px-3 py-2 text-right font-mono text-[11px] leading-relaxed tracking-[0.1em] text-starblue backdrop-blur-sm sm:block">
           <div className="flex items-center justify-end gap-2 text-star">
             {t("FLOW BANDWIDTH", "INTENZITA DOPRAVY")} <span className="h-0.5 w-3 bg-cyan" />
             <span className="h-2 w-3 bg-cyan" />
           </div>
-          {showVc && (
-            <div className="space-y-1 animate-in fade-in-0">
-              <div className="text-star">
-                {t("V/C = VOLUME / CAPACITY", "V/C = INTENZITA / KAPACITA")}
-              </div>
-              <div className="flex items-center justify-end gap-2">
-                {t("V/C UNDER 0.70", "V/C POD 0,70")} <span className="h-1.5 w-5 bg-go" />
-              </div>
-              <div className="flex items-center justify-end gap-2">
-                {t("0.70 – 0.90", "0,70 – 0,90")} <span className="h-1.5 w-5 bg-amber" />
-              </div>
-              <div className="flex items-center justify-end gap-2">
-                {t("OVER 0.90", "NAD 0,90")} <span className="h-1.5 w-5 bg-alert" />
-              </div>
-            </div>
-          )}
           <div className="flex items-center justify-end gap-2">
             {t("JUNCTION = PROJECT", "KŘIŽOVATKA = PROJEKT")}{" "}
             <span className="size-2.5 rounded-full border border-star bg-void" />
           </div>
-          <button
-            type="button"
-            aria-pressed={showVc}
-            onClick={() => setShowVc((v) => !v)}
-            title={t(
-              "Colour roads by volume-to-capacity ratio",
-              "Obarvit silnice podle poměru intenzity a kapacity",
-            )}
-            className="mt-1 inline-flex items-center gap-2 rounded-full border border-cyan/50 bg-void/80 px-3 py-1.5 text-[11px] tracking-[0.1em] text-cyan uppercase shadow-[0_0_12px_-2px_var(--cyan)] transition-colors hover:border-cyan hover:bg-cyan/10"
-          >
-            <span
-              className={cn(
-                "flex h-3 w-5 items-center rounded-full p-0.5 transition-colors",
-                showVc ? "bg-cyan" : "bg-star/20",
-              )}
-            >
-              <span
-                className={cn(
-                  "size-2 rounded-full bg-void transition-transform",
-                  showVc && "translate-x-2",
-                )}
-              />
-            </span>
-            {t("Colour by V/C", "Barvy podle V/C")}
-          </button>
           <div className="pt-1 text-dim">
             {selected
               ? t("ESC TO CLOSE", "ESC ZAVŘE")
               : t("CLICK A JUNCTION", "KLIKNĚTE NA KŘIŽOVATKU")}
           </div>
         </div>
+
+        {/* V/C colour legend: one compact row bottom-right, so it never covers a junction */}
+        {showVc && (
+          <div
+            title={t("V/C = volume / capacity", "V/C = intenzita / kapacita")}
+            className="absolute right-1 bottom-1 hidden items-center gap-3 rounded-lg bg-void/55 px-3 py-1.5 font-mono text-[10.5px] tracking-[0.1em] text-starblue backdrop-blur-sm animate-in fade-in-0 sm:flex"
+          >
+            <span className="text-star">V/C</span>
+            <span className="flex items-center gap-1.5">
+              <span className="h-1.5 w-4 bg-go" />
+              {t("< 0.70", "< 0,70")}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="h-1.5 w-4 bg-amber" />
+              {t("0.70 – 0.90", "0,70 – 0,90")}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="h-1.5 w-4 bg-alert" />
+              {t("> 0.90", "> 0,90")}
+            </span>
+          </div>
+        )}
 
         {node && project && (
           <div
@@ -669,6 +735,24 @@ export function HeroRoadNetwork() {
           </div>
         )}
       </div>
+
+      {/* compact V/C legend for phones (the full legend is hidden below sm) */}
+      {showVc && (
+        <div className="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 font-mono text-[10px] tracking-[0.1em] text-starblue animate-in fade-in-0 sm:hidden">
+          <span className="flex items-center gap-1.5">
+            <span className="h-1.5 w-4 bg-go" />
+            {t("V/C < 0.70", "V/C < 0,70")}
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="h-1.5 w-4 bg-amber" />
+            {t("0.70 – 0.90", "0,70 – 0,90")}
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="h-1.5 w-4 bg-alert" />
+            {t("> 0.90", "> 0,90")}
+          </span>
+        </div>
+      )}
     </div>
   );
 }
