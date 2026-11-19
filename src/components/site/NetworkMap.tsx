@@ -1,6 +1,7 @@
 import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { LOCATIONS, type NetworkLocation, type Region } from "@/data/portfolio";
+import { useContent } from "@/data/useContent";
 import { usePrefersReducedMotion } from "@/hooks/use-telemetry";
 
 const VW = 1000;
@@ -45,6 +46,7 @@ export function NetworkMap({
 }) {
   const reducedMotion = usePrefersReducedMotion();
   const { t } = useLang();
+  const { cityLabel, countryLabel } = useContent();
   const inRegion = (l: NetworkLocation) => !region || l.region === region;
 
   const careerD = CAREER_PATH.slice(1)
@@ -107,7 +109,7 @@ export function NetworkMap({
             key={l.id}
             role="button"
             tabIndex={0}
-            aria-label={`${l.name}, ${l.country}`}
+            aria-label={`${cityLabel(l.name)}, ${countryLabel(l.country)}`}
             aria-pressed={sel}
             className={cn("group cursor-pointer outline-none transition-opacity", dimmed && "opacity-25")}
             onClick={() => onSelect(sel ? undefined : l.id)}
@@ -157,14 +159,14 @@ export function NetworkMap({
                   fontSize="11"
                   className={cn(sel || l.kind === "hq" ? "fill-cyan" : l.kind === "base" ? "fill-starblue" : "fill-star")}
                 >
-                  {l.name.toUpperCase()}
+                  {cityLabel(l.name).toUpperCase()}
                 </text>
                 <text x={p.x + (labelRight ? 18 : -18)} y={p.y + 10} fontSize="8.5" className="fill-dim">
                   {l.kind === "hq" ? "SYSTRA DUBLIN" : l.kind === "base" ? t("CAREER BASE", "KARIÉRNÍ ZASTÁVKA") : l.kind === "town" ? t("TOWN MODEL", "MODEL MĚSTA") : t("PROJECT", "PROJEKT")}
                 </text>
               </g>
             )}
-            <title>{`${l.name}, ${l.country}`}</title>
+            <title>{`${cityLabel(l.name)}, ${countryLabel(l.country)}`}</title>
           </g>
         );
       })}

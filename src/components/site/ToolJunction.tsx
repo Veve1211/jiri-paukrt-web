@@ -44,7 +44,7 @@ function Junction({ active }: { active: Quadrant | null }) {
 
 export function ToolJunction() {
   const { t } = useLang();
-  const { tech: TECH, getProject, quadrantLabel } = useContent();
+  const { tech: TECH, getProject, quadrantLabel, techLabel } = useContent();
   const [selected, setSelected] = useState(TECH[0]?.name ?? "");
   const [hoverArm, setHoverArm] = useState<Quadrant | null>(null);
   const tech = TECH.find((t) => t.name === selected) ?? TECH[0]!;
@@ -86,7 +86,7 @@ export function ToolJunction() {
                         : "border-white/40 text-white hover:bg-white/15",
                     )}
                   >
-                    {t.name}
+                    {techLabel(t.name)}
                   </button>
                 ))}
               </div>
@@ -97,7 +97,7 @@ export function ToolJunction() {
 
       <div className="glass rounded-[20px] p-5 lg:col-span-4" aria-live="polite">
         <div className="telemetry text-[10px] text-cyan">{quadrantLabel(tech.quadrant)}</div>
-        <h3 className="mt-2 text-2xl font-medium">{tech.name}</h3>
+        <h3 className="mt-2 text-2xl font-medium">{techLabel(tech.name)}</h3>
         <p className="mt-2 text-sm leading-relaxed text-dim">{tech.blurb}</p>
         {tech.projects && (
           <div className="mt-4">

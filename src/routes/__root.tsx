@@ -4,11 +4,12 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { Toaster } from "@/components/ui/sonner";
@@ -16,23 +17,25 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { BlueprintBackdrop } from "@/components/site/BlueprintBackdrop";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { LangProvider } from "@/lib/i18n";
+import { LangProvider, useLang } from "@/lib/i18n";
+import { useContent } from "@/data/useContent";
 
 function NotFoundComponent() {
+  const { t } = useLang();
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">{t("Page not found", "Stránka nenalezena")}</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+          {t("The page you're looking for doesn't exist or has been moved.", "Hledaná stránka neexistuje nebo byla přesunuta.")}
         </p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Go home
+            {t("Go home", "Na úvod")}
           </Link>
         </div>
       </div>
@@ -43,6 +46,7 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
+  const { t } = useLang();
   useEffect(() => {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
@@ -51,10 +55,13 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
+          {t("This page didn't load", "Stránku se nepodařilo načíst")}
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+          {t(
+            "Something went wrong on our end. You can try refreshing or head back home.",
+            "Něco se pokazilo. Zkuste stránku obnovit nebo se vraťte na úvod.",
+          )}
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -64,13 +71,13 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
             }}
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Try again
+            {t("Try again", "Zkusit znovu")}
           </button>
           <a
             href="/"
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
           >
-            Go home
+            {t("Go home", "Na úvod")}
           </a>
         </div>
       </div>
@@ -151,8 +158,55 @@ function RootComponent() {
         </main>
         <SiteFooter />
       </div>
+      <CzechDocumentTitle />
       <Toaster theme="dark" position="bottom-right" />
       </LangProvider>
     </QueryClientProvider>
   );
+}
+
+const TITLE_CS: Record<string, string> = {
+  "/": "Ing. Jiří Paukrt — hlavní dopravní inženýr | Dopravní modelování",
+  "/career": "Kariéra 1999–dosud — Jiří Paukrt",
+  "/projects": "Projekty a publikace — Jiří Paukrt",
+  "/network": "Mapa projektů — Jiří Paukrt",
+  "/expertise": "Odbornost a nástroje — Jiří Paukrt",
+  "/contact": "Kontakt — Jiří Paukrt",
+  "/cv": "Životopis — Ing. Jiří Paukrt, hlavní dopravní inženýr",
+  "/privacy": "Ochrana osobních údajů — Jiří Paukrt",
+};
+
+/**
+ * Page titles in <head> come from each route and are English (the server render).
+ * In the Czech version the browser tab gets the Czech title instead.
+ */
+function CzechDocumentTitle() {
+  const { lang } = useLang();
+  const { getProject } = useContent();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const czechTitle = useRef<string | null>(null);
+  useEffect(() => {
+    if (lang !== "cs") {
+      // switching back to English: put the route's English title back
+      if (czechTitle.current && document.title === czechTitle.current) {
+        const el = document.querySelector("title");
+        if (el?.dataset["en"]) document.title = el.dataset["en"];
+      }
+      czechTitle.current = null;
+      return;
+    }
+    const path = pathname.replace(/\/$/, "") || "/";
+    const slug = path.startsWith("/projects/") ? path.slice("/projects/".length) : undefined;
+    const project = slug ? getProject(slug) : undefined;
+    const title = project ? `${project.title} — Jiří Paukrt` : (TITLE_CS[path] ?? "Stránka nenalezena — Jiří Paukrt");
+    // run after the router has written its own (English) title
+    const id = window.setTimeout(() => {
+      const el = document.querySelector("title");
+      if (el && document.title !== czechTitle.current) el.dataset["en"] = document.title;
+      document.title = title;
+      czechTitle.current = title;
+    }, 0);
+    return () => window.clearTimeout(id);
+  }, [lang, pathname, getProject]);
+  return null;
 }

@@ -70,7 +70,7 @@ export function LangSwitch({ className }: { className?: string }) {
   return (
     <div
       role="group"
-      aria-label="Language"
+      aria-label={lang === "cs" ? "Jazyk" : "Language"}
       className={`inline-flex items-center rounded-full border border-star/15 p-0.5 font-mono text-[10.5px] tracking-wider ${className ?? ""}`}
     >
       {(["en", "cs"] as const).map((l) => (

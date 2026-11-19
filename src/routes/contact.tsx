@@ -56,7 +56,7 @@ function ContactPage() {
               <div className="telemetry text-[10px] text-cyan">{t("Based in the Czech Republic", "Žije v Česku")}</div>
               <div className="mt-1 text-lg font-medium">{t(PERSON.name, "Jiří Paukrt")}</div>
               <div className="text-sm text-dim">
-                {PERSON.role} · {PERSON.company}
+                {t(PERSON.role, "Hlavní dopravní inženýr")} · {PERSON.company}
               </div>
               <div className="mt-3 flex items-center gap-1.5 font-mono text-[10.5px] tracking-wider text-dim uppercase">
                 <MapPin className="size-3 text-cyan" /> {t("Czech Republic · SYSTRA Dublin", "Česko · SYSTRA Dublin")}

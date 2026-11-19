@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Download, Printer } from "lucide-react";
 
-import { CAREER, EDUCATION, PERSON, PROJECTS, QUADRANTS, TECH } from "@/data/portfolio";
+import { PERSON, QUADRANTS } from "@/data/portfolio";
+import { useContent } from "@/data/useContent";
+import { useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/cv")({
   head: () => ({
@@ -23,48 +25,53 @@ export const Route = createFileRoute("/cv")({
 
 /** A printable, document-style CV. The same page is exported to /Jiri-Paukrt-CV.pdf. */
 function CvPage() {
-  const projects = PROJECTS.filter((p) => p.role);
-  const pubs = PROJECTS.filter((p) => p.publication);
+  const { t } = useLang();
+  const { person, career, education, projects: all, tech, quadrantLabel, techLabel } = useContent();
+  const projects = all.filter((p) => p.role);
+  const pubs = all.filter((p) => p.publication);
   return (
     <div className="px-4 pt-10 md:px-8 print:p-0">
       <div className="no-print mx-auto mb-6 flex max-w-[860px] flex-wrap items-center justify-between gap-3">
-        <p className="telemetry text-[11px] text-cyan">Curriculum vitae</p>
+        <p className="telemetry text-[11px] text-cyan">{t("Curriculum vitae", "Životopis")}</p>
         <div className="flex gap-2">
           <a
             href="/Jiri-Paukrt-CV.pdf"
             download
             className="inline-flex h-10 items-center gap-2 rounded-full bg-cyan px-4 text-sm font-semibold text-void hover:brightness-105"
           >
-            <Download className="size-4" /> Download PDF
+            <Download className="size-4" /> {t("Download PDF", "Stáhnout PDF")}
           </a>
           <button
             type="button"
             onClick={() => window.print()}
             className="inline-flex h-10 items-center gap-2 rounded-full border border-star/15 px-4 text-sm text-star hover:bg-star/10"
           >
-            <Printer className="size-4" /> Print
+            <Printer className="size-4" /> {t("Print", "Tisk")}
           </button>
         </div>
       </div>
 
       <article className="cv-sheet mx-auto max-w-[860px] rounded-[20px] bg-white px-10 py-12 text-[12.5px] leading-[1.55] text-[#1d2a3d] shadow-2xl md:px-14 print:max-w-none print:rounded-none print:px-0 print:py-0 print:shadow-none">
         <header className="border-b-2 border-[#1f5fad] pb-5">
-          <h1 className="text-[34px] leading-tight font-semibold tracking-tight text-[#0f2443]">{PERSON.name}, Ing.</h1>
+          <h1 className="text-[34px] leading-tight font-semibold tracking-tight text-[#0f2443]">{t(`${person.name}, Ing.`, `Ing. ${person.name}`)}</h1>
           <p className="mt-1 text-[15px] font-medium text-[#1f5fad]">
-            {PERSON.role} · {PERSON.company} ({PERSON.city}, Ireland) · based in the {PERSON.home}
+            {t(
+              `${person.role} · ${PERSON.company} (${PERSON.city}, Ireland) · based in the ${PERSON.home}`,
+              `${person.role} · ${PERSON.company} (${PERSON.city}, Irsko) · žije v Česku`,
+            )}
           </p>
           <p className="mt-2 text-[12px] text-[#4a5a70]">
             linkedin.com/in/jiri-paukrt · paukrt.lovable.app
           </p>
         </header>
 
-        <Section title="Profile">
-          <p>{PERSON.summary}</p>
+        <Section title={t("Profile", "Profil")}>
+          <p>{person.summary}</p>
         </Section>
 
-        <Section title="Experience">
+        <Section title={t("Experience", "Praxe")}>
           <div className="space-y-5">
-            {CAREER.map((c) => (
+            {career.map((c) => (
               <div key={c.company} className="break-inside-avoid">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-4">
                   <h3 className="text-[14.5px] font-semibold text-[#0f2443]">
@@ -83,7 +90,7 @@ function CvPage() {
           </div>
         </Section>
 
-        <Section title="Selected projects">
+        <Section title={t("Selected projects", "Vybrané projekty")}>
           <ul className="space-y-1.5">
             {projects.map((p) => (
               <li key={p.slug} className="break-inside-avoid">
@@ -94,13 +101,13 @@ function CvPage() {
                   {p.years ? `, ${p.years}` : ""}
                 </span>
                 <br />
-                <span>Role: {p.role}</span>
+                <span>{t("Role", "Role")}: {p.role}</span>
               </li>
             ))}
           </ul>
         </Section>
 
-        <Section title="Publications & conference papers">
+        <Section title={t("Publications & conference papers", "Publikace a konferenční příspěvky")}>
           <ul className="space-y-1.5">
             {pubs.map((p) => (
               <li key={p.slug} className="break-inside-avoid">
@@ -115,14 +122,14 @@ function CvPage() {
         </Section>
 
         <div className="grid gap-x-10 md:grid-cols-2 print:grid-cols-2">
-          <Section title="Tools">
+          <Section title={t("Tools", "Nástroje")}>
             <dl className="space-y-1.5">
               {QUADRANTS.map((q) => (
                 <div key={q}>
-                  <dt className="inline font-semibold text-[#0f2443]">{q}: </dt>
+                  <dt className="inline font-semibold text-[#0f2443]">{quadrantLabel(q)}: </dt>
                   <dd className="inline">
-                    {TECH.filter((t) => t.quadrant === q)
-                      .map((t) => t.name)
+                    {tech.filter((x) => x.quadrant === q)
+                      .map((x) => techLabel(x.name))
                       .join(", ")}
                   </dd>
                 </div>
@@ -130,14 +137,14 @@ function CvPage() {
             </dl>
           </Section>
           <div>
-            <Section title="Education">
-              <p className="font-semibold text-[#0f2443]">{EDUCATION.degree}</p>
+            <Section title={t("Education", "Vzdělání")}>
+              <p className="font-semibold text-[#0f2443]">{education.degree}</p>
               <p className="text-[#4a5a70]">
-                {EDUCATION.school}, {EDUCATION.location}, {EDUCATION.years}
+                {education.school}, {education.location}, {education.years}
               </p>
             </Section>
-            <Section title="Languages">
-              <p>{PERSON.languages.map((l) => `${l.name} (${l.level.toLowerCase()})`).join(" · ")}</p>
+            <Section title={t("Languages", "Jazyky")}>
+              <p>{person.languages.map((l) => `${l.name} (${l.level.toLowerCase()})`).join(" · ")}</p>
             </Section>
           </div>
         </div>
