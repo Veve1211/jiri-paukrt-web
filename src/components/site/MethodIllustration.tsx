@@ -277,7 +277,7 @@ export function MethodIllustration({ method, className }: { method: Method; clas
         </button>
       </div>
       {showVc && (
-        <div className="absolute right-2 bottom-2 left-2 flex flex-wrap items-center justify-end gap-x-2.5 gap-y-1 rounded-md bg-void/70 px-2 py-1 font-mono text-[9px] tracking-[0.1em] text-dim animate-in fade-in-0">
+        <div className="absolute right-2 bottom-2 flex max-w-[calc(100%-1rem)] flex-wrap items-center justify-end gap-x-2.5 gap-y-1 rounded-md bg-void/70 px-2 py-1 font-mono text-[9px] tracking-[0.1em] text-dim animate-in fade-in-0">
           <span className="text-star/80">{t("V/C = VOLUME / CAPACITY", "V/C = INTENZITA / KAPACITA")}</span>
           <span className="flex items-center gap-1">
             <span className="h-1 w-3 bg-go" /> {t("<0.70", "<0,70")}
