@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, X } from "lucide-react";
+import { ArrowRight, Gauge, Route, X } from "lucide-react";
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 
 import { useContent } from "@/data/useContent";
@@ -218,9 +218,10 @@ function FlowLink({
         y2={b.y}
         strokeWidth={bandWidth(flow) + (lit ? 2 : 0)}
         strokeLinecap="butt"
+        style={{ transition: "stroke 1.8s ease, stroke-width 0.5s, opacity 0.5s" }}
         className={cn(
           c.stroke,
-          "transition-all duration-500",
+          "transition-[stroke-width,opacity] duration-500",
           lit ? "opacity-100" : showVc ? "opacity-75" : "opacity-60",
         )}
       />
@@ -314,6 +315,7 @@ export function HeroRoadNetwork() {
   };
   const [showVc, setShowVc] = useState(false);
   const [pulse, setPulse] = useState(false);
+  const [hint, setHint] = useState(true);
   const touched = useRef(false);
   const wrapRef = useRef<HTMLDivElement>(null);
   const reducedMotion = usePrefersReducedMotion();
@@ -323,6 +325,7 @@ export function HeroRoadNetwork() {
   const chooseVc = (on: boolean) => {
     touched.current = true;
     setPulse(false);
+    setHint(false);
     setShowVc(on);
   };
 
@@ -339,7 +342,7 @@ export function HeroRoadNetwork() {
           setShowVc(true);
           if (!reducedMotion) setPulse(true);
         },
-        reducedMotion ? 0 : 1200,
+        reducedMotion ? 0 : 2500,
       );
     };
     if (typeof IntersectionObserver === "undefined") {
@@ -614,43 +617,52 @@ export function HeroRoadNetwork() {
         </svg>
 
         {/* view switch: plain network vs. congestion (V/C) colours */}
-        <div
-          role="radiogroup"
-          aria-label={t("Map view", "Zobrazení mapy")}
-          onAnimationEnd={() => setPulse(false)}
-          className={cn(
-            "absolute top-1 left-1 z-10 inline-flex gap-0.5 rounded-full border border-cyan/50 bg-void/85 p-0.5 font-mono text-[10px] tracking-[0.1em] uppercase backdrop-blur-sm sm:text-[11px]",
-            pulse && "animate-[vc-pulse_1s_ease-in-out_2]",
+        <div className="absolute top-1 left-1 z-10 flex flex-col items-start gap-1.5">
+          <div
+            role="radiogroup"
+            aria-label={t("Map view", "Zobrazení mapy")}
+            onAnimationEnd={() => setPulse(false)}
+            className={cn(
+              "inline-flex gap-1 rounded-full border border-cyan bg-void/90 p-1 font-mono text-[11px] tracking-[0.1em] uppercase shadow-[0_0_18px_-4px_var(--cyan)] backdrop-blur-sm sm:text-xs",
+              pulse && "animate-[vc-pulse_1.4s_ease-in-out_3]",
+            )}
+          >
+            {[
+              { on: false, label: t("Network", "Síť"), Icon: Route },
+              { on: true, label: t("Congestion (V/C)", "Vytížení (V/C)"), Icon: Gauge },
+            ].map(({ on, label, Icon }) => (
+              <button
+                key={String(on)}
+                type="button"
+                role="radio"
+                aria-checked={showVc === on}
+                onClick={() => chooseVc(on)}
+                title={
+                  on
+                    ? t(
+                        "Colour roads by volume-to-capacity ratio",
+                        "Obarvit silnice podle poměru intenzity a kapacity",
+                      )
+                    : undefined
+                }
+                className={cn(
+                  "inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 transition-colors duration-700",
+                  showVc === on
+                    ? "bg-cyan text-void"
+                    : "text-star hover:bg-cyan/15 hover:text-cyan",
+                )}
+              >
+                <Icon className="size-3.5" aria-hidden="true" />
+                {label}
+              </button>
+            ))}
+          </div>
+          {hint && (
+            <div className="hidden items-center gap-1.5 pl-3 font-mono text-[10px] sm:flex tracking-[0.1em] text-cyan uppercase animate-in fade-in-0">
+              <span className="size-1.5 animate-pulse rounded-full bg-cyan" />
+              {t("Switch the map view", "Přepněte zobrazení mapy")}
+            </div>
           )}
-        >
-          {[
-            { on: false, label: t("Network", "Síť") },
-            { on: true, label: t("Congestion (V/C)", "Vytížení (V/C)") },
-          ].map((o) => (
-            <button
-              key={String(o.on)}
-              type="button"
-              role="radio"
-              aria-checked={showVc === o.on}
-              onClick={() => chooseVc(o.on)}
-              title={
-                o.on
-                  ? t(
-                      "Colour roads by volume-to-capacity ratio",
-                      "Obarvit silnice podle poměru intenzity a kapacity",
-                    )
-                  : undefined
-              }
-              className={cn(
-                "rounded-full px-3 py-1.5 transition-colors",
-                showVc === o.on
-                  ? "bg-cyan text-void"
-                  : "text-starblue hover:bg-cyan/10 hover:text-cyan",
-              )}
-            >
-              {o.label}
-            </button>
-          ))}
         </div>
 
         {/* legend */}
