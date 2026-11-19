@@ -63,6 +63,7 @@ interface ProjectCs {
   usedFor?: string;
   metricLabels?: string[];
   venue?: string;
+  publicationTitle?: string;
 }
 
 export const PROJECTS_CS: Record<string, ProjectCs> = {
@@ -83,6 +84,7 @@ export const PROJECTS_CS: Record<string, ProjectCs> = {
     usedFor: "NTA podle něj posuzuje budoucí varianty dopravy a využití území na národní i regionální úrovni.",
     metricLabels: ["Regionální multimodální modely", "Záznamy cestovních deníků (2022)"],
     venue: "NTA, září 2025 · prezentováno na ETC 2025, Antverpy",
+    publicationTitle: "Odhad míry tvorby cest v Irsku po covidu-19",
   },
   "nta-long-distance-model": {
     title: "Model dálkové dopravy NTA",
@@ -99,6 +101,8 @@ export const PROJECTS_CS: Record<string, ProjectCs> = {
     role: "Vytvořil model dálkové poptávky; spoluprezentující na ETC 2019",
     usedFor: "Testování změn na dálkové železnici — víc vlaků, vyšší kapacita nebo nové jízdné.",
     metricLabels: ["Modelované druhy dopravy", "ETC Dublin"],
+    venue: "Evropská dopravní konference (ETC 2019), Dublin",
+    publicationTitle: "Model dálkové dopravy irského Národního dopravního úřadu",
   },
   "glasgow-m74-evaluation": {
     title: "Dostavba dálnice M74 — 5 let po otevření",
@@ -114,6 +118,8 @@ export const PROJECTS_CS: Record<string, ProjectCs> = {
     role: "Spoluautor hodnocení pět let po otevření",
     usedFor: "Ověření, zda nová dálnice pět let po otevření přinesla očekávané odlehčení dopravy.",
     metricLabels: ["Nová dálnice", "Po otevření"],
+    venue: "Konference STAR 2017, Glasgow",
+    publicationTitle: "Hodnocení projektů skotské páteřní silniční sítě (STRIPE): dostavba dálnice M74 — 5 let po otevření",
   },
   "road-safety-traffic-conflicts": {
     title: "Bezpečnost provozu pomocí dopravních konfliktů",
@@ -130,6 +136,8 @@ export const PROJECTS_CS: Record<string, ProjectCs> = {
     role: "Spoluautor",
     usedFor: "Ověření, zda mikrosimulace dokáže odhalit rizikové křižovatky dřív, než dojde k nehodám.",
     metricLabels: ["Porovnané metody", "ICTTE Bělehrad"],
+    venue: "ICTTE 2014, Bělehrad",
+    publicationTitle: "Hodnocení bezpečnosti silničního provozu pomocí dopravních konfliktů: pilotní srovnání mikrosimulace a pozorování",
   },
   "commonwealth-games": {
     title: "Poptávka návštěvníků Her Commonwealthu",

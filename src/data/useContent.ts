@@ -42,7 +42,10 @@ function localizeProject(p: Project): Project {
   };
   if (cs.role) out.role = cs.role;
   if (cs.usedFor) out.usedFor = cs.usedFor;
-  if (p.publication && cs.venue) out.publication = { ...p.publication, venue: cs.venue };
+  if (p.publication && (cs.venue || cs.publicationTitle)) {
+    out.publication = { ...p.publication, venue: cs.venue ?? p.publication.venue };
+    if (cs.publicationTitle) out.publication.titleCs = cs.publicationTitle;
+  }
   return out;
 }
 

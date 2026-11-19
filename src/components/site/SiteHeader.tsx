@@ -45,7 +45,7 @@ export function SiteHeader() {
           download
           className="hidden items-center gap-2 rounded-full bg-cyan px-4 py-2 font-mono text-[11px] font-semibold tracking-wider text-void uppercase transition-[filter] hover:brightness-105 lg:flex"
         >
-          {t("Download CV", "Stáhnout CV")}
+          {t("Download CV", "Stáhnout CV (EN)")}
         </a>
         </div>
 
@@ -80,7 +80,7 @@ export function SiteHeader() {
               download
               className="absolute inset-x-6 bottom-8 flex h-12 items-center justify-center rounded-full bg-cyan font-mono text-[11px] font-semibold tracking-wider text-void uppercase"
             >
-              {t("Download CV (PDF)", "Stáhnout CV (PDF)")}
+              {t("Download CV (PDF)", "Stáhnout CV (PDF, anglicky)")}
             </a>
           </SheetContent>
         </Sheet>

@@ -91,7 +91,7 @@ function Hero() {
         <div className="mt-8 flex flex-wrap gap-3">
           <Button asChild variant="glow" size="pill" className="font-medium">
             <a href="/Jiri-Paukrt-CV.pdf" download>
-              {t("Download CV (PDF)", "Stáhnout CV (PDF)")}
+              {t("Download CV (PDF)", "Stáhnout CV (PDF, anglicky)")}
             </a>
           </Button>
           <Button asChild variant="glass" size="pill" className="font-normal">

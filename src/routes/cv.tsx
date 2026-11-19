@@ -39,7 +39,7 @@ function CvPage() {
             download
             className="inline-flex h-10 items-center gap-2 rounded-full bg-cyan px-4 text-sm font-semibold text-void hover:brightness-105"
           >
-            <Download className="size-4" /> {t("Download PDF", "Stáhnout PDF")}
+            <Download className="size-4" /> {t("Download PDF", "Stáhnout PDF (anglicky)")}
           </a>
           <button
             type="button"
@@ -111,7 +111,9 @@ function CvPage() {
           <ul className="space-y-1.5">
             {pubs.map((p) => (
               <li key={p.slug} className="break-inside-avoid">
-                <span className="font-medium text-[#0f2443]">{p.publication!.title}.</span>{" "}
+                <span className="font-medium text-[#0f2443]">{p.publication!.title}</span>
+                {p.publication!.titleCs && <span className="text-[#0f2443]"> ({p.publication!.titleCs})</span>}
+                <span className="font-medium text-[#0f2443]">.</span>{" "}
                 <span className="text-[#4a5a70]">
                   {p.publication!.authors ? `${p.publication!.authors}. ` : ""}
                   {p.publication!.venue}.

@@ -166,6 +166,7 @@ function ProjectPage() {
                 <BookOpen className="size-3.5" /> {t("Publication", "Publikace")}
               </div>
               <p className="mt-3 text-base leading-snug font-medium">"{p.publication.title}"</p>
+              {p.publication.titleCs && <p className="mt-1 text-sm leading-snug text-dim">({p.publication.titleCs})</p>}
               <p className="mt-2 text-sm text-dim">{p.publication.venue}</p>
               {p.publication.authors && <p className="mt-1 text-sm text-dim">{p.publication.authors}</p>}
               {p.publication.url && (

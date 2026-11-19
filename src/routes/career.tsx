@@ -52,7 +52,7 @@ function CareerPage() {
         download
         className="mt-6 inline-flex h-11 items-center gap-2 rounded-full bg-cyan px-5 text-sm font-semibold text-void shadow-glow hover:brightness-105"
       >
-        <Download className="size-4" /> {t("Download CV (PDF)", "Stáhnout CV (PDF)")}
+        <Download className="size-4" /> {t("Download CV (PDF)", "Stáhnout CV (PDF, anglicky)")}
       </a>
 
       <ol className="relative mt-12 max-w-4xl">

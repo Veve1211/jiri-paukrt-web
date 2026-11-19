@@ -68,6 +68,8 @@ export interface Metric {
 
 export interface Publication {
   title: string;
+  /** Czech translation of the title, shown in brackets in the Czech version. */
+  titleCs?: string;
   venue: string;
   authors?: string;
   url?: string;
