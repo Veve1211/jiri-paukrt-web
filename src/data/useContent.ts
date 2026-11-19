@@ -52,7 +52,13 @@ function localizeProject(p: Project): Project {
 function localizeCareer(c: CareerEntry): CareerEntry {
   const cs = CAREER_CS[c.company];
   if (!cs) return c;
-  return { ...c, years: cs.years ?? c.years, role: cs.role ?? c.role, location: cs.location ?? c.location, duties: cs.duties };
+  return {
+    ...c,
+    years: cs.years ?? c.years,
+    role: cs.role ?? c.role,
+    location: cs.location ?? c.location,
+    duties: cs.duties,
+  };
 }
 
 /** Portfolio content in the current language. */
@@ -73,7 +79,9 @@ export function useContent() {
           waysOfWorking: PERSON_CS.waysOfWorking,
         }
       : PERSON;
-    const tech: Tech[] = cs ? TECH.map((t) => ({ ...t, blurb: TECH_BLURB_CS[t.name] ?? t.blurb })) : TECH;
+    const tech: Tech[] = cs
+      ? TECH.map((t) => ({ ...t, blurb: TECH_BLURB_CS[t.name] ?? t.blurb }))
+      : TECH;
     return {
       lang,
       person,
@@ -82,7 +90,8 @@ export function useContent() {
       education: cs ? { ...EDUCATION, ...EDUCATION_CS } : EDUCATION,
       tech,
       getProject: (slug: string) => projects.find((p) => p.slug === slug),
-      domainLabel: (k: DomainKey) => (cs ? DOMAINS_CS[k] : (DOMAINS.find((d) => d.key === k)?.label ?? k)),
+      domainLabel: (k: DomainKey) =>
+        cs ? DOMAINS_CS[k] : (DOMAINS.find((d) => d.key === k)?.label ?? k),
       quadrantLabel: (q: Quadrant) => (cs ? QUADRANT_CS[q] : q),
       /** Display name of a tool (the `name` stays the stable key). */
       techLabel: (name: string) => (cs ? (TECH_NAME_CS[name] ?? name) : name),

@@ -21,7 +21,11 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 px-4 pt-4 md:px-8 md:pt-5">
       <div className="glass mx-auto flex h-14 max-w-7xl items-center justify-between rounded-full pr-2 pl-5 md:pr-2.5 md:pl-6">
-        <Link to="/" aria-label={t("Jiri Paukrt — home", "Jiří Paukrt — úvod")} className="shrink-0">
+        <Link
+          to="/"
+          aria-label={t("Jiri Paukrt — home", "Jiří Paukrt — úvod")}
+          className="shrink-0"
+        >
           <BrandMark compactTagline />
         </Link>
 
@@ -39,14 +43,14 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-        <LangSwitch />
-        <a
-          href="/Jiri-Paukrt-CV.pdf"
-          download
-          className="hidden items-center gap-2 rounded-full bg-cyan px-4 py-2 font-mono text-[11px] font-semibold tracking-wider text-void uppercase transition-[filter] hover:brightness-105 lg:flex"
-        >
-          {t("Download CV", "Stáhnout CV (EN)")}
-        </a>
+          <LangSwitch />
+          <a
+            href="/Jiri-Paukrt-CV.pdf"
+            download
+            className="hidden items-center gap-2 rounded-full bg-cyan px-4 py-2 font-mono text-[11px] font-semibold tracking-wider text-void uppercase transition-[filter] hover:brightness-105 lg:flex"
+          >
+            {t("Download CV", "Stáhnout CV (EN)")}
+          </a>
         </div>
 
         <Sheet open={open} onOpenChange={setOpen}>
@@ -61,7 +65,10 @@ export function SiteHeader() {
             <div className="mt-2">
               <BrandMark />
             </div>
-            <nav aria-label={t("Mobile menu", "Mobilní menu")} className="mt-10 flex flex-col gap-1">
+            <nav
+              aria-label={t("Mobile menu", "Mobilní menu")}
+              className="mt-10 flex flex-col gap-1"
+            >
               {NAV.map((item, i) => (
                 <Link
                   key={item.to}

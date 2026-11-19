@@ -48,7 +48,10 @@ export function simulate(demand: number, m: Measures): SimResult {
   const speedKmh = bprSpeed(demand, capacity);
   const travelTimeMin = (CORRIDOR_KM / speedKmh) * 60;
   const conflictsPerHour =
-    CONFLICT_RATE * Math.max(0, demand) * vc ** 2 * (m.conflictRedesign ? 1 - CONFLICT_REDESIGN_REDUCTION : 1);
+    CONFLICT_RATE *
+    Math.max(0, demand) *
+    vc ** 2 *
+    (m.conflictRedesign ? 1 - CONFLICT_REDESIGN_REDUCTION : 1);
   return { capacity, vc, speedKmh, travelTimeMin, conflictsPerHour };
 }
 

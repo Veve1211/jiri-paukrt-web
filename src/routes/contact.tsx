@@ -20,7 +20,8 @@ export const Route = createFileRoute("/contact")({
       { property: "og:title", content: "Contact — Jiri Paukrt" },
       {
         property: "og:description",
-        content: "Send a message or connect on LinkedIn. Works for SYSTRA in Dublin, based in the Czech Republic.",
+        content:
+          "Send a message or connect on LinkedIn. Works for SYSTRA in Dublin, based in the Czech Republic.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -53,13 +54,16 @@ function ContactPage() {
           <div className="glass mt-10 flex items-center gap-5 rounded-[20px] p-5">
             <MonogramBadge className="size-24 shrink-0" />
             <div>
-              <div className="telemetry text-[10px] text-cyan">{t("Based in the Czech Republic", "Žije v Česku")}</div>
+              <div className="telemetry text-[10px] text-cyan">
+                {t("Based in the Czech Republic", "Žije v Česku")}
+              </div>
               <div className="mt-1 text-lg font-medium">{t(PERSON.name, "Jiří Paukrt")}</div>
               <div className="text-sm text-dim">
                 {t(PERSON.role, "Hlavní dopravní inženýr")} · {PERSON.company}
               </div>
               <div className="mt-3 flex items-center gap-1.5 font-mono text-[10.5px] tracking-wider text-dim uppercase">
-                <MapPin className="size-3 text-cyan" /> {t("Czech Republic · SYSTRA Dublin", "Česko · SYSTRA Dublin")}
+                <MapPin className="size-3 text-cyan" />{" "}
+                {t("Czech Republic · SYSTRA Dublin", "Česko · SYSTRA Dublin")}
               </div>
             </div>
           </div>
@@ -77,7 +81,10 @@ function ContactPage() {
           </Button>
         </div>
 
-        <section className="glass rounded-[20px] p-5 md:p-7 lg:col-span-7" aria-labelledby="form-title">
+        <section
+          className="glass rounded-[20px] p-5 md:p-7 lg:col-span-7"
+          aria-labelledby="form-title"
+        >
           <div className="telemetry text-[10px] text-cyan">{t("Message", "Zpráva")}</div>
           <h2 id="form-title" className="mt-2 mb-6 text-2xl font-light tracking-tight">
             {t("Send Jiri a ", "Napište Jiřímu ")}

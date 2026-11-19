@@ -26,9 +26,14 @@ function NotFoundComponent() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">{t("Page not found", "Stránka nenalezena")}</h2>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">
+          {t("Page not found", "Stránka nenalezena")}
+        </h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          {t("The page you're looking for doesn't exist or has been moved.", "Hledaná stránka neexistuje nebo byla přesunuta.")}
+          {t(
+            "The page you're looking for doesn't exist or has been moved.",
+            "Hledaná stránka neexistuje nebo byla přesunuta.",
+          )}
         </p>
         <div className="mt-6">
           <Link
@@ -103,7 +108,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "Jiri Paukrt — Principal Transportation Engineer" },
       {
         property: "og:description",
-        content: "27+ years of transport demand modelling, microsimulation and GIS across Ireland, the UK, Australia and Europe.",
+        content:
+          "27+ years of transport demand modelling, microsimulation and GIS across Ireland, the UK, Australia and Europe.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -149,17 +155,17 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <LangProvider>
-      <BlueprintBackdrop />
-      <div className="relative flex min-h-screen flex-col">
-        <SiteHeader />
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <main className="relative z-10 flex-1">
-          <Outlet />
-        </main>
-        <SiteFooter />
-      </div>
-      <CzechDocumentTitle />
-      <Toaster theme="dark" position="bottom-right" />
+        <BlueprintBackdrop />
+        <div className="relative flex min-h-screen flex-col">
+          <SiteHeader />
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <main className="relative z-10 flex-1">
+            <Outlet />
+          </main>
+          <SiteFooter />
+        </div>
+        <CzechDocumentTitle />
+        <Toaster theme="dark" position="bottom-right" />
       </LangProvider>
     </QueryClientProvider>
   );
@@ -198,7 +204,9 @@ function CzechDocumentTitle() {
     const path = pathname.replace(/\/$/, "") || "/";
     const slug = path.startsWith("/projects/") ? path.slice("/projects/".length) : undefined;
     const project = slug ? getProject(slug) : undefined;
-    const title = project ? `${project.title} — Jiří Paukrt` : (TITLE_CS[path] ?? "Stránka nenalezena — Jiří Paukrt");
+    const title = project
+      ? `${project.title} — Jiří Paukrt`
+      : (TITLE_CS[path] ?? "Stránka nenalezena — Jiří Paukrt");
     // run after the router has written its own (English) title
     const id = window.setTimeout(() => {
       const el = document.querySelector("title");

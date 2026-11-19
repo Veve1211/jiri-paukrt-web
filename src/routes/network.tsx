@@ -4,13 +4,7 @@ import { useState } from "react";
 
 import { NetworkMap } from "@/components/site/NetworkMap";
 import { PageIntro } from "@/components/site/PageIntro";
-import {
-  getLocation,
-  LOCATIONS,
-  projectsAt,
-  REGIONS,
-  type Region,
-} from "@/data/portfolio";
+import { getLocation, LOCATIONS, projectsAt, REGIONS, type Region } from "@/data/portfolio";
 import { useContent } from "@/data/useContent";
 import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -32,7 +26,8 @@ export const Route = createFileRoute("/network")({
       { property: "og:title", content: "Project Map — Jiri Paukrt" },
       {
         property: "og:description",
-        content: "Where the models were built: national demand models, microsimulations, major events and road safety research.",
+        content:
+          "Where the models were built: national demand models, microsimulations, major events and road safety research.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -41,8 +36,18 @@ export const Route = createFileRoute("/network")({
   component: NetworkPage,
 });
 
-const KIND_LABEL = { hq: "Current employer", project: "Project", base: "Career base", town: "Town model" } as const;
-const KIND_LABEL_CS = { hq: "Současný zaměstnavatel", project: "Projekt", base: "Kariérní zastávka", town: "Model města" } as const;
+const KIND_LABEL = {
+  hq: "Current employer",
+  project: "Project",
+  base: "Career base",
+  town: "Town model",
+} as const;
+const KIND_LABEL_CS = {
+  hq: "Současný zaměstnavatel",
+  project: "Projekt",
+  base: "Kariérní zastávka",
+  town: "Model města",
+} as const;
 function NetworkPage() {
   const { node } = Route.useSearch();
   const navigate = Route.useNavigate();
@@ -73,7 +78,11 @@ function NetworkPage() {
         )}
       </PageIntro>
 
-      <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label={t("Filter by region", "Filtrovat podle země")}>
+      <div
+        className="mt-8 flex flex-wrap gap-2"
+        role="group"
+        aria-label={t("Filter by region", "Filtrovat podle země")}
+      >
         {[undefined, ...REGIONS].map((r) => {
           const count = r ? LOCATIONS.filter((l) => l.region === r).length : LOCATIONS.length;
           const on = region === r;
@@ -85,10 +94,13 @@ function NetworkPage() {
               onClick={() => setRegion(r)}
               className={cn(
                 "rounded-full border px-4 py-2 font-mono text-[11px] tracking-wider uppercase transition-colors",
-                on ? "border-cyan/40 bg-cyan/10 text-cyan" : "border-star/10 bg-star/[0.03] text-dim hover:text-star",
+                on
+                  ? "border-cyan/40 bg-cyan/10 text-cyan"
+                  : "border-star/10 bg-star/[0.03] text-dim hover:text-star",
               )}
             >
-              {r ? regionLabel(r) : t("All places", "Všechna místa")} <span className="ml-1 text-dim/70">{String(count).padStart(2, "0")}</span>
+              {r ? regionLabel(r) : t("All places", "Všechna místa")}{" "}
+              <span className="ml-1 text-dim/70">{String(count).padStart(2, "0")}</span>
             </button>
           );
         })}
@@ -100,23 +112,46 @@ function NetworkPage() {
             <NetworkMap selected={node} region={region} onSelect={select} />
           </div>
           <div className="flex flex-wrap gap-x-5 gap-y-1 border-t border-star/10 px-4 py-3 font-mono text-[10px] tracking-wider text-dim">
-            <span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-cyan" /> {t("CURRENT EMPLOYER", "SOUČASNÝ ZAMĚSTNAVATEL")}</span>
-            <span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-star" /> {t("PROJECT", "PROJEKT")}</span>
-            <span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-starblue" /> {t("CAREER BASE", "KARIÉRNÍ ZASTÁVKA")}</span>
-            <span className="flex items-center gap-1.5"><span className="size-1.5 rounded-full bg-star/80" /> {t("TOWN MODEL", "MODEL MĚSTA")}</span>
-            <span className="flex items-center gap-1.5"><span className="h-px w-4 border-t border-dashed border-volt" /> {t("CAREER PATH", "KARIÉRNÍ CESTA")}</span>
+            <span className="flex items-center gap-1.5">
+              <span className="size-2 rounded-full bg-cyan" />{" "}
+              {t("CURRENT EMPLOYER", "SOUČASNÝ ZAMĚSTNAVATEL")}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="size-2 rounded-full bg-star" /> {t("PROJECT", "PROJEKT")}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="size-2 rounded-full bg-starblue" />{" "}
+              {t("CAREER BASE", "KARIÉRNÍ ZASTÁVKA")}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="size-1.5 rounded-full bg-star/80" /> {t("TOWN MODEL", "MODEL MĚSTA")}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="h-px w-4 border-t border-dashed border-volt" />{" "}
+              {t("CAREER PATH", "KARIÉRNÍ CESTA")}
+            </span>
           </div>
         </div>
 
         <aside className="glass rounded-[20px] p-5 lg:col-span-4" aria-live="polite">
-          {loc ? <LocationPanel id={loc.id} onClose={() => select(undefined)} /> : <Overview region={region} onSelect={select} />}
+          {loc ? (
+            <LocationPanel id={loc.id} onClose={() => select(undefined)} />
+          ) : (
+            <Overview region={region} onSelect={select} />
+          )}
         </aside>
       </div>
     </div>
   );
 }
 
-function Overview({ region, onSelect }: { region?: Region | undefined; onSelect: (id: string) => void }) {
+function Overview({
+  region,
+  onSelect,
+}: {
+  region?: Region | undefined;
+  onSelect: (id: string) => void;
+}) {
   const { t, lang } = useLang();
   const { regionLabel, countryLabel, cityLabel } = useContent();
   const kind = lang === "cs" ? KIND_LABEL_CS : KIND_LABEL;
@@ -126,8 +161,15 @@ function Overview({ region, onSelect }: { region?: Region | undefined; onSelect:
   return (
     <div>
       <div className="telemetry text-[10px] text-cyan">{t("Overview", "Přehled")}</div>
-      <h2 className="mt-2 text-xl font-medium">{region ? regionLabel(region) : t("All places", "Všechna místa")}</h2>
-      <p className="mt-1 text-sm text-dim">{t("Select a place on the map or from the list below.", "Vyberte místo na mapě nebo v seznamu níže.")}</p>
+      <h2 className="mt-2 text-xl font-medium">
+        {region ? regionLabel(region) : t("All places", "Všechna místa")}
+      </h2>
+      <p className="mt-1 text-sm text-dim">
+        {t(
+          "Select a place on the map or from the list below.",
+          "Vyberte místo na mapě nebo v seznamu níže.",
+        )}
+      </p>
       <ul className="mt-5 divide-y divide-star/10">
         {list.map((l) => (
           <li key={l.id}>
@@ -138,7 +180,9 @@ function Overview({ region, onSelect }: { region?: Region | undefined; onSelect:
             >
               <span>
                 <span className="block text-sm font-medium">{cityLabel(l.name)}</span>
-                <span className="telemetry block text-[9.5px] text-dim">{kind[l.kind]} · {country(l.country)}</span>
+                <span className="telemetry block text-[9.5px] text-dim">
+                  {kind[l.kind]} · {country(l.country)}
+                </span>
               </span>
               <span className="font-mono text-[10px] text-dim">
                 {String(projectsAt(l.id).length).padStart(2, "0")}
@@ -149,7 +193,9 @@ function Overview({ region, onSelect }: { region?: Region | undefined; onSelect:
       </ul>
       {towns.length > 0 && (
         <div className="mt-4">
-          <div className="telemetry text-[9.5px] text-dim">{t("Town microsimulations", "Mikrosimulace měst")} · {towns.length}</div>
+          <div className="telemetry text-[9.5px] text-dim">
+            {t("Town microsimulations", "Mikrosimulace měst")} · {towns.length}
+          </div>
           <div className="mt-2 flex flex-wrap gap-1.5">
             {towns.map((town) => (
               <button
@@ -165,7 +211,9 @@ function Overview({ region, onSelect }: { region?: Region | undefined; onSelect:
         </div>
       )}
       {list.length === 0 && towns.length === 0 && (
-        <p className="mt-6 text-sm text-dim">{t("No places in this filter.", "Žádná místa pro tento filtr.")}</p>
+        <p className="mt-6 text-sm text-dim">
+          {t("No places in this filter.", "Žádná místa pro tento filtr.")}
+        </p>
       )}
     </div>
   );
@@ -182,8 +230,15 @@ function LocationPanel({ id, onClose }: { id: string; onClose: () => void }) {
   return (
     <div className="animate-in fade-in-0">
       <div className="flex items-start justify-between">
-        <div className="telemetry text-[10px] text-cyan">{kind[loc.kind]} · {regionLabel(loc.region)}</div>
-        <button type="button" onClick={onClose} className="rounded-full p-1 text-dim hover:bg-star/10 hover:text-star" aria-label={t("Back to overview", "Zpět na přehled")}>
+        <div className="telemetry text-[10px] text-cyan">
+          {kind[loc.kind]} · {regionLabel(loc.region)}
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          className="rounded-full p-1 text-dim hover:bg-star/10 hover:text-star"
+          aria-label={t("Back to overview", "Zpět na přehled")}
+        >
           <X className="size-4" />
         </button>
       </div>
@@ -191,23 +246,35 @@ function LocationPanel({ id, onClose }: { id: string; onClose: () => void }) {
       <p className="text-sm text-dim">{country(loc.country)}</p>
       <div className="mt-4 inline-flex items-baseline gap-2 rounded-[10px] border border-cyan/30 bg-cyan/[0.06] px-3 py-2">
         <span className="text-xl font-bold text-cyan">{projects.length}</span>
-        <span className="telemetry text-[9px] text-dim">{t(projects.length === 1 ? "Linked project" : "Linked projects", "Propojené projekty")}</span>
+        <span className="telemetry text-[9px] text-dim">
+          {t(projects.length === 1 ? "Linked project" : "Linked projects", "Propojené projekty")}
+        </span>
       </div>
 
       {roles.map((r) => (
-        <div key={r.company} className="mt-4 rounded-[14px] border border-volt/30 bg-volt/[0.08] p-3">
+        <div
+          key={r.company}
+          className="mt-4 rounded-[14px] border border-volt/30 bg-volt/[0.08] p-3"
+        >
           <div className="telemetry text-[9.5px] text-starblue">{r.years}</div>
           <div className="mt-1 text-sm font-medium">{r.role}</div>
           <div className="text-xs text-dim">{r.company}</div>
         </div>
       ))}
       {loc.id === "prague" && (
-        <p className="mt-3 text-xs text-dim">{t("Also home to ČVUT, where Jiri earned his Ing. in Transport Planning and Traffic Engineering.", "Také sídlo ČVUT, kde Jiří získal titul Ing. v oboru dopravní plánování a dopravní inženýrství.")}</p>
+        <p className="mt-3 text-xs text-dim">
+          {t(
+            "Also home to ČVUT, where Jiri earned his Ing. in Transport Planning and Traffic Engineering.",
+            "Také sídlo ČVUT, kde Jiří získal titul Ing. v oboru dopravní plánování a dopravní inženýrství.",
+          )}
+        </p>
       )}
 
       {projects.length > 0 && (
         <div className="mt-5">
-          <div className="telemetry text-[9.5px] text-dim">{t("Projects here", "Projekty zde")}</div>
+          <div className="telemetry text-[9.5px] text-dim">
+            {t("Projects here", "Projekty zde")}
+          </div>
           <ul className="mt-2 space-y-2">
             {projects.map((p) => (
               <li key={p.slug}>

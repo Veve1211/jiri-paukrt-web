@@ -14,12 +14,22 @@ export function SiteFooter() {
         <div>
           <BrandMark />
           <p className="mt-4 max-w-xs text-sm text-dim">
-            {t(`${PERSON.name} — ${PERSON.role}, ${PERSON.company} ${PERSON.city}.`, `Jiří Paukrt — hlavní dopravní inženýr, ${PERSON.company} ${PERSON.city}.`)}
+            {t(
+              `${PERSON.name} — ${PERSON.role}, ${PERSON.company} ${PERSON.city}.`,
+              `Jiří Paukrt — hlavní dopravní inženýr, ${PERSON.company} ${PERSON.city}.`,
+            )}
           </p>
         </div>
-        <nav aria-label={t("Footer", "Patička")} className="flex flex-wrap gap-x-6 gap-y-2 md:flex-col">
+        <nav
+          aria-label={t("Footer", "Patička")}
+          className="flex flex-wrap gap-x-6 gap-y-2 md:flex-col"
+        >
           {NAV.map((item) => (
-            <Link key={item.to} to={item.to} className="telemetry text-[11px] text-dim hover:text-star">
+            <Link
+              key={item.to}
+              to={item.to}
+              className="telemetry text-[11px] text-dim hover:text-star"
+            >
               {t(item.label, item.cs)}
             </Link>
           ))}

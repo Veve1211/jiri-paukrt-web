@@ -81,7 +81,8 @@ export const PROJECTS_CS: Record<string, ProjectCs> = {
       "Prezentováno na European Transport Conference 2025 v Antverpách",
     ],
     role: "Řídil vývoj a kalibraci NDFM; vytvořil národní model zdrojů a cílů cest",
-    usedFor: "NTA podle něj posuzuje budoucí varianty dopravy a využití území na národní i regionální úrovni.",
+    usedFor:
+      "NTA podle něj posuzuje budoucí varianty dopravy a využití území na národní i regionální úrovni.",
     metricLabels: ["Regionální multimodální modely", "Záznamy cestovních deníků (2022)"],
     venue: "NTA, září 2025 · prezentováno na ETC 2025, Antverpy",
     publicationTitle: "Odhad míry tvorby cest v Irsku po covidu-19",
@@ -119,7 +120,8 @@ export const PROJECTS_CS: Record<string, ProjectCs> = {
     usedFor: "Ověření, zda nová dálnice pět let po otevření přinesla očekávané odlehčení dopravy.",
     metricLabels: ["Nová dálnice", "Po otevření"],
     venue: "Konference STAR 2017, Glasgow",
-    publicationTitle: "Hodnocení projektů skotské páteřní silniční sítě (STRIPE): dostavba dálnice M74 — 5 let po otevření",
+    publicationTitle:
+      "Hodnocení projektů skotské páteřní silniční sítě (STRIPE): dostavba dálnice M74 — 5 let po otevření",
   },
   "road-safety-traffic-conflicts": {
     title: "Bezpečnost provozu pomocí dopravních konfliktů",
@@ -134,17 +136,23 @@ export const PROJECTS_CS: Record<string, ProjectCs> = {
       "Prezentováno na ICTTE v Bělehradě, listopad 2014",
     ],
     role: "Spoluautor",
-    usedFor: "Ověření, zda mikrosimulace dokáže odhalit rizikové křižovatky dřív, než dojde k nehodám.",
+    usedFor:
+      "Ověření, zda mikrosimulace dokáže odhalit rizikové křižovatky dřív, než dojde k nehodám.",
     metricLabels: ["Porovnané metody", "ICTTE Bělehrad"],
     venue: "ICTTE 2014, Bělehrad",
-    publicationTitle: "Hodnocení bezpečnosti silničního provozu pomocí dopravních konfliktů: pilotní srovnání mikrosimulace a pozorování",
+    publicationTitle:
+      "Hodnocení bezpečnosti silničního provozu pomocí dopravních konfliktů: pilotní srovnání mikrosimulace a pozorování",
   },
   "commonwealth-games": {
     title: "Poptávka návštěvníků Her Commonwealthu",
     location: "Glasgow a Birmingham, Velká Británie",
     summary:
       "Modelování a plánování poptávky návštěvníků pro dvoje Hry Commonwealthu — prognóza, jak se návštěvníci v den akce dopraví na sportoviště.",
-    highlights: ["Hry Commonwealthu Glasgow 2014", "Hry Commonwealthu Birmingham 2022", "Modelování poptávky návštěvníků"],
+    highlights: [
+      "Hry Commonwealthu Glasgow 2014",
+      "Hry Commonwealthu Birmingham 2022",
+      "Modelování poptávky návštěvníků",
+    ],
     role: "Podílel se na modelování poptávky návštěvníků",
     usedFor: "Plánování, jak se návštěvníci během Her dopraví na sportoviště.",
     metricLabels: ["Ročníky Her", "Roky konání"],
@@ -202,7 +210,10 @@ export const PROJECTS_CS: Record<string, ProjectCs> = {
   },
 };
 
-export const CAREER_CS: Record<string, { years?: string; role?: string; location?: string; duties: string[] }> = {
+export const CAREER_CS: Record<
+  string,
+  { years?: string; role?: string; location?: string; duties: string[] }
+> = {
   SYSTRA: {
     years: "01/2008 – dosud",
     role: "Hlavní dopravní inženýr",
@@ -264,11 +275,15 @@ export const QUADRANT_CS: Record<Quadrant, string> = {
 };
 
 export const TECH_BLURB_CS: Record<string, string> = {
-  "3D visualisation": "Trojrozměrná vizualizace simulované dopravy, která klientům a veřejnosti vysvětlí navrhovaná řešení.",
-  "Paramics Discovery": "Mikroskopická simulace dopravy na křižovatkách, v koridorech a městských sítích, vozidlo po vozidle.",
-  "S-Paramics": "Mikrosimulační platforma použitá v pilotní studii bezpečnosti pomocí dopravních konfliktů.",
+  "3D visualisation":
+    "Trojrozměrná vizualizace simulované dopravy, která klientům a veřejnosti vysvětlí navrhovaná řešení.",
+  "Paramics Discovery":
+    "Mikroskopická simulace dopravy na křižovatkách, v koridorech a městských sítích, vozidlo po vozidle.",
+  "S-Paramics":
+    "Mikrosimulační platforma použitá v pilotní studii bezpečnosti pomocí dopravních konfliktů.",
   SATURN: "Strategické přidělení dopravy na síť: volba trasy a kongesce v celé síti.",
-  "Variable Demand Modeling": "Poptávka, která reaguje na změnu nákladů cesty — četnost, druh dopravy, cíl a čas.",
+  "Variable Demand Modeling":
+    "Poptávka, která reaguje na změnu nákladů cesty — četnost, druh dopravy, cíl a čas.",
   COBA: "Britská metodika hodnocení nákladů a přínosů silničních staveb.",
   "HDM-4": "Model Highway Development and Management pro hodnocení investic do silnic.",
   QGIS: "Prostorové analýzy v open-source GIS: nehodovost, dostupnost a mapování sítí.",

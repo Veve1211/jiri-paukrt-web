@@ -9,8 +9,7 @@ import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/projects/")({
-  validateSearch: (search: Record<string, unknown>): { domain?: DomainKey } =>
-    {
+  validateSearch: (search: Record<string, unknown>): { domain?: DomainKey } => {
     const raw = search["domain"];
     return isDomainKey(raw) ? { domain: raw } : {};
   },
@@ -25,7 +24,8 @@ export const Route = createFileRoute("/projects/")({
       { property: "og:title", content: "Projects & Publications — Jiri Paukrt" },
       {
         property: "og:description",
-        content: "Filter projects by strategic models, microsimulation, major events and road safety.",
+        content:
+          "Filter projects by strategic models, microsimulation, major events and road safety.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -59,8 +59,17 @@ function ProjectsPage() {
         )}
       </PageIntro>
 
-      <div className="mt-8 flex flex-wrap items-center gap-2" role="group" aria-label={t("Filter by domain", "Filtrovat podle oboru")}>
-        <FilterChip active={!domain} label={t("All projects", "Všechny projekty")} count={projects.length} search={{}} />
+      <div
+        className="mt-8 flex flex-wrap items-center gap-2"
+        role="group"
+        aria-label={t("Filter by domain", "Filtrovat podle oboru")}
+      >
+        <FilterChip
+          active={!domain}
+          label={t("All projects", "Všechny projekty")}
+          count={projects.length}
+          search={{}}
+        />
         {DOMAINS.map((d) => (
           <FilterChip
             key={d.key}
@@ -73,7 +82,11 @@ function ProjectsPage() {
       </div>
 
       <p className="mt-6 font-mono text-[11px] tracking-wider text-dim" aria-live="polite">
-        {String(list.length).padStart(2, "0")} {t(list.length === 1 ? "PROJECT" : "PROJECTS", list.length === 1 ? "PROJEKT" : list.length < 5 ? "PROJEKTY" : "PROJEKTŮ")}
+        {String(list.length).padStart(2, "0")}{" "}
+        {t(
+          list.length === 1 ? "PROJECT" : "PROJECTS",
+          list.length === 1 ? "PROJEKT" : list.length < 5 ? "PROJEKTY" : "PROJEKTŮ",
+        )}
       </p>
 
       {list.length > 0 ? (
@@ -84,7 +97,9 @@ function ProjectsPage() {
         </div>
       ) : (
         <div className="glass mt-4 rounded-[20px] p-10 text-center">
-          <p className="text-dim">{t("No projects in this category.", "V této kategorii nejsou žádné projekty.")}</p>
+          <p className="text-dim">
+            {t("No projects in this category.", "V této kategorii nejsou žádné projekty.")}
+          </p>
           <Link to="/projects" className="mt-3 inline-block text-sm text-cyan hover:underline">
             {t("Show all projects", "Zobrazit všechny projekty")}
           </Link>
@@ -92,7 +107,9 @@ function ProjectsPage() {
       )}
 
       <section className="mt-20" aria-labelledby="pubs">
-        <p className="font-mono text-[11px] tracking-[0.25em] text-cyan/80">{t("PUBLICATIONS & CONFERENCE PAPERS", "PUBLIKACE A KONFERENČNÍ PŘÍSPĚVKY")}</p>
+        <p className="font-mono text-[11px] tracking-[0.25em] text-cyan/80">
+          {t("PUBLICATIONS & CONFERENCE PAPERS", "PUBLIKACE A KONFERENČNÍ PŘÍSPĚVKY")}
+        </p>
         <h2 id="pubs" className="mt-4 text-3xl font-light tracking-tight md:text-4xl">
           {t("Papers & ", "Články a ")}
           <span className="font-bold">{t("Presentations", "přednášky")}</span>
@@ -109,9 +126,17 @@ function ProjectsPage() {
                   <BookOpen className="size-3.5" /> {p.publication!.venue.toUpperCase()}
                 </span>
                 <span className="md:col-span-7">
-                  <span className="block text-base font-medium group-hover:text-cyan">{p.publication!.title}</span>
-                  {p.publication!.titleCs && <span className="mt-0.5 block text-sm text-dim">({p.publication!.titleCs})</span>}
-                  {p.publication!.authors && <span className="mt-0.5 block text-sm text-dim">{p.publication!.authors}</span>}
+                  <span className="block text-base font-medium group-hover:text-cyan">
+                    {p.publication!.title}
+                  </span>
+                  {p.publication!.titleCs && (
+                    <span className="mt-0.5 block text-sm text-dim">
+                      ({p.publication!.titleCs})
+                    </span>
+                  )}
+                  {p.publication!.authors && (
+                    <span className="mt-0.5 block text-sm text-dim">{p.publication!.authors}</span>
+                  )}
                 </span>
                 <span className="hidden justify-end md:col-span-2 md:flex">
                   <ArrowRight className="size-4 text-dim group-hover:text-cyan" />
@@ -144,7 +169,9 @@ function FilterChip({
       aria-pressed={active}
       className={cn(
         "rounded-full border px-4 py-2 font-mono text-[11px] tracking-wider uppercase transition-colors",
-        active ? "border-cyan/40 bg-cyan/10 text-cyan" : "border-star/10 bg-star/[0.03] text-dim hover:text-star",
+        active
+          ? "border-cyan/40 bg-cyan/10 text-cyan"
+          : "border-star/10 bg-star/[0.03] text-dim hover:text-star",
       )}
     >
       {label} <span className="ml-1 text-dim/70">{String(count).padStart(2, "0")}</span>

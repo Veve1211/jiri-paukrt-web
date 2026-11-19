@@ -16,14 +16,17 @@ describe("corridor telemetry simulator", () => {
   });
 
   it("adaptive signals plus ramp metering raise capacity by 10% then 8%", () => {
-    expect(corridorCapacity({ adaptiveSignals: true, rampMetering: true, conflictRedesign: false })).toBeCloseTo(
-      3600 * 1.1 * 1.08,
-      6,
-    );
+    expect(
+      corridorCapacity({ adaptiveSignals: true, rampMetering: true, conflictRedesign: false }),
+    ).toBeCloseTo(3600 * 1.1 * 1.08, 6);
   });
 
   it("conflict-zone redesign alone cuts conflicts by 35% without changing speed", () => {
-    const c = compare(3000, { adaptiveSignals: false, rampMetering: false, conflictRedesign: true });
+    const c = compare(3000, {
+      adaptiveSignals: false,
+      rampMetering: false,
+      conflictRedesign: true,
+    });
     expect(c.conflictReductionPct).toBeCloseTo(35, 6);
     expect(c.speedGainPct).toBe(0);
   });

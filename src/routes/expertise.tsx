@@ -17,7 +17,8 @@ export const Route = createFileRoute("/expertise")({
       { property: "og:title", content: "Expertise & Tools — Jiri Paukrt" },
       {
         property: "og:description",
-        content: "The modelling tools behind the projects, and a small corridor flow simulator to try.",
+        content:
+          "The modelling tools behind the projects, and a small corridor flow simulator to try.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -49,7 +50,9 @@ function ExpertisePage() {
       </div>
 
       <section className="mt-20" aria-labelledby="sim">
-        <p className="font-mono text-[11px] tracking-[0.25em] text-cyan/80">{t("TRY IT — ILLUSTRATIVE MODEL", "VYZKOUŠEJTE — ILUSTRATIVNÍ MODEL")}</p>
+        <p className="font-mono text-[11px] tracking-[0.25em] text-cyan/80">
+          {t("TRY IT — ILLUSTRATIVE MODEL", "VYZKOUŠEJTE — ILUSTRATIVNÍ MODEL")}
+        </p>
         <h2 id="sim" className="mt-4 text-3xl font-light tracking-tight md:text-4xl">
           {t("Corridor ", "Simulátor ")}
           <span className="font-bold">{t("Flow Simulator", "dopravy v koridoru")}</span>
