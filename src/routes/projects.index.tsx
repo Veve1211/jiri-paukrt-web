@@ -168,13 +168,16 @@ function FilterChip({
       resetScroll={false}
       aria-pressed={active}
       className={cn(
-        "rounded-full border px-4 py-2 font-mono text-[11px] tracking-wider uppercase transition-colors",
+        "rounded-full border px-4 py-2 font-mono text-[11px] tracking-wider uppercase transition-colors duration-300",
         active
-          ? "border-cyan/40 bg-cyan/10 text-cyan"
-          : "border-star/10 bg-star/[0.03] text-dim hover:text-star",
+          ? "border-cyan bg-cyan text-void shadow-[0_0_18px_-4px_var(--cyan)]"
+          : "border-cyan/30 bg-void/60 text-star hover:border-cyan hover:bg-cyan/10 hover:text-cyan",
       )}
     >
-      {label} <span className="ml-1 text-dim/70">{String(count).padStart(2, "0")}</span>
+      {label}{" "}
+      <span className={cn("ml-1", active ? "text-void/70" : "text-dim")}>
+        {String(count).padStart(2, "0")}
+      </span>
     </Link>
   );
 }
