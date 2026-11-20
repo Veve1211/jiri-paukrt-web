@@ -319,24 +319,24 @@
 /* "spotlight": everything clickable lights up, but only while the pointer is on it */
 @media (hover: hover) {
   :is(
-      a,
-      button:not(:disabled),
-      [role="button"],
-      [role="radio"],
-      [role="switch"],
-      label:has(> button[role="switch"])
-    ) {
+    a,
+    button:not(:disabled),
+    [role="button"],
+    [role="radio"],
+    [role="switch"],
+    label:has(> button[role="switch"])
+  ) {
     transition:
       box-shadow 0.2s ease,
       filter 0.2s ease;
   }
   :is(
-      a,
-      button:not(:disabled),
-      [role="button"]:not(g),
-      [role="radio"],
-      label:has(> button[role="switch"])
-    ):hover {
+    a,
+    button:not(:disabled),
+    [role="button"]:not(g),
+    [role="radio"],
+    label:has(> button[role="switch"])
+  ):hover {
     box-shadow:
       0 0 0 1px color-mix(in oklab, var(--cyan) 70%, transparent),
       0 0 12px -2px color-mix(in oklab, var(--cyan) 35%, transparent);
