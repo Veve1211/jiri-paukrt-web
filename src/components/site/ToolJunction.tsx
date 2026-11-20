@@ -71,7 +71,7 @@ export function ToolJunction() {
               onMouseLeave={() => setHoverArm(null)}
               className={cn(
                 "self-center rounded-[12px] border bg-[#163b6e] p-3 transition-colors",
-                activeArm === quadrant ? "border-cyan/70" : "border-star/25",
+                activeArm === quadrant ? "border-cyan/40" : "border-star/20",
                 area,
               )}
               aria-label={quadrantLabel(quadrant)}
@@ -89,8 +89,8 @@ export function ToolJunction() {
                     className={cn(
                       "rounded-[6px] border px-2 py-1 text-left text-xs font-medium transition-colors",
                       t.name === selected
-                        ? "border-cyan bg-cyan/20 text-star"
-                        : "border-star/30 text-star/90 hover:border-cyan hover:bg-cyan/10 hover:text-cyan",
+                        ? "border-cyan/60 bg-cyan/15 text-star"
+                        : "border-star/30 text-star/90 hover:border-cyan/50 hover:bg-cyan/10 hover:text-star",
                     )}
                   >
                     {techLabel(t.name)}

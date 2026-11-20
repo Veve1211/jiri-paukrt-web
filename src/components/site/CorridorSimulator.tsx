@@ -106,8 +106,8 @@ export function CorridorSimulator() {
             <label
               key={m.key}
               className={cn(
-                "flex cursor-pointer items-center justify-between gap-3 rounded-[14px] border p-3 transition-colors hover:border-cyan",
-                measures[m.key] ? "border-cyan/50 bg-cyan/[0.07]" : "border-star/20 bg-star/[0.03]",
+                "flex cursor-pointer items-center justify-between gap-3 rounded-[14px] border p-3 transition-colors hover:border-cyan/50",
+                measures[m.key] ? "border-cyan/30 bg-cyan/[0.04]" : "border-star/20 bg-star/[0.03]",
               )}
             >
               <span>
@@ -126,7 +126,7 @@ export function CorridorSimulator() {
                   {measures[m.key] ? t("ON", "ZAP") : t("OFF", "VYP")}
                 </span>
                 <Switch
-                  className="h-6 w-11 border-star/40 data-[state=checked]:border-cyan data-[state=checked]:bg-cyan data-[state=unchecked]:bg-star/15 [&>span]:h-5 [&>span]:w-5 [&>span]:data-[state=checked]:translate-x-5"
+                  className="h-6 w-11 border-star/40 data-[state=checked]:border-cyan/60 data-[state=checked]:bg-cyan/70 data-[state=unchecked]:bg-star/15 [&>span]:h-5 [&>span]:w-5 [&>span]:data-[state=checked]:translate-x-5"
                   checked={measures[m.key]}
                   onCheckedChange={(v) => setMeasures((s) => ({ ...s, [m.key]: v }))}
                   aria-label={t(m.label, m.labelCs)}
@@ -216,7 +216,7 @@ export function CorridorSimulator() {
 function Step({ n, title, children }: { n: number; title: string; children: ReactNode }) {
   return (
     <div className="flex max-w-[520px] gap-3">
-      <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-cyan/70 font-mono text-sm font-bold text-cyan">
+      <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-cyan/40 font-mono text-sm font-bold text-cyan">
         {n}
       </span>
       <div>

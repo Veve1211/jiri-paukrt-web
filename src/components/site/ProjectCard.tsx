@@ -52,7 +52,7 @@ export function ProjectCard({ project }: { project: Project }) {
             <div className="text-2xl font-bold">{lead.value}</div>
             <div className="telemetry text-[9px] text-dim">{lead.label}</div>
           </div>
-          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-cyan bg-cyan/10 px-4 py-2 text-sm font-medium text-cyan transition-colors group-hover:bg-cyan group-hover:text-void">
+          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-cyan/40 px-4 py-2 text-sm font-medium text-cyan transition-colors group-hover:border-cyan/70 group-hover:bg-cyan/10">
             {t("View details", "Zobrazit detail")}
             <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
           </span>

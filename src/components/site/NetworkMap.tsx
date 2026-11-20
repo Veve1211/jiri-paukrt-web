@@ -177,7 +177,7 @@ export function NetworkMap({
               cy={p.y}
               r={town ? 10 : 18}
               className={cn(
-                "fill-cyan/15 stroke-cyan transition-opacity duration-200",
+                "fill-cyan/10 stroke-cyan/60 transition-opacity duration-200",
                 hot ? "opacity-100" : "opacity-0",
               )}
               strokeWidth="1.2"

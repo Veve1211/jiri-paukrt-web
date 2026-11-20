@@ -585,11 +585,11 @@ export function HeroRoadNetwork() {
             {t("JUNCTION = PROJECT", "KŘIŽOVATKA = PROJEKT")}{" "}
             <span className="size-2.5 rounded-full border border-star bg-void" />
           </div>
-          <div className="flex items-center justify-end gap-2 pt-1 text-cyan">
-            {!selected && <span className="size-1.5 animate-pulse rounded-full bg-cyan" />}
+          <div className="flex items-center justify-end gap-2 pt-1 text-cyan/80">
+            {!selected && <span className="size-1.5 rounded-full bg-cyan/70" />}
             {selected
               ? t("ESC TO CLOSE", "ESC ZAVŘE")
-              : t("CLICK A GLOWING JUNCTION", "KLIKNĚTE NA SVÍTÍCÍ KŘIŽOVATKU")}
+              : t("CLICK A JUNCTION", "KLIKNĚTE NA KŘIŽOVATKU")}
           </div>
         </div>
 
