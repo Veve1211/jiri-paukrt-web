@@ -170,12 +170,12 @@ function FilterChip({
       className={cn(
         "rounded-full border px-4 py-2 font-mono text-[11px] tracking-wider uppercase transition-colors duration-300",
         active
-          ? "border-cyan bg-cyan text-void"
+          ? "border-cyan bg-cyan/15 text-cyan"
           : "border-cyan/30 bg-void/60 text-star hover:border-cyan hover:bg-cyan/10 hover:text-cyan",
       )}
     >
       {label}{" "}
-      <span className={cn("ml-1", active ? "text-void/70" : "text-dim")}>
+      <span className={cn("ml-1", active ? "text-cyan/70" : "text-dim")}>
         {String(count).padStart(2, "0")}
       </span>
     </Link>

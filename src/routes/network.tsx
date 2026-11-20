@@ -96,12 +96,12 @@ function NetworkPage() {
               className={cn(
                 "rounded-full border px-4 py-2 font-mono text-[11px] tracking-wider uppercase transition-colors duration-300",
                 on
-                  ? "border-cyan bg-cyan text-void"
+                  ? "border-cyan bg-cyan/15 text-cyan"
                   : "border-cyan/30 bg-void/60 text-star hover:border-cyan hover:bg-cyan/10 hover:text-cyan",
               )}
             >
               {r ? regionLabel(r) : t("All places", "Všechna místa")}{" "}
-              <span className={cn("ml-1", on ? "text-void/70" : "text-dim")}>
+              <span className={cn("ml-1", on ? "text-cyan/70" : "text-dim")}>
                 {String(count).padStart(2, "0")}
               </span>
             </button>
@@ -138,6 +138,9 @@ function NetworkPage() {
             <span className="flex items-center gap-1.5">
               <span className="h-px w-4 border-t border-dashed border-volt" />{" "}
               {t("CAREER PATH", "KARIÉRNÍ CESTA")}
+            </span>
+            <span className="ml-auto text-cyan">
+              {t("POINT AT A PLACE, THEN CLICK", "NAJEĎTE NA MÍSTO A KLIKNĚTE")}
             </span>
           </div>
         </div>
