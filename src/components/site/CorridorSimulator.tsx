@@ -333,8 +333,9 @@ function CorridorCanvas({
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
       const { vc: load, speedKmh: v, demand: q, conflictsPerHour: c } = params.current;
-      // exaggerate the speed difference so the slowdown is easy to see; frozen with reduced motion
-      const pxPerSec = reducedMotion ? 0 : Math.pow(v / 80, 2) * 170;
+      // exaggerate the speed difference so the slowdown is easy to see. The cars always move:
+      // the moving corridor is the point of this demo (with reduced motion they just move gently)
+      const pxPerSec = Math.pow(v / 80, 2) * (reducedMotion ? 110 : 170);
       // cars take the V/C colour: green = free flow, amber = busy, red = congested
       const carCol = load < 0.7 ? go : load < 0.9 ? amber : alert;
       offset += pxPerSec * dt;
@@ -381,7 +382,7 @@ function CorridorCanvas({
       ctx.shadowBlur = 0;
 
       // conflict events — 1 simulated hour plays over 30 seconds
-      if (!reducedMotion && Math.random() < (c / 30) * dt) {
+      if (Math.random() < (c / 30) * dt) {
         flashes.push({ x: Math.random() * width, y: height * (0.42 + Math.random() * 0.16), t: 0 });
         setFlagged((n) => n + 1);
       }
