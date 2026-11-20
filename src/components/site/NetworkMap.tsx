@@ -127,7 +127,7 @@ export function NetworkMap({
           </circle>
         ))}
 
-      {LOCATIONS.map((l) => {
+      {LOCATIONS.map((l, idx) => {
         const p = pt(l.id);
         const sel = selected === l.id;
         const dimmed = !inRegion(l);
@@ -154,11 +154,30 @@ export function NetworkMap({
             }}
           >
             <circle cx={p.x} cy={p.y} r={town ? 9 : 16} className="fill-transparent" />
+            {/* pulsing ring: shows every point that can be clicked */}
+            {!dimmed && !sel && !reducedMotion && (
+              <circle cx={p.x} cy={p.y} r={r + 2} strokeWidth="2" className="stroke-cyan">
+                <animate
+                  attributeName="r"
+                  values={`${r + 2};${r + (town ? 9 : 14)}`}
+                  dur="2.4s"
+                  begin={`${(idx % 6) * 0.4}s`}
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="opacity"
+                  values="0.9;0"
+                  dur="2.4s"
+                  begin={`${(idx % 6) * 0.4}s`}
+                  repeatCount="indefinite"
+                />
+              </circle>
+            )}
             <circle
               cx={p.x}
               cy={p.y}
               r={r + 8}
-              className="stroke-cyan opacity-0 transition-opacity group-focus-visible:opacity-100"
+              className="stroke-cyan opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
               strokeDasharray="3 3"
             />
             {(l.kind === "hq" || sel) && (

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
@@ -59,8 +59,13 @@ export function CorridorSimulator() {
   return (
     <div className="grid gap-6 lg:grid-cols-12">
       <div className="glass rounded-[20px] p-5 lg:col-span-4">
-        <div className="telemetry text-[10px] text-cyan">{t("Inputs", "Vstupy")}</div>
-        <div className="mt-5">
+        <Step n={1} title={t("Set the traffic", "Nastavte provoz")}>
+          {t(
+            "Drag the slider: how many vehicles per hour want to use the road. Around 3,600 the road is full.",
+            "Posuňte jezdcem, kolik vozidel za hodinu chce silnici použít. Kolem 3 600 je silnice plná.",
+          )}
+        </Step>
+        <div className="mt-4">
           <div className="flex items-baseline justify-between">
             <label htmlFor="sim-demand" className="text-sm">
               {t("Peak-hour demand", "Poptávka ve špičce")}
@@ -88,7 +93,15 @@ export function CorridorSimulator() {
             <span>4,400</span>
           </div>
         </div>
-        <div className="mt-6 space-y-3">
+        <div className="mt-7">
+          <Step n={2} title={t("Switch on measures", "Zapněte opatření")}>
+            {t(
+              "Each switch is one real-world fix. Try them on and off.",
+              "Každý přepínač je jedno opatření z praxe. Zkuste je zapínat a vypínat.",
+            )}
+          </Step>
+        </div>
+        <div className="mt-4 space-y-3">
           {MEASURES.map((m) => (
             <label
               key={m.key}
@@ -118,11 +131,16 @@ export function CorridorSimulator() {
 
       <div className="space-y-4 lg:col-span-8">
         <div className="glass overflow-hidden rounded-[20px]">
-          <div className="flex items-center justify-between px-4 pt-3 font-mono text-[10px] tracking-wider text-dim">
-            <span className="flex items-center gap-1.5 text-cyan">
-              <span className="size-1 rounded-full bg-cyan" /> {t("SCENARIO", "SCÉNÁŘ")}
+          <div className="flex flex-wrap items-start justify-between gap-3 px-4 pt-4">
+            <Step n={3} title={t("Watch the result", "Sledujte výsledek")}>
+              {t(
+                "Each dash is a car: the busier the road, the slower they go. A red ring is a near-miss (traffic conflict).",
+                "Každá čárka je auto: čím plnější silnice, tím jedou pomaleji. Červený kroužek je kolizní situace (dopravní konflikt).",
+              )}
+            </Step>
+            <span className="font-mono text-[10px] tracking-wider text-dim">
+              V/C {scenario.vc.toFixed(2)}
             </span>
-            <span>V/C {scenario.vc.toFixed(2)}</span>
           </div>
           <CorridorCanvas
             speedKmh={scenario.speedKmh}
@@ -131,9 +149,15 @@ export function CorridorSimulator() {
           />
         </div>
 
+        <p className="text-[13px] leading-relaxed text-dim">
+          {t(
+            "The cards compare your scenario with the same road without any measures. Green % = better, red % = worse.",
+            "Karty porovnávají váš scénář se stejnou silnicí bez opatření. Zelené % = lepší, červené % = horší.",
+          )}
+        </p>
         <div className="grid grid-cols-2 gap-2.5 md:grid-cols-4">
           <Readout
-            baseLabel={t("BASE", "VÝCHOZÍ")}
+            baseLabel={t("WITHOUT", "BEZ OPATŘENÍ")}
             label={t("Flow speed", "Rychlost")}
             value={`${scenario.speedKmh.toFixed(1)}`}
             unit="km/h"
@@ -143,7 +167,7 @@ export function CorridorSimulator() {
             highlight
           />
           <Readout
-            baseLabel={t("BASE", "VÝCHOZÍ")}
+            baseLabel={t("WITHOUT", "BEZ OPATŘENÍ")}
             label={t("Travel time", "Doba jízdy")}
             value={scenario.travelTimeMin.toFixed(1)}
             unit="min"
@@ -153,7 +177,7 @@ export function CorridorSimulator() {
             }
           />
           <Readout
-            baseLabel={t("BASE", "VÝCHOZÍ")}
+            baseLabel={t("WITHOUT", "BEZ OPATŘENÍ")}
             label={t("Volume / capacity", "Intenzita / kapacita")}
             value={scenario.vc.toFixed(2)}
             unit=""
@@ -161,7 +185,7 @@ export function CorridorSimulator() {
             delta={((scenario.vc - baseline.vc) / (baseline.vc || 1)) * 100}
           />
           <Readout
-            baseLabel={t("BASE", "VÝCHOZÍ")}
+            baseLabel={t("WITHOUT", "BEZ OPATŘENÍ")}
             label={t("Conflicts", "Konflikty")}
             value={scenario.conflictsPerHour.toFixed(1)}
             unit="/h"
@@ -169,6 +193,20 @@ export function CorridorSimulator() {
             delta={-result.conflictReductionPct}
           />
         </div>
+      </div>
+    </div>
+  );
+}
+
+function Step({ n, title, children }: { n: number; title: string; children: ReactNode }) {
+  return (
+    <div className="flex max-w-[520px] gap-3">
+      <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-cyan font-mono text-sm font-bold text-void shadow-[0_0_14px_-3px_var(--cyan)]">
+        {n}
+      </span>
+      <div>
+        <div className="text-sm font-medium text-star">{title}</div>
+        <p className="mt-0.5 text-[12.5px] leading-snug text-dim">{children}</p>
       </div>
     </div>
   );

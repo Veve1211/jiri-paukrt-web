@@ -470,7 +470,7 @@ export function HeroRoadNetwork() {
             })}
           </g>
 
-          {JUNCTIONS.map((j) => {
+          {JUNCTIONS.map((j, idx) => {
             const isActive = active === j.id;
             const isSel = selected === j.id;
             const showLabel = j.major || isActive;
@@ -498,6 +498,25 @@ export function HeroRoadNetwork() {
                   className="transition-all duration-300"
                 />
                 <circle cx={j.x} cy={j.y} r="24" className="fill-transparent" />
+                {/* pulsing ring: shows every junction can be clicked */}
+                {!isSel && !reducedMotion && (
+                  <circle cx={j.x} cy={j.y} r="10" strokeWidth="1.6" className="stroke-cyan">
+                    <animate
+                      attributeName="r"
+                      values="10;30"
+                      dur="2.4s"
+                      begin={`${(idx % 6) * 0.4}s`}
+                      repeatCount="indefinite"
+                    />
+                    <animate
+                      attributeName="opacity"
+                      values="0.9;0"
+                      dur="2.4s"
+                      begin={`${(idx % 6) * 0.4}s`}
+                      repeatCount="indefinite"
+                    />
+                  </circle>
+                )}
                 <circle
                   cx={j.x}
                   cy={j.y}
@@ -585,10 +604,11 @@ export function HeroRoadNetwork() {
             {t("JUNCTION = PROJECT", "KŘIŽOVATKA = PROJEKT")}{" "}
             <span className="size-2.5 rounded-full border border-star bg-void" />
           </div>
-          <div className="pt-1 text-dim">
+          <div className="flex items-center justify-end gap-2 pt-1 text-cyan">
+            {!selected && <span className="size-1.5 animate-pulse rounded-full bg-cyan" />}
             {selected
               ? t("ESC TO CLOSE", "ESC ZAVŘE")
-              : t("CLICK A JUNCTION", "KLIKNĚTE NA KŘIŽOVATKU")}
+              : t("CLICK A GLOWING JUNCTION", "KLIKNĚTE NA SVÍTÍCÍ KŘIŽOVATKU")}
           </div>
         </div>
 

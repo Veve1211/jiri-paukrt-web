@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, MousePointerClick } from "lucide-react";
 import { useState } from "react";
 
 import { type Project } from "@/data/portfolio";
@@ -24,12 +24,17 @@ export function ProjectCard({ project }: { project: Project }) {
       onBlur={() => setHover(false)}
       className="group glass spotlight reveal flex h-full flex-col rounded-[20px] p-6 transition-transform duration-300 hover:-translate-y-1"
     >
-      <div className="-mx-6 -mt-6 mb-5 overflow-hidden rounded-t-[20px] border-b border-star/10">
+      <div className="relative -mx-6 -mt-6 mb-5 overflow-hidden rounded-t-[20px] border-b border-star/10">
         <ProjectCover
           slug={project.slug}
           animate={hover}
           className="transition-transform duration-500 group-hover:scale-[1.03]"
         />
+        {/* make it obvious the picture opens the project detail */}
+        <span className="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-full border border-cyan bg-void/85 px-3 py-1.5 font-mono text-[10px] tracking-[0.1em] text-cyan uppercase shadow-[0_0_14px_-4px_var(--cyan)] backdrop-blur-sm transition-colors group-hover:bg-cyan group-hover:text-void">
+          <MousePointerClick className="size-3.5" aria-hidden="true" />
+          {t("Open project", "Otevřít projekt")}
+        </span>
       </div>
       <div className="flex items-center justify-between">
         <span className="telemetry text-[10px] text-cyan">{project.location}</span>
@@ -52,8 +57,8 @@ export function ProjectCard({ project }: { project: Project }) {
             <div className="text-2xl font-bold">{lead.value}</div>
             <div className="telemetry text-[9px] text-dim">{lead.label}</div>
           </div>
-          <span className="inline-flex items-center gap-1 text-sm text-cyan">
-            {t("Details", "Detail")}{" "}
+          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-cyan bg-cyan/10 px-4 py-2 text-sm font-medium text-cyan transition-colors group-hover:bg-cyan group-hover:text-void">
+            {t("View details", "Zobrazit detail")}
             <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
           </span>
         </div>
