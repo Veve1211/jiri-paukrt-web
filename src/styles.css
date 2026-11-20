@@ -80,8 +80,8 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --shadow-glow: 0 8px 30px -12px color-mix(in oklab, var(--cyan) 55%, transparent);
-  --shadow-glow-strong: 0 10px 36px -10px color-mix(in oklab, var(--cyan) 75%, transparent);
+  --shadow-glow: 0 8px 30px -12px color-mix(in oklab, var(--cyan) 35%, transparent);
+  --shadow-glow-strong: 0 10px 36px -10px color-mix(in oklab, var(--cyan) 50%, transparent);
   --shadow-dot: 0 0 8px color-mix(in oklab, var(--cyan) 80%, transparent);
 }
 
@@ -261,9 +261,8 @@
 @utility text-glow {
   color: #cfe7ff;
   text-shadow:
-    0 0 6px color-mix(in oklab, var(--cyan) 70%, transparent),
-    0 0 22px color-mix(in oklab, var(--cyan) 55%, transparent),
-    0 0 48px color-mix(in oklab, var(--cyan) 35%, transparent);
+    0 0 4px color-mix(in oklab, var(--cyan) 40%, transparent),
+    0 0 18px color-mix(in oklab, var(--cyan) 20%, transparent);
 }
 
 @utility text-gradient {
@@ -328,7 +327,7 @@
     box-shadow: 0 0 0 0 color-mix(in srgb, var(--cyan) 0%, transparent);
   }
   50% {
-    box-shadow: 0 0 0 12px color-mix(in srgb, var(--cyan) 45%, transparent);
+    box-shadow: 0 0 0 8px color-mix(in srgb, var(--cyan) 25%, transparent);
   }
 }
 
