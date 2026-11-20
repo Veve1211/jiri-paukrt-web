@@ -134,8 +134,8 @@ export function CorridorSimulator() {
           <div className="flex flex-wrap items-start justify-between gap-3 px-4 pt-4">
             <Step n={3} title={t("Watch the result", "Sledujte výsledek")}>
               {t(
-                "Each dash is a car: the busier the road, the slower they go. A red ring is a near-miss (traffic conflict).",
-                "Každá čárka je auto: čím plnější silnice, tím jedou pomaleji. Červený kroužek je kolizní situace (dopravní konflikt).",
+                "Each dash is a car. The fuller the road, the slower they go and the colour turns green → amber → red. A red ring is a near-miss (traffic conflict).",
+                "Každá čárka je auto. Čím plnější silnice, tím jedou pomaleji a barva se mění zelená → oranžová → červená. Červený kroužek je kolizní situace (dopravní konflikt).",
               )}
             </Step>
             <span className="font-mono text-[10px] tracking-wider text-dim">
@@ -143,6 +143,7 @@ export function CorridorSimulator() {
             </span>
           </div>
           <CorridorCanvas
+            vc={scenario.vc}
             speedKmh={scenario.speedKmh}
             demand={demand}
             conflictsPerHour={scenario.conflictsPerHour}
@@ -201,7 +202,7 @@ export function CorridorSimulator() {
 function Step({ n, title, children }: { n: number; title: string; children: ReactNode }) {
   return (
     <div className="flex max-w-[520px] gap-3">
-      <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-cyan font-mono text-sm font-bold text-void shadow-[0_0_14px_-3px_var(--cyan)]">
+      <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-cyan font-mono text-sm font-bold text-void">
         {n}
       </span>
       <div>
@@ -263,17 +264,19 @@ function hash(n: number) {
 }
 
 function CorridorCanvas({
+  vc,
   speedKmh,
   demand,
   conflictsPerHour,
 }: {
+  vc: number;
   speedKmh: number;
   demand: number;
   conflictsPerHour: number;
 }) {
   const ref = useRef<HTMLCanvasElement>(null);
-  const params = useRef({ speedKmh, demand, conflictsPerHour });
-  params.current = { speedKmh, demand, conflictsPerHour };
+  const params = useRef({ vc, speedKmh, demand, conflictsPerHour });
+  params.current = { vc, speedKmh, demand, conflictsPerHour };
   const reducedMotion = usePrefersReducedMotion();
   const { t } = useLang();
   const [flagged, setFlagged] = useState(0);
@@ -290,6 +293,8 @@ function CorridorCanvas({
     const dim = col("--dim");
     const alert = col("--alert");
     const volt = col("--volt");
+    const go = col("--go");
+    const amber = col("--amber");
 
     let raf = 0;
     let last = performance.now();
@@ -313,8 +318,11 @@ function CorridorCanvas({
     const draw = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
-      const { speedKmh: v, demand: q, conflictsPerHour: c } = params.current;
-      const pxPerSec = (v / 80) * 140;
+      const { vc: load, speedKmh: v, demand: q, conflictsPerHour: c } = params.current;
+      // exaggerate the speed difference so the slowdown is easy to see; frozen with reduced motion
+      const pxPerSec = reducedMotion ? 0 : Math.pow(v / 80, 2) * 170;
+      // cars take the V/C colour: green = free flow, amber = busy, red = congested
+      const carCol = load < 0.7 ? go : load < 0.9 ? amber : alert;
       offset += pxPerSec * dt;
 
       ctx.clearRect(0, 0, width, height);
@@ -348,9 +356,9 @@ function CorridorCanvas({
               spacing) %
               (width + spacing)) -
             spacing / 2;
-          ctx.fillStyle = lane ? star : cyan;
+          ctx.fillStyle = carCol || (lane ? star : cyan);
           ctx.shadowColor = lane ? volt : cyan;
-          ctx.shadowBlur = 8;
+          ctx.shadowBlur = 0;
           ctx.beginPath();
           ctx.roundRect(x - 7, y - 3, 14, 6, 3);
           ctx.fill();
@@ -359,7 +367,7 @@ function CorridorCanvas({
       ctx.shadowBlur = 0;
 
       // conflict events — 1 simulated hour plays over 30 seconds
-      if (Math.random() < (c / 30) * dt) {
+      if (!reducedMotion && Math.random() < (c / 30) * dt) {
         flashes.push({ x: Math.random() * width, y: height * (0.42 + Math.random() * 0.16), t: 0 });
         setFlagged((n) => n + 1);
       }
@@ -380,7 +388,7 @@ function CorridorCanvas({
         ctx.globalAlpha = 1;
       }
 
-      if (!reducedMotion) raf = requestAnimationFrame(draw);
+      raf = requestAnimationFrame(draw);
     };
     raf = requestAnimationFrame(draw);
     return () => {
@@ -403,6 +411,22 @@ function CorridorCanvas({
       <div className="absolute right-4 bottom-2 font-mono text-[9.5px] tracking-wider text-dim">
         {t("CONFLICTS FLAGGED", "ZAZNAMENANÉ KONFLIKTY")}{" "}
         <span className="text-alert">{String(flagged).padStart(3, "0")}</span>
+      </div>
+      <div
+        className={cn(
+          "absolute top-2 left-4 rounded-full border px-3 py-1 font-mono text-[10px] tracking-[0.12em] uppercase transition-colors duration-500",
+          vc < 0.7
+            ? "border-go/50 text-go"
+            : vc < 0.9
+              ? "border-amber/50 text-amber"
+              : "border-alert/50 text-alert",
+        )}
+      >
+        {vc < 0.7
+          ? t("Free flow", "Plynulý provoz")
+          : vc < 0.9
+            ? t("Busy", "Hustý provoz")
+            : t("Congested", "Kongesce")}
       </div>
       <div className="absolute bottom-2 left-4 font-mono text-[9.5px] tracking-wider text-dim">
         {t("1 SIM-HOUR = 30 S", "1 SIMULOVANÁ HODINA = 30 S")}

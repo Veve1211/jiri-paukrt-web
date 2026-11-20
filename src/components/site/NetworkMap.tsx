@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { LOCATIONS, type NetworkLocation, type Region } from "@/data/portfolio";
@@ -45,11 +47,21 @@ export function NetworkMap({
   selected,
   region,
   onSelect,
+  hovered: hoveredOutside,
+  onHover,
 }: {
   selected?: string | undefined;
   region?: Region | undefined;
   onSelect: (id: string | undefined) => void;
+  hovered?: string | undefined;
+  onHover?: (id: string | undefined) => void;
 }) {
+  const [hoveredInside, setHoveredInside] = useState<string | undefined>(undefined);
+  const hovered = hoveredInside ?? hoveredOutside;
+  const setHover = (id: string | undefined) => {
+    setHoveredInside(id);
+    onHover?.(id);
+  };
   const reducedMotion = usePrefersReducedMotion();
   const { t } = useLang();
   const { cityLabel, countryLabel } = useContent();
@@ -130,6 +142,7 @@ export function NetworkMap({
       {LOCATIONS.map((l, idx) => {
         const p = pt(l.id);
         const sel = selected === l.id;
+        const hot = hovered === l.id && !sel;
         const dimmed = !inRegion(l);
         const town = l.kind === "town";
         const r = l.kind === "hq" ? 6 : town ? 2.2 : 4.5;
@@ -146,6 +159,10 @@ export function NetworkMap({
               dimmed && "opacity-25",
             )}
             onClick={() => onSelect(sel ? undefined : l.id)}
+            onMouseEnter={() => setHover(l.id)}
+            onMouseLeave={() => setHover(undefined)}
+            onFocus={() => setHover(l.id)}
+            onBlur={() => setHover(undefined)}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
@@ -154,20 +171,31 @@ export function NetworkMap({
             }}
           >
             <circle cx={p.x} cy={p.y} r={town ? 9 : 16} className="fill-transparent" />
+            {/* hover: the point lights up so it is clear it can be clicked */}
+            <circle
+              cx={p.x}
+              cy={p.y}
+              r={town ? 10 : 18}
+              className={cn(
+                "fill-cyan/15 stroke-cyan transition-opacity duration-200",
+                hot ? "opacity-100" : "opacity-0",
+              )}
+              strokeWidth="1.2"
+            />
             {/* pulsing ring: shows every point that can be clicked */}
             {!dimmed && !sel && !reducedMotion && (
-              <circle cx={p.x} cy={p.y} r={r + 2} strokeWidth="2" className="stroke-cyan">
+              <circle cx={p.x} cy={p.y} r={r + 2} strokeWidth="1.4" className="stroke-cyan">
                 <animate
                   attributeName="r"
-                  values={`${r + 2};${r + (town ? 9 : 14)}`}
-                  dur="2.4s"
+                  values={`${r + 2};${r + (town ? 8 : 12)}`}
+                  dur="3.2s"
                   begin={`${(idx % 6) * 0.4}s`}
                   repeatCount="indefinite"
                 />
                 <animate
                   attributeName="opacity"
-                  values="0.9;0"
-                  dur="2.4s"
+                  values="0.5;0"
+                  dur="3.2s"
                   begin={`${(idx % 6) * 0.4}s`}
                   repeatCount="indefinite"
                 />
@@ -177,7 +205,7 @@ export function NetworkMap({
               cx={p.x}
               cy={p.y}
               r={r + 8}
-              className="stroke-cyan opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+              className="stroke-cyan opacity-0 transition-opacity group-focus-visible:opacity-100"
               strokeDasharray="3 3"
             />
             {(l.kind === "hq" || sel) && (
@@ -199,13 +227,13 @@ export function NetworkMap({
                   strokeWidth="1.2"
                   className={cn(
                     "fill-void",
-                    sel || l.kind === "hq" ? "stroke-cyan" : "stroke-star/70",
+                    sel || hot || l.kind === "hq" ? "stroke-cyan" : "stroke-star/70",
                   )}
                 />
                 <path
                   d={`M${p.x - r - 7} ${p.y}h-4M${p.x + r + 7} ${p.y}h4M${p.x} ${p.y - r - 7}v-4M${p.x} ${p.y + r + 7}v4`}
                   strokeWidth="1"
-                  className={sel || l.kind === "hq" ? "stroke-cyan" : "stroke-star/50"}
+                  className={sel || hot || l.kind === "hq" ? "stroke-cyan" : "stroke-star/50"}
                 />
               </>
             )}
@@ -215,15 +243,15 @@ export function NetworkMap({
               r={town ? (sel ? r + 1.5 : r) : sel ? 3.5 : 2.6}
               className={cn(
                 "transition-all",
-                l.kind === "hq" || sel
+                l.kind === "hq" || sel || hot
                   ? "fill-cyan"
                   : l.kind === "base"
                     ? "fill-starblue"
                     : "fill-star",
-                town && !sel && "fill-star/80 group-hover:fill-cyan",
+                town && !sel && !hot && "fill-star/80",
               )}
             />
-            {(!town || sel) && (
+            {(!town || sel || hot) && (
               <g
                 className="font-mono"
                 letterSpacing="1.5"
@@ -234,7 +262,7 @@ export function NetworkMap({
                   y={p.y - 4}
                   fontSize="11"
                   className={cn(
-                    sel || l.kind === "hq"
+                    sel || hot || l.kind === "hq"
                       ? "fill-cyan"
                       : l.kind === "base"
                         ? "fill-starblue"

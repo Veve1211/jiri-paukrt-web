@@ -82,7 +82,7 @@ export function VcSwitch({
         aria-label={t("Map view", "Zobrazení mapy")}
         onAnimationEnd={vc.endPulse}
         className={cn(
-          "inline-flex gap-1 rounded-full border border-cyan bg-void/90 p-1 font-mono text-[11px] tracking-[0.1em] uppercase shadow-[0_0_18px_-4px_var(--cyan)] backdrop-blur-sm sm:text-xs",
+          "inline-flex gap-1 rounded-full border border-cyan/70 bg-void/90 p-1 font-mono text-[11px] tracking-[0.1em] uppercase backdrop-blur-sm sm:text-xs",
           vc.pulse && "animate-[vc-pulse_1.8s_ease-in-out_3]",
         )}
       >
