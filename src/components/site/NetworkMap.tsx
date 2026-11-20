@@ -139,7 +139,7 @@ export function NetworkMap({
           </circle>
         ))}
 
-      {LOCATIONS.map((l, idx) => {
+      {LOCATIONS.map((l) => {
         const p = pt(l.id);
         const sel = selected === l.id;
         const hot = hovered === l.id && !sel;
@@ -182,25 +182,6 @@ export function NetworkMap({
               )}
               strokeWidth="1.2"
             />
-            {/* pulsing ring: shows every point that can be clicked */}
-            {!dimmed && !sel && !reducedMotion && (
-              <circle cx={p.x} cy={p.y} r={r + 2} strokeWidth="1.4" className="stroke-cyan">
-                <animate
-                  attributeName="r"
-                  values={`${r + 2};${r + (town ? 8 : 12)}`}
-                  dur="3.2s"
-                  begin={`${(idx % 6) * 0.4}s`}
-                  repeatCount="indefinite"
-                />
-                <animate
-                  attributeName="opacity"
-                  values="0.5;0"
-                  dur="3.2s"
-                  begin={`${(idx % 6) * 0.4}s`}
-                  repeatCount="indefinite"
-                />
-              </circle>
-            )}
             <circle
               cx={p.x}
               cy={p.y}

@@ -105,7 +105,10 @@ export function CorridorSimulator() {
           {MEASURES.map((m) => (
             <label
               key={m.key}
-              className="flex cursor-pointer items-center justify-between gap-3 rounded-[14px] border border-star/10 bg-star/[0.03] p-3"
+              className={cn(
+                "flex cursor-pointer items-center justify-between gap-3 rounded-[14px] border p-3 transition-colors hover:border-cyan",
+                measures[m.key] ? "border-cyan/50 bg-cyan/[0.07]" : "border-star/20 bg-star/[0.03]",
+              )}
             >
               <span>
                 <span className="block text-sm">{t(m.label, m.labelCs)}</span>
@@ -113,11 +116,22 @@ export function CorridorSimulator() {
                   {t(m.detail, m.detailCs)}
                 </span>
               </span>
-              <Switch
-                checked={measures[m.key]}
-                onCheckedChange={(v) => setMeasures((s) => ({ ...s, [m.key]: v }))}
-                aria-label={t(m.label, m.labelCs)}
-              />
+              <span className="flex shrink-0 items-center gap-2">
+                <span
+                  className={cn(
+                    "w-8 text-right font-mono text-[10px] tracking-wider",
+                    measures[m.key] ? "text-cyan" : "text-dim",
+                  )}
+                >
+                  {measures[m.key] ? t("ON", "ZAP") : t("OFF", "VYP")}
+                </span>
+                <Switch
+                  className="h-6 w-11 border-star/40 data-[state=checked]:border-cyan data-[state=checked]:bg-cyan data-[state=unchecked]:bg-star/15 [&>span]:h-5 [&>span]:w-5 [&>span]:data-[state=checked]:translate-x-5"
+                  checked={measures[m.key]}
+                  onCheckedChange={(v) => setMeasures((s) => ({ ...s, [m.key]: v }))}
+                  aria-label={t(m.label, m.labelCs)}
+                />
+              </span>
             </label>
           ))}
         </div>
@@ -202,7 +216,7 @@ export function CorridorSimulator() {
 function Step({ n, title, children }: { n: number; title: string; children: ReactNode }) {
   return (
     <div className="flex max-w-[520px] gap-3">
-      <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-cyan font-mono text-sm font-bold text-void">
+      <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-cyan/70 font-mono text-sm font-bold text-cyan">
         {n}
       </span>
       <div>

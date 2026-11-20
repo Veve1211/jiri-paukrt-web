@@ -70,13 +70,13 @@ export function ToolJunction() {
               onMouseEnter={() => setHoverArm(quadrant)}
               onMouseLeave={() => setHoverArm(null)}
               className={cn(
-                "self-center rounded-[12px] border-2 bg-[#1c4f9c] p-3 shadow-lg transition-colors",
-                activeArm === quadrant ? "border-star" : "border-star/50",
+                "self-center rounded-[12px] border bg-[#163b6e] p-3 transition-colors",
+                activeArm === quadrant ? "border-cyan/70" : "border-star/25",
                 area,
               )}
               aria-label={quadrantLabel(quadrant)}
             >
-              <h3 className="flex items-center gap-2 font-display text-sm font-semibold tracking-wide text-white">
+              <h3 className="flex items-center gap-2 font-display text-sm font-semibold tracking-wide text-star">
                 <Arrow className="size-4" /> {quadrantLabel(quadrant)}
               </h3>
               <div className="mt-2 flex flex-wrap gap-1.5">
@@ -89,8 +89,8 @@ export function ToolJunction() {
                     className={cn(
                       "rounded-[6px] border px-2 py-1 text-left text-xs font-medium transition-colors",
                       t.name === selected
-                        ? "border-white bg-white text-[#0f2443]"
-                        : "border-white/40 text-white hover:bg-white/15",
+                        ? "border-cyan bg-cyan/20 text-star"
+                        : "border-star/30 text-star/90 hover:border-cyan hover:bg-cyan/10 hover:text-cyan",
                     )}
                   >
                     {techLabel(t.name)}

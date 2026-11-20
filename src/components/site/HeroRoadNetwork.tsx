@@ -470,7 +470,7 @@ export function HeroRoadNetwork() {
             })}
           </g>
 
-          {JUNCTIONS.map((j, idx) => {
+          {JUNCTIONS.map((j) => {
             const isActive = active === j.id;
             const isSel = selected === j.id;
             const showLabel = j.major || isActive;
@@ -498,25 +498,6 @@ export function HeroRoadNetwork() {
                   className="transition-all duration-300"
                 />
                 <circle cx={j.x} cy={j.y} r="24" className="fill-transparent" />
-                {/* pulsing ring: shows every junction can be clicked */}
-                {!isSel && !reducedMotion && (
-                  <circle cx={j.x} cy={j.y} r="10" strokeWidth="1.2" className="stroke-cyan">
-                    <animate
-                      attributeName="r"
-                      values="10;26"
-                      dur="3.2s"
-                      begin={`${(idx % 6) * 0.4}s`}
-                      repeatCount="indefinite"
-                    />
-                    <animate
-                      attributeName="opacity"
-                      values="0.45;0"
-                      dur="3.2s"
-                      begin={`${(idx % 6) * 0.4}s`}
-                      repeatCount="indefinite"
-                    />
-                  </circle>
-                )}
                 <circle
                   cx={j.x}
                   cy={j.y}
