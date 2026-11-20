@@ -170,8 +170,8 @@ function FilterChip({
       className={cn(
         "rounded-full border px-4 py-2 font-mono text-[11px] tracking-wider uppercase transition-colors duration-300",
         active
-          ? "border-cyan bg-cyan/15 text-cyan"
-          : "border-cyan/30 bg-void/60 text-star hover:border-cyan hover:bg-cyan/10 hover:text-cyan",
+          ? "border-cyan/40 bg-cyan/10 text-cyan"
+          : "border-star/10 bg-star/[0.03] text-dim hover:border-cyan/40 hover:text-star",
       )}
     >
       {label}{" "}

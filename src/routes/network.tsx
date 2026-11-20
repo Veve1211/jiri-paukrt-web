@@ -96,8 +96,8 @@ function NetworkPage() {
               className={cn(
                 "rounded-full border px-4 py-2 font-mono text-[11px] tracking-wider uppercase transition-colors duration-300",
                 on
-                  ? "border-cyan bg-cyan/15 text-cyan"
-                  : "border-cyan/30 bg-void/60 text-star hover:border-cyan hover:bg-cyan/10 hover:text-cyan",
+                  ? "border-cyan/40 bg-cyan/10 text-cyan"
+                  : "border-star/10 bg-star/[0.03] text-dim hover:border-cyan/40 hover:text-star",
               )}
             >
               {r ? regionLabel(r) : t("All places", "Všechna místa")}{" "}
@@ -139,7 +139,7 @@ function NetworkPage() {
               <span className="h-px w-4 border-t border-dashed border-volt" />{" "}
               {t("CAREER PATH", "KARIÉRNÍ CESTA")}
             </span>
-            <span className="ml-auto text-cyan">
+            <span className="ml-auto text-cyan/70">
               {t("POINT AT A PLACE, THEN CLICK", "NAJEĎTE NA MÍSTO A KLIKNĚTE")}
             </span>
           </div>
@@ -226,8 +226,8 @@ function Overview({
                 onMouseEnter={() => onHover(town.id)}
                 onMouseLeave={() => onHover(undefined)}
                 className={cn(
-                  "rounded-full border border-star/10 px-2.5 py-1 text-xs text-dim transition-colors hover:border-cyan hover:bg-cyan/10 hover:text-cyan",
-                  hovered === town.id && "border-cyan bg-cyan/10 text-cyan",
+                  "rounded-full border border-star/10 px-2.5 py-1 text-xs text-dim transition-colors hover:border-cyan/40 hover:text-cyan",
+                  hovered === town.id && "border-cyan/40 text-cyan",
                 )}
               >
                 {town.name}
