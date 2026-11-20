@@ -52,6 +52,7 @@ function NetworkPage() {
   const { node } = Route.useSearch();
   const navigate = Route.useNavigate();
   const [region, setRegion] = useState<Region | undefined>(undefined);
+  const [hovered, setHovered] = useState<string | undefined>(undefined);
 
   const select = (id: string | undefined) =>
     navigate({ search: id ? { node: id } : {}, replace: true, resetScroll: false });
@@ -95,7 +96,7 @@ function NetworkPage() {
               className={cn(
                 "rounded-full border px-4 py-2 font-mono text-[11px] tracking-wider uppercase transition-colors duration-300",
                 on
-                  ? "border-cyan bg-cyan text-void shadow-[0_0_18px_-4px_var(--cyan)]"
+                  ? "border-cyan bg-cyan text-void"
                   : "border-cyan/30 bg-void/60 text-star hover:border-cyan hover:bg-cyan/10 hover:text-cyan",
               )}
             >
@@ -111,7 +112,13 @@ function NetworkPage() {
       <div className="mt-6 grid gap-6 lg:grid-cols-12">
         <div className="glass relative overflow-hidden rounded-[20px] lg:col-span-8">
           <div className="aspect-[5/3] w-full">
-            <NetworkMap selected={node} region={region} onSelect={select} />
+            <NetworkMap
+              selected={node}
+              region={region}
+              onSelect={select}
+              hovered={hovered}
+              onHover={setHovered}
+            />
           </div>
           <div className="flex flex-wrap gap-x-5 gap-y-1 border-t border-star/10 px-4 py-3 font-mono text-[10px] tracking-wider text-dim">
             <span className="flex items-center gap-1.5">
@@ -139,7 +146,7 @@ function NetworkPage() {
           {loc ? (
             <LocationPanel id={loc.id} onClose={() => select(undefined)} />
           ) : (
-            <Overview region={region} onSelect={select} />
+            <Overview region={region} onSelect={select} onHover={setHovered} hovered={hovered} />
           )}
         </aside>
       </div>
@@ -150,9 +157,13 @@ function NetworkPage() {
 function Overview({
   region,
   onSelect,
+  onHover,
+  hovered,
 }: {
   region?: Region | undefined;
   onSelect: (id: string) => void;
+  onHover: (id: string | undefined) => void;
+  hovered?: string | undefined;
 }) {
   const { t, lang } = useLang();
   const { regionLabel, countryLabel, cityLabel } = useContent();
@@ -178,7 +189,12 @@ function Overview({
             <button
               type="button"
               onClick={() => onSelect(l.id)}
-              className="flex w-full items-center justify-between gap-3 py-3 text-left hover:text-cyan"
+              onMouseEnter={() => onHover(l.id)}
+              onMouseLeave={() => onHover(undefined)}
+              className={cn(
+                "flex w-full items-center justify-between gap-3 rounded-lg px-2 py-3 text-left transition-colors hover:bg-cyan/10 hover:text-cyan",
+                hovered === l.id && "bg-cyan/10 text-cyan",
+              )}
             >
               <span>
                 <span className="block text-sm font-medium">{cityLabel(l.name)}</span>
@@ -204,7 +220,12 @@ function Overview({
                 key={town.id}
                 type="button"
                 onClick={() => onSelect(town.id)}
-                className="rounded-full border border-star/10 px-2.5 py-1 text-xs text-dim hover:border-cyan/40 hover:text-cyan"
+                onMouseEnter={() => onHover(town.id)}
+                onMouseLeave={() => onHover(undefined)}
+                className={cn(
+                  "rounded-full border border-star/10 px-2.5 py-1 text-xs text-dim transition-colors hover:border-cyan hover:bg-cyan/10 hover:text-cyan",
+                  hovered === town.id && "border-cyan bg-cyan/10 text-cyan",
+                )}
               >
                 {town.name}
               </button>
