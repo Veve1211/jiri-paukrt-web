@@ -2,8 +2,8 @@
 
 ## Projekt
 * Název: Jiri Paukrt — osobní web (vizitka a online CV)
-* Cíl: zaujmout tak, aby Jirkovi někdo nabídl práci. Jirka = Jiri Paukrt, Ing., Principal Transportation Engineer, SYSTRA Dublin, 27 let praxe.
-* Cílová skupina: personalisté a firmy z oboru dopravního inženýrství, mezinárodně. Web anglicky i česky (EN výchozí).
+* Cíl: představit Jirkovu odbornost a projekty. Jirka = Jiri Paukrt, Ing., Principal Transportation Engineer, SYSTRA Dublin, 27 let praxe.
+* Cílová skupina: odborníci a firmy z oboru dopravního inženýrství, mezinárodně. Web anglicky i česky (EN výchozí).
 * Adresa: paukrt.lovable.app
 
 ## Uživatel
@@ -32,7 +32,7 @@
 * Publikace: NTA/ETC 2025, ETC 2019 Dublin, STAR 2017 Glasgow, ICTTE 2014 Belgrade. Počet v UI musí sedět se seznamem.
 
 ## Pravidla (nikdy neporušit)
-* NIKDY text o hledání práce ("open to roles", "available", "hledám práci"). Nadřízení v SYSTRA to nesmí vidět.
+* NIKDY text o hledání práce ("open to roles", "available", "hledám práci"). Web Jirku představuje, neinzeruje.
 * Žádný placeholder ani lorem ipsum v UI.
 * Žádná soukromá adresa ani osobní telefon na webu ani v PDF CV.
 * Obrázky patří do `/public`, ne na externí dočasné adresy. Náhled pro sdílení: `public/og.png` (1200×630), og:image nastavený v `src/routes/index.tsx`.
@@ -43,7 +43,7 @@
 * Práce na větvi `dev`, do `main` jen otestované. `main` se synchronizuje do Lovable.
 * Nikdy force push ani přepis historie.
 * Na začátku každé práce `git pull` (do repa píše i Lovable a další nástroje). Na konci commit a push. Při nepushnutých změnách upozorni uživatelku.
-* Nikdy necommituj přímo do `main`.
+* Nikdy necommituj přímo do `main` a nenahrávej soubory přes web GitHubu; změny jen přes Claude Code → `dev` → PR → `main` (CI: lint, typy, testy, build).
 
 ## Před publikováním
 * Test na mobilu, tabletu i počítači.

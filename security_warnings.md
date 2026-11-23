@@ -1,10 +1,10 @@
 # Bezpečnostní kontrola
 
-Poslední kontrola: 18. 11. 2026. Postup podle bezpečnostní matice z manuálu Vibecoding Akademie (secrets, databáze, závislosti).
+Poslední kontrola: 23. 11. 2026. Postup podle bezpečnostní matice z manuálu Vibecoding Akademie (secrets, databáze, závislosti).
 
 ## V pořádku
 
-1. **žádné tajné klíče v kódu ani v historii.** Prohledána celá historie gitu (33 commitů). Klíč `SUPABASE_SERVICE_ROLE_KEY` se načítá jen z prostředí serveru a v repu není.
+1. **žádné tajné klíče v kódu ani v historii.** Prohledána celá historie gitu (23. 11. 2026, 82 commitů). Klíč `SUPABASE_SERVICE_ROLE_KEY` se načítá jen z prostředí serveru a v repu není.
 2. **databáze je zamčená.** Tabulka `contact_inquiries` má zapnuté Row Level Security. Veřejnost smí jen vkládat (`INSERT`), zprávy nikdo zvenku číst nemůže. Délky polí hlídá přímo databáze (`CHECK`).
 3. **ochrana formuláře proti spamu:** skryté pole (honeypot), minimální čas vyplnění 4 s, 10 minut pauza mezi zprávami, blokace jednorázových e-mailů, limit odkazů a filtr nesmyslného textu.
 4. **žádné osobní údaje navíc.** Na webu ani v PDF CV není soukromá adresa ani osobní telefon.
@@ -17,8 +17,8 @@ Poslední kontrola: 18. 11. 2026. Postup podle bezpečnostní matice z manuálu 
 ## Závislosti
 
 1. **opraveno 18. 11. 2026.** `bun audit fix` a aktualizace vite (8.1.6) a vitest (4.1.12) snížily počet nálezů z 30 (1 kritický, 15 vysokých) na 4. Opravený je i kritický `shell-quote` a `seroval`, který běží přímo na webu. Po aktualizaci prošly typy, testy i build.
-2. **zbývá 4 (2 vysoké, 2 střední), vědomě ponecháno:**
-   1. `esbuild`, `minimatch` a `picomatch` jsou nástroje pro build a vývojový server, na živém webu neběží.
+2. **zbývají 3 (1 vysoká, 2 střední, stav 23. 11. 2026), vědomě ponecháno:**
+   1. `esbuild` a `minimatch` jsou nástroje pro build a vývojový server, na živém webu neběží.
    2. `zod` 3.x (validace kontaktního formuláře) nemá opravu ve verzi 3, oprava vyžaduje přechod na zod 4. Chyba se týká validace obřích kolekcí; formulář validuje jen krátké texty s pevným limitem délky, takže praktické riziko je nízké. Přechod na zod 4 je samostatný úkol.
 
 ## Vědomé rozhodnutí
