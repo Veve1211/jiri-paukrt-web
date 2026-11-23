@@ -42,6 +42,7 @@ const CS: Record<string, string> = {
 };
 
 export type TopicValue = (typeof TOPICS)[number]["value"];
+const TOPIC_VALUES = TOPICS.map((t) => t.value) as [TopicValue, ...TopicValue[]];
 
 // --- Junk filters ----------------------------------------------------------
 // Client-side checks that stop careless spam and nonsense messages. They are not a
@@ -100,7 +101,7 @@ const schema = z.object({
       "Please use a permanent email address so Jiri can reply",
     ),
   organisation: z.string().trim().max(120, "Keep it under 120 characters").optional(),
-  topic: z.enum(["national-models", "microsimulation", "mega-events", "gis-safety", "other"]),
+  topic: z.enum(TOPIC_VALUES),
   message: z
     .string()
     .trim()
