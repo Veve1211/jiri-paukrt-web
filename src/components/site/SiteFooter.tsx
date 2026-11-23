@@ -49,7 +49,7 @@ export function SiteFooter() {
           <a href="/privacy" className="telemetry text-[10px] text-dim hover:text-star">
             {t("Privacy notice", "Ochrana osobních údajů")}
           </a>
-          <span className="telemetry text-[10px] text-dim/70">
+          <span className="telemetry text-[10px] text-dim">
             © {new Date().getFullYear()} {t(PERSON.name, "Jiří Paukrt")}
           </span>
         </div>

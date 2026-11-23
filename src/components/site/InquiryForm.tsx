@@ -94,11 +94,14 @@ const schema = z.object({
   email: z
     .string()
     .trim()
-    .email("Enter a valid email address")
-    .max(255)
-    .refine(
-      (v) => !DISPOSABLE_DOMAINS.includes(v.split("@")[1]?.toLowerCase() ?? ""),
-      "Please use a permanent email address so Jiri can reply",
+    .pipe(
+      z
+        .email("Enter a valid email address")
+        .max(255)
+        .refine(
+          (v) => !DISPOSABLE_DOMAINS.includes(v.split("@")[1]?.toLowerCase() ?? ""),
+          "Please use a permanent email address so Jiri can reply",
+        ),
     ),
   organisation: z.string().trim().max(120, "Keep it under 120 characters").optional(),
   topic: z.enum(TOPIC_VALUES),
@@ -382,7 +385,7 @@ export function InquiryForm({
           "Your details are used only to reply to your message.",
           "Vaše údaje použijeme jen k odpovědi na zprávu.",
         )}{" "}
-        <a href="/privacy" className="text-cyan underline-offset-2 hover:underline">
+        <a href="/privacy" className="text-cyan underline underline-offset-2">
           {t("Privacy notice", "Ochrana osobních údajů")}
         </a>
       </p>
@@ -426,7 +429,7 @@ function Field({
         <label htmlFor={htmlFor} className="telemetry text-[10px] text-dim">
           {label}
         </label>
-        {hint && <span className="font-mono text-[10px] text-dim/60">{hint}</span>}
+        {hint && <span className="font-mono text-[10px] text-dim">{hint}</span>}
       </div>
       {children}
       {error && <p className="mt-1.5 text-xs text-alert">{error}</p>}

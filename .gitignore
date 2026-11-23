@@ -33,3 +33,7 @@ dist-ssr
 
 # Environment files (.env is managed by Lovable and holds only public keys)
 .env*
+
+# Playwright
+test-results/
+playwright-report/
