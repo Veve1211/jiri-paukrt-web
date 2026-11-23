@@ -94,11 +94,14 @@ const schema = z.object({
   email: z
     .string()
     .trim()
-    .email("Enter a valid email address")
-    .max(255)
-    .refine(
-      (v) => !DISPOSABLE_DOMAINS.includes(v.split("@")[1]?.toLowerCase() ?? ""),
-      "Please use a permanent email address so Jiri can reply",
+    .pipe(
+      z
+        .email("Enter a valid email address")
+        .max(255)
+        .refine(
+          (v) => !DISPOSABLE_DOMAINS.includes(v.split("@")[1]?.toLowerCase() ?? ""),
+          "Please use a permanent email address so Jiri can reply",
+        ),
     ),
   organisation: z.string().trim().max(120, "Keep it under 120 characters").optional(),
   topic: z.enum(TOPIC_VALUES),

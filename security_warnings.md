@@ -17,9 +17,8 @@ Poslední kontrola: 23. 11. 2026. Postup podle bezpečnostní matice z manuálu 
 ## Závislosti
 
 1. **opraveno 18. 11. 2026.** `bun audit fix` a aktualizace vite (8.1.6) a vitest (4.1.12) snížily počet nálezů z 30 (1 kritický, 15 vysokých) na 4. Opravený je i kritický `shell-quote` a `seroval`, který běží přímo na webu. Po aktualizaci prošly typy, testy i build.
-2. **zbývají 3 (1 vysoká, 2 střední, stav 23. 11. 2026), vědomě ponecháno:**
-   1. `esbuild` a `minimatch` jsou nástroje pro build a vývojový server, na živém webu neběží.
-   2. `zod` 3.x (validace kontaktního formuláře) nemá opravu ve verzi 3, oprava vyžaduje přechod na zod 4. Chyba se týká validace obřích kolekcí; formulář validuje jen krátké texty s pevným limitem délky, takže praktické riziko je nízké. Přechod na zod 4 je samostatný úkol.
+2. **23. 11. 2026: přechod na zod 4** (validace kontaktního formuláře). Tím zmizel jediný vysoký nález.
+3. **zbývají 2 střední, vědomě ponecháno:** `esbuild` a `minimatch` jsou nástroje pro build a vývojový server, na živém webu neběží.
 
 ## Vědomé rozhodnutí
 
