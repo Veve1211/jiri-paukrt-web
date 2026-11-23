@@ -166,7 +166,7 @@ function FilterChip({
       to="/projects"
       search={search}
       resetScroll={false}
-      aria-pressed={active}
+      aria-current={active ? "true" : undefined}
       className={cn(
         "rounded-full border px-4 py-2 font-mono text-[11px] tracking-wider uppercase transition-colors duration-300",
         active
@@ -175,7 +175,7 @@ function FilterChip({
       )}
     >
       {label}{" "}
-      <span className={cn("ml-1", active ? "text-cyan/70" : "text-dim")}>
+      <span className={cn("ml-1", active ? "text-cyan" : "text-dim")}>
         {String(count).padStart(2, "0")}
       </span>
     </Link>

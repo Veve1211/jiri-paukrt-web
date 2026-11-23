@@ -101,7 +101,7 @@ function NetworkPage() {
               )}
             >
               {r ? regionLabel(r) : t("All places", "Všechna místa")}{" "}
-              <span className={cn("ml-1", on ? "text-cyan/70" : "text-dim")}>
+              <span className={cn("ml-1", on ? "text-cyan" : "text-dim")}>
                 {String(count).padStart(2, "0")}
               </span>
             </button>
@@ -139,7 +139,7 @@ function NetworkPage() {
               <span className="h-px w-4 border-t border-dashed border-volt" />{" "}
               {t("CAREER PATH", "KARIÉRNÍ CESTA")}
             </span>
-            <span className="ml-auto text-cyan/70">
+            <span className="ml-auto text-cyan">
               {t("POINT AT A PLACE, THEN CLICK", "NAJEĎTE NA MÍSTO A KLIKNĚTE")}
             </span>
           </div>

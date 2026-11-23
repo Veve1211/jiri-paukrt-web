@@ -147,96 +147,102 @@ export function NetworkMap({
         const town = l.kind === "town";
         const r = l.kind === "hq" ? 6 : town ? 2.2 : 4.5;
         const labelRight = p.x < 600 || (p.x > 690 && p.x < 900);
+        const toggle = () => onSelect(sel ? undefined : l.id);
         return (
-          <g
-            key={l.id}
-            role="button"
-            tabIndex={0}
-            aria-label={`${cityLabel(l.name)}, ${countryLabel(l.country)}`}
-            aria-pressed={sel}
-            className={cn(
-              "group cursor-pointer outline-none transition-opacity",
-              dimmed && "opacity-25",
-            )}
-            onClick={() => onSelect(sel ? undefined : l.id)}
-            onMouseEnter={() => setHover(l.id)}
-            onMouseLeave={() => setHover(undefined)}
-            onFocus={() => setHover(l.id)}
-            onBlur={() => setHover(undefined)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                onSelect(sel ? undefined : l.id);
-              }
-            }}
-          >
-            <circle cx={p.x} cy={p.y} r={town ? 9 : 16} className="fill-transparent" />
-            {/* hover: the point lights up so it is clear it can be clicked */}
-            <circle
-              cx={p.x}
-              cy={p.y}
-              r={town ? 10 : 18}
-              className={cn(
-                "fill-cyan/10 stroke-cyan/60 transition-opacity duration-200",
-                hot ? "opacity-100" : "opacity-0",
-              )}
-              strokeWidth="1.2"
-            />
-            <circle
-              cx={p.x}
-              cy={p.y}
-              r={r + 8}
-              className="stroke-cyan opacity-0 transition-opacity group-focus-visible:opacity-100"
-              strokeDasharray="3 3"
-            />
-            {(l.kind === "hq" || sel) && (
+          <g key={l.id} className={cn("transition-opacity", dimmed && "opacity-25")}>
+            <g
+              role="button"
+              tabIndex={0}
+              aria-label={`${cityLabel(l.name)}, ${countryLabel(l.country)}`}
+              aria-pressed={sel}
+              className="group cursor-pointer outline-none"
+              onClick={toggle}
+              onMouseEnter={() => setHover(l.id)}
+              onMouseLeave={() => setHover(undefined)}
+              onFocus={() => setHover(l.id)}
+              onBlur={() => setHover(undefined)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onSelect(sel ? undefined : l.id);
+                }
+              }}
+            >
+              <circle cx={p.x} cy={p.y} r={town ? 9 : 16} className="fill-transparent" />
+              {/* hover: the point lights up so it is clear it can be clicked */}
               <circle
                 cx={p.x}
                 cy={p.y}
-                r={r + 9}
-                strokeWidth="0.8"
-                strokeDasharray="2 3"
-                className="stroke-cyan"
+                r={town ? 10 : 18}
+                className={cn(
+                  "fill-cyan/10 stroke-cyan/60 transition-opacity duration-200",
+                  hot ? "opacity-100" : "opacity-0",
+                )}
+                strokeWidth="1.2"
               />
-            )}
-            {!town && (
-              <>
+              <circle
+                cx={p.x}
+                cy={p.y}
+                r={r + 8}
+                className="stroke-cyan opacity-0 transition-opacity group-focus-visible:opacity-100"
+                strokeDasharray="3 3"
+              />
+              {(l.kind === "hq" || sel) && (
                 <circle
                   cx={p.x}
                   cy={p.y}
-                  r={r + 3.5}
-                  strokeWidth="1.2"
-                  className={cn(
-                    "fill-void",
-                    sel || hot || l.kind === "hq" ? "stroke-cyan" : "stroke-star/70",
-                  )}
+                  r={r + 9}
+                  strokeWidth="0.8"
+                  strokeDasharray="2 3"
+                  className="stroke-cyan"
                 />
-                <path
-                  d={`M${p.x - r - 7} ${p.y}h-4M${p.x + r + 7} ${p.y}h4M${p.x} ${p.y - r - 7}v-4M${p.x} ${p.y + r + 7}v4`}
-                  strokeWidth="1"
-                  className={sel || hot || l.kind === "hq" ? "stroke-cyan" : "stroke-star/50"}
-                />
-              </>
-            )}
-            <circle
-              cx={p.x}
-              cy={p.y}
-              r={town ? (sel ? r + 1.5 : r) : sel ? 3.5 : 2.6}
-              className={cn(
-                "transition-all",
-                l.kind === "hq" || sel || hot
-                  ? "fill-cyan"
-                  : l.kind === "base"
-                    ? "fill-starblue"
-                    : "fill-star",
-                town && !sel && !hot && "fill-star/80",
               )}
-            />
+              {!town && (
+                <>
+                  <circle
+                    cx={p.x}
+                    cy={p.y}
+                    r={r + 3.5}
+                    strokeWidth="1.2"
+                    className={cn(
+                      "fill-void",
+                      sel || hot || l.kind === "hq" ? "stroke-cyan" : "stroke-star/70",
+                    )}
+                  />
+                  <path
+                    d={`M${p.x - r - 7} ${p.y}h-4M${p.x + r + 7} ${p.y}h4M${p.x} ${p.y - r - 7}v-4M${p.x} ${p.y + r + 7}v4`}
+                    strokeWidth="1"
+                    className={sel || hot || l.kind === "hq" ? "stroke-cyan" : "stroke-star/50"}
+                  />
+                </>
+              )}
+              <circle
+                cx={p.x}
+                cy={p.y}
+                r={town ? (sel ? r + 1.5 : r) : sel ? 3.5 : 2.6}
+                className={cn(
+                  "transition-all",
+                  l.kind === "hq" || sel || hot
+                    ? "fill-cyan"
+                    : l.kind === "base"
+                      ? "fill-starblue"
+                      : "fill-star",
+                  town && !sel && !hot && "fill-star/80",
+                )}
+              />
+              <title>{`${cityLabel(l.name)}, ${countryLabel(l.country)}`}</title>
+            </g>
             {(!town || sel || hot) && (
               <g
-                className="font-mono"
                 letterSpacing="1.5"
                 textAnchor={labelRight ? "start" : "end"}
+                // Outside the button: visual duplicate of its name. Clickable with a mouse;
+                // the keyboard uses the button.
+                aria-hidden="true"
+                className="cursor-pointer font-mono"
+                onClick={toggle}
+                onMouseEnter={() => setHover(l.id)}
+                onMouseLeave={() => setHover(undefined)}
               >
                 <text
                   x={p.x + (labelRight ? 18 : -18)}
@@ -268,7 +274,6 @@ export function NetworkMap({
                 </text>
               </g>
             )}
-            <title>{`${cityLabel(l.name)}, ${countryLabel(l.country)}`}</title>
           </g>
         );
       })}

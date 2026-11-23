@@ -15,6 +15,7 @@
 * Data: obsah webu v `src/data/portfolio.ts`; Supabase spravuje Lovable
 * Hosting: Lovable (paukrt.lovable.app), repo GitHub Veve1211/transport-constellation-atlas
 * Testy: `npx vitest run`, typy: `npx tsc --noEmit`. Před každým pushem obojí musí projít.
+* Testy v prohlížeči: `bun run test:e2e` (Playwright: počítač, tablet, mobil; všechny stránky EN i CZ, axe WCAG 2.1 AA, kontrola textu o hledání práce, formulář). Běží i v CI. V cloud sandboxu s `PW_CHROMIUM_PATH=/opt/pw-browsers/chromium-1243/chrome-linux64/chrome`.
 * Zákaz: secrets a `.env` hodnoty nikdy do repa.
 
 ## Jazyk

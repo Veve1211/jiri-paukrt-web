@@ -1,6 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, X } from "lucide-react";
-import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
+import {
+  Fragment,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type KeyboardEvent,
+} from "react";
 
 import { useContent } from "@/data/useContent";
 import { useLang } from "@/lib/i18n";
@@ -475,71 +482,79 @@ export function HeroRoadNetwork() {
             const isSel = selected === j.id;
             const showLabel = j.major || isActive;
             const pos = LABEL_POS[j.id] ?? { x: j.x + 16, y: j.y - 10 };
+            const toggle = () => setSelected((s) => (s === j.id ? null : j.id));
             return (
-              <g
-                key={j.id}
-                role="button"
-                tabIndex={0}
-                aria-label={`${t(j.label, j.labelCs ?? j.label)} — ${t(j.sub, j.subCs)}`}
-                aria-pressed={isSel}
-                className="cursor-pointer outline-none [&:focus-visible_.focus-ring]:opacity-100"
-                onClick={() => setSelected((s) => (s === j.id ? null : j.id))}
-                onKeyDown={(e) => onNodeKey(e, j.id)}
-                onMouseEnter={() => setHovered(j.id)}
-                onMouseLeave={() => setHovered(null)}
-                onFocus={() => setHovered(j.id)}
-                onBlur={() => setHovered(null)}
-              >
-                <circle
-                  cx={j.x}
-                  cy={j.y}
-                  r={isActive ? 40 : j.major ? 28 : 22}
-                  fill="url(#junction-light)"
-                  className="transition-all duration-300"
-                />
-                <circle cx={j.x} cy={j.y} r="24" className="fill-transparent" />
-                <circle
-                  cx={j.x}
-                  cy={j.y}
-                  r="20"
-                  className="focus-ring stroke-cyan opacity-0 transition-opacity"
-                  strokeDasharray="3 3"
-                />
-                {/* junction drawn as a technical node symbol: ring, crosshair ticks, centre point */}
-                {(isActive || j.major) && (
+              <Fragment key={j.id}>
+                <g
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${t(j.label, j.labelCs ?? j.label)} — ${t(j.sub, j.subCs)}`}
+                  aria-pressed={isSel}
+                  className="cursor-pointer outline-none [&:focus-visible_.focus-ring]:opacity-100"
+                  onClick={toggle}
+                  onKeyDown={(e) => onNodeKey(e, j.id)}
+                  onMouseEnter={() => setHovered(j.id)}
+                  onMouseLeave={() => setHovered(null)}
+                  onFocus={() => setHovered(j.id)}
+                  onBlur={() => setHovered(null)}
+                >
                   <circle
                     cx={j.x}
                     cy={j.y}
-                    r={j.major ? 17 : 14}
-                    strokeWidth="0.8"
-                    strokeDasharray="2 3"
-                    className={isActive ? "stroke-cyan" : "stroke-star/40"}
+                    r={isActive ? 40 : j.major ? 28 : 22}
+                    fill="url(#junction-light)"
+                    className="transition-all duration-300"
                   />
-                )}
-                <path
-                  d={`M${j.x - 14} ${j.y}h-5M${j.x + 14} ${j.y}h5M${j.x} ${j.y - 14}v-5M${j.x} ${j.y + 14}v5`}
-                  strokeWidth="1"
-                  className={isActive ? "stroke-cyan" : "stroke-star/50"}
-                />
-                <circle
-                  cx={j.x}
-                  cy={j.y}
-                  r={j.major ? 9 : 7}
-                  strokeWidth="1.4"
-                  className={cn(
-                    "fill-void transition-colors",
-                    isActive ? "stroke-cyan" : "stroke-star",
+                  <circle cx={j.x} cy={j.y} r="24" className="fill-transparent" />
+                  <circle
+                    cx={j.x}
+                    cy={j.y}
+                    r="20"
+                    className="focus-ring stroke-cyan opacity-0 transition-opacity"
+                    strokeDasharray="3 3"
+                  />
+                  {/* junction drawn as a technical node symbol: ring, crosshair ticks, centre point */}
+                  {(isActive || j.major) && (
+                    <circle
+                      cx={j.x}
+                      cy={j.y}
+                      r={j.major ? 17 : 14}
+                      strokeWidth="0.8"
+                      strokeDasharray="2 3"
+                      className={isActive ? "stroke-cyan" : "stroke-star/40"}
+                    />
                   )}
-                />
-                <circle
-                  cx={j.x}
-                  cy={j.y}
-                  r={isActive ? 4 : 2.5}
-                  className={cn("transition-all", isActive ? "fill-cyan" : "fill-star")}
-                />
+                  <path
+                    d={`M${j.x - 14} ${j.y}h-5M${j.x + 14} ${j.y}h5M${j.x} ${j.y - 14}v-5M${j.x} ${j.y + 14}v5`}
+                    strokeWidth="1"
+                    className={isActive ? "stroke-cyan" : "stroke-star/50"}
+                  />
+                  <circle
+                    cx={j.x}
+                    cy={j.y}
+                    r={j.major ? 9 : 7}
+                    strokeWidth="1.4"
+                    className={cn(
+                      "fill-void transition-colors",
+                      isActive ? "stroke-cyan" : "stroke-star",
+                    )}
+                  />
+                  <circle
+                    cx={j.x}
+                    cy={j.y}
+                    r={isActive ? 4 : 2.5}
+                    className={cn("transition-all", isActive ? "fill-cyan" : "fill-star")}
+                  />
+                </g>
                 {showLabel && (
                   <g
-                    className="font-mono"
+                    // Outside the button: visual duplicate of its name. Clickable with a mouse;
+                    // the keyboard uses the button.
+                    aria-hidden="true"
+                    className="cursor-pointer font-mono"
+                    onClick={toggle}
+                    onMouseEnter={() => setHovered(j.id)}
+                    onMouseLeave={() => setHovered(null)}
                     letterSpacing="1.4"
                     textAnchor={pos.anchor}
                     stroke="var(--void)"
@@ -560,7 +575,7 @@ export function HeroRoadNetwork() {
                     </text>
                   </g>
                 )}
-              </g>
+              </Fragment>
             );
           })}
 

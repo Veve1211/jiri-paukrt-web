@@ -261,7 +261,7 @@ function Readout({
       </div>
       <div className="telemetry mt-1 text-[9.5px] text-dim">{label}</div>
       <div className="mt-2 flex items-center justify-between font-mono text-[9.5px]">
-        <span className="text-dim/70">
+        <span className="text-dim">
           {baseLabel} {base}
         </span>
         <span className={cn(good === null ? "text-dim" : good ? "text-go" : "text-alert")}>
