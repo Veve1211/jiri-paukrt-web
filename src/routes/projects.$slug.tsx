@@ -2,12 +2,8 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, MapPin } from "lucide-react";
 
 import { InquiryDialog } from "@/components/site/InquiryDialog";
-import {
-  METHOD_CAPTION,
-  METHOD_CAPTION_CS,
-  MethodIllustration,
-  type Method,
-} from "@/components/site/MethodIllustration";
+import { MethodIllustration, type Method } from "@/components/site/MethodIllustration";
+import { METHOD_CAPTION, METHOD_CAPTION_CS } from "@/data/method-captions";
 import { useContent } from "@/data/useContent";
 import { useLang } from "@/lib/i18n";
 import { ProjectCover } from "@/components/site/ProjectCover";

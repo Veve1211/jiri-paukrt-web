@@ -3,7 +3,8 @@ import { Menu } from "lucide-react";
 import { useState } from "react";
 
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { LangSwitch, useLang } from "@/lib/i18n";
+import { LangSwitch } from "@/components/site/LangProvider";
+import { useLang } from "@/lib/i18n";
 import { BrandMark } from "./BrandMark";
 
 export const NAV = [
