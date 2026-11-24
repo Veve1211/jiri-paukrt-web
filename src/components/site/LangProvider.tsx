@@ -1,35 +1,6 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 
-/**
- * Two-language support (English default, Czech). The choice is kept in the URL
- * (?lang=cs) when present, otherwise in localStorage. Server render is English;
- * the browser switches after mount.
- */
-
-export type Lang = "en" | "cs";
-
-const STORAGE_KEY = "site-lang";
-
-interface LangValue {
-  lang: Lang;
-  setLang: (l: Lang) => void;
-  /** Pick the string for the current language. */
-  t: (en: string, cs: string) => string;
-}
-
-const LangContext = createContext<LangValue>({
-  lang: "en",
-  setLang: () => {},
-  t: (en) => en,
-});
+import { LangContext, STORAGE_KEY, useLang, type Lang, type LangValue } from "@/lib/i18n";
 
 export function LangProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("en");
@@ -66,10 +37,6 @@ export function LangProvider({ children }: { children: ReactNode }) {
   );
 
   return <LangContext.Provider value={value}>{children}</LangContext.Provider>;
-}
-
-export function useLang() {
-  return useContext(LangContext);
 }
 
 /** EN | CZ switch for the header. */

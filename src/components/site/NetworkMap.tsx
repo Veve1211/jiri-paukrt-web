@@ -10,7 +10,7 @@ const VW = 1000;
 const VH = 600;
 
 /** Two-panel map projection: Europe on the left, Australia on the right. */
-export function project(loc: { lat: number; lon: number }): { x: number; y: number } {
+function project(loc: { lat: number; lon: number }): { x: number; y: number } {
   if (loc.lat < 0) {
     const k = 24.7;
     return {

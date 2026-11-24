@@ -17,7 +17,8 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { BlueprintBackdrop } from "@/components/site/BlueprintBackdrop";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { LangProvider, useLang } from "@/lib/i18n";
+import { LangProvider } from "@/components/site/LangProvider";
+import { useLang } from "@/lib/i18n";
 import { useContent } from "@/data/useContent";
 
 function NotFoundComponent() {

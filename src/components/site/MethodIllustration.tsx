@@ -1,8 +1,10 @@
 import { createContext, useContext, useRef, type ReactNode } from "react";
 
-import { useVcSwitch, VcSwitch, VC_FADE } from "@/components/site/VcSwitch";
+import { VcSwitch } from "@/components/site/VcSwitch";
+import { useVcSwitch, VC_FADE } from "@/components/site/useVcSwitch";
 import { useLang } from "@/lib/i18n";
 
+import { METHOD_CAPTION, METHOD_CAPTION_CS } from "@/data/method-captions";
 import { cn } from "@/lib/utils";
 
 /**
@@ -342,24 +344,6 @@ const DRAW: Record<Method, () => ReactNode> = {
   beforeAfter: BeforeAfter,
   junction: Junction,
   profile: Profile,
-};
-
-export const METHOD_CAPTION: Record<Method, string> = {
-  calibration: "Calibration: modelled flows checked against observed counts",
-  matrix: "Demand: trips between zones held in an origin–destination matrix",
-  bandwidth: "Assignment: traffic loaded onto the road network",
-  beforeAfter: "Evaluation: how traffic moved after a scheme opened",
-  junction: "Microsimulation: individual vehicles through a signalised junction",
-  profile: "Demand over the day: arrival and departure peaks",
-};
-
-export const METHOD_CAPTION_CS: Record<Method, string> = {
-  calibration: "Kalibrace: modelované intenzity porovnané se sčítáním dopravy",
-  matrix: "Poptávka: cesty mezi zónami v matici zdrojů a cílů",
-  bandwidth: "Přidělení: doprava zatížená na silniční síť",
-  beforeAfter: "Hodnocení: jak se doprava změnila po otevření stavby",
-  junction: "Mikrosimulace: jednotlivá vozidla na světelné křižovatce",
-  profile: "Poptávka během dne: špičky příchodů a odchodů",
 };
 
 export function MethodIllustration({ method, className }: { method: Method; className?: string }) {
