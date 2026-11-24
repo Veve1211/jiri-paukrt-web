@@ -13,7 +13,8 @@ import { useContent } from "@/data/useContent";
 import { useLang } from "@/lib/i18n";
 import { usePrefersReducedMotion } from "@/hooks/use-telemetry";
 import { cn } from "@/lib/utils";
-import { useVcSwitch, VcSwitch, VC_FADE } from "@/components/site/VcSwitch";
+import { VcSwitch } from "@/components/site/VcSwitch";
+import { useVcSwitch, VC_FADE } from "@/components/site/useVcSwitch";
 
 /**
  * Hero graphic: a schematic traffic-model flow plot. Each junction is a project;
