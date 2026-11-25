@@ -102,3 +102,14 @@ test("the contact form checks the fields before sending anything", async ({ page
   await expect(page.locator("#inq-email")).not.toHaveAttribute("aria-invalid", "true");
   expect(sent).toEqual([]);
 });
+
+// Google Search Console reads the raw server HTML, so check the response body, not the live DOM.
+test("server HTML keeps the Google Search Console verification tag in <head>", async ({
+  request,
+}) => {
+  const html = await (await request.get("/")).text();
+  const head = html.slice(0, html.indexOf("</head>"));
+  expect(head).toMatch(
+    /<meta name="google-site-verification" content="Ctgx3MlIJJWdodU5RKD0QqkVdI_yZhYH0Ax9UxsskUY"\s*\/?>/,
+  );
+});
