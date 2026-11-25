@@ -104,12 +104,20 @@ test("the contact form checks the fields before sending anything", async ({ page
 });
 
 // Google Search Console reads the raw server HTML, so check the response body, not the live DOM.
-test("server HTML keeps the Google Search Console verification tag in <head>", async ({
+const SITE_VERIFICATION_TOKENS = [
+  "Ctgx3MlIJJWdodU5RKD0QqkVdI_yZhYH0Ax9UxsskUY", // paukrt.lovable.app
+  "I1BdPvOxBZ2Xa9qqwYhdoJhEafmc3PIXcCgCenOrBPw", // jiri-paukrt-web-eytb.vercel.app
+];
+
+test("server HTML keeps the Google Search Console verification tags in <head>", async ({
   request,
 }) => {
   const html = await (await request.get("/")).text();
   const head = html.slice(0, html.indexOf("</head>"));
-  expect(head).toMatch(
-    /<meta name="google-site-verification" content="Ctgx3MlIJJWdodU5RKD0QqkVdI_yZhYH0Ax9UxsskUY"\s*\/?>/,
-  );
+  for (const token of SITE_VERIFICATION_TOKENS) {
+    // [^>]* allows extra attributes the dev server adds (data-tsd-source)
+    expect(head).toMatch(
+      new RegExp(`<meta name="google-site-verification" content="${token}"[^>]*>`),
+    );
+  }
 });
