@@ -114,6 +114,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      // Google Search Console ownership proof — keep permanently, removing it unverifies the site.
+      {
+        name: "google-site-verification",
+        content: "Ctgx3MlIJJWdodU5RKD0QqkVdI_yZhYH0Ax9UxsskUY",
+      },
     ],
     links: [
       {
