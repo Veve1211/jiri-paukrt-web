@@ -146,6 +146,12 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en" className="dark">
       <head>
         <HeadContent />
+        {/* Google Search Console token for the Vercel address (jiri-paukrt-web-eytb.vercel.app) —
+            keep permanently. Written here, not in head(): HeadContent keeps only one meta per name. */}
+        <meta
+          name="google-site-verification"
+          content="I1BdPvOxBZ2Xa9qqwYhdoJhEafmc3PIXcCgCenOrBPw"
+        />
       </head>
       <body>
         {children}
