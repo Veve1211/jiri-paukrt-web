@@ -141,11 +141,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+// The published address; copies of the site (e.g. on Vercel) point search engines here.
+const CANONICAL_ORIGIN = "https://paukrt.lovable.app";
+
 function RootShell({ children }: { children: ReactNode }) {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const canonicalPath = pathname.replace(/\/+$/, "") || "/";
   return (
     <html lang="en" className="dark">
       <head>
         <HeadContent />
+        <link rel="canonical" href={`${CANONICAL_ORIGIN}${canonicalPath}`} />
         {/* Google Search Console token for the Vercel address (jiri-paukrt-web-eytb.vercel.app) —
             keep permanently. Written here, not in head(): HeadContent keeps only one meta per name. */}
         <meta

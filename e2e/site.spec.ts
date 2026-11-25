@@ -121,3 +121,14 @@ test("server HTML keeps the Google Search Console verification tags in <head>", 
     );
   }
 });
+
+test("every page names paukrt.lovable.app as the canonical address", async ({ request }) => {
+  for (const path of ["/", "/cv", `/projects/${PROJECTS[0].slug}`]) {
+    const html = await (await request.get(`${path}?lang=cs`)).text();
+    const head = html.slice(0, html.indexOf("</head>"));
+    const canonical = head.match(/<link rel="canonical" href="([^"]+)"/g) ?? [];
+    expect(canonical, path).toEqual([
+      `<link rel="canonical" href="https://paukrt.lovable.app${path}"`,
+    ]);
+  }
+});
