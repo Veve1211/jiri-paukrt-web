@@ -11,6 +11,8 @@ import { useLang } from "@/lib/i18n";
 import { spotlightMove } from "@/hooks/use-spotlight";
 import { cn } from "@/lib/utils";
 
+const imageAlt = "Jiri Paukrt, Ing. — Principal Transportation Engineer";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -29,14 +31,19 @@ export const Route = createFileRoute("/")({
       { name: "seznam-wmt", content: "xhTtQpmWvW9uVGZRCyfxKoysTzTmFjkI" },
       { property: "og:type", content: "website" },
       { property: "og:image", content: "https://jiri-paukrt.vercel.app/og.png" },
+      { property: "og:image:type", content: "image/png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       {
         property: "og:image:alt",
-        content: "Jiri Paukrt, Ing. — Principal Transportation Engineer",
+        content: imageAlt,
       },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:image", content: "https://jiri-paukrt.vercel.app/og.png" },
+      {
+        name: "twitter:image:alt",
+        content: imageAlt,
+      },
     ],
   }),
   component: Index,
