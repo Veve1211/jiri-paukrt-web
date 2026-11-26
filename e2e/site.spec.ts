@@ -11,7 +11,9 @@ const JOB_SEEKING =
   /open to (new )?(roles|opportunities|work)|available for (hire|work|new)|looking for (a )?(new )?(job|role|position)|job search|hledám (novou )?práci|hledám (nové )?uplatnění|k dispozici pro nové/i;
 
 async function open(page: Page, path: string, lang: "en" | "cs" = "en") {
-  await page.goto(`${path}?lang=${lang}`, { waitUntil: "networkidle" });
+  const url = new URL(path, "http://localhost");
+  url.searchParams.set("lang", lang);
+  await page.goto(url.pathname + url.search, { waitUntil: "networkidle" });
   await expect(page.locator("html")).toHaveAttribute("lang", lang);
 }
 
@@ -57,11 +59,11 @@ for (const path of PAGES) {
 
 test("the EN/CZ switch translates the menu and is remembered", async ({ page }) => {
   await page.goto("/", { waitUntil: "networkidle" });
-  await page.getByRole("button", { name: "CZ", exact: true }).click();
+  await page.getByRole("link", { name: "CZ", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("lang", "cs");
-  await expect(page.getByRole("button", { name: "CZ", exact: true })).toHaveAttribute(
-    "aria-pressed",
-    "true",
+  await expect(page.getByRole("link", { name: "CZ", exact: true })).toHaveAttribute(
+    "aria-current",
+    "page",
   );
   await page.reload({ waitUntil: "networkidle" });
   await expect(page.locator("html")).toHaveAttribute("lang", "cs");
@@ -69,18 +71,21 @@ test("the EN/CZ switch translates the menu and is remembered", async ({ page }) 
     const nav = page.getByRole("navigation", { name: "Hlavní menu" });
     for (const item of NAV) await expect(nav.getByRole("link", { name: item.cs })).toBeVisible();
   }
-  await page.getByRole("button", { name: "EN", exact: true }).click();
+  await page.getByRole("link", { name: "EN", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
 });
 
 test("the mobile menu opens and navigates", async ({ page }) => {
   test.skip(page.viewportSize()!.width >= 768, "the full menu shows from md (768 px)");
   await open(page, "/");
-  await page.getByRole("button", { name: "Open menu" }).click();
-  await page
-    .getByRole("navigation", { name: "Mobile menu" })
-    .getByRole("link", { name: "Projects" })
-    .click();
+  const menu = page.getByRole("navigation", { name: "Mobile menu" });
+  await expect(async () => {
+    if (!(await menu.isVisible())) {
+      await page.getByRole("button", { name: "Open menu" }).click();
+    }
+    await expect(menu).toBeVisible({ timeout: 750 });
+  }).toPass({ timeout: 10_000 });
+  await menu.getByRole("link", { name: "Projects" }).click();
   await expect(page).toHaveURL(/\/projects/);
   await expect(page.getByRole("navigation", { name: "Mobile menu" })).toBeHidden();
 });
@@ -186,14 +191,24 @@ test("all canonical pages have reciprocal hreflang and complete sharing cards in
   }
 });
 
-test("map and project filters keep the active language", async ({ page }) => {
+test("switching languages preserves project filters and map selections", async ({ page }) => {
   await open(page, "/projects", "cs");
-  await page.locator('a[href*="domain=microsim"]').first().click();
+  const filter = page
+    .getByRole("group", { name: "Filtrovat podle oboru" })
+    .locator('a[href*="domain=microsim"]');
+  await filter.click();
+  await expect(filter).toHaveAttribute("aria-current", "page");
+  await page.waitForLoadState("networkidle");
   await expect(page).toHaveURL(/lang=cs/);
   await expect(page).toHaveURL(/domain=microsim/);
-  await page.getByRole("button", { name: "EN", exact: true }).click();
+  await page.getByRole("link", { name: "EN", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
   await expect(page).toHaveURL(/domain=microsim/);
+
+  await open(page, "/network?node=dublin", "en");
+  await page.getByRole("link", { name: "CZ", exact: true }).click();
+  await expect(page.locator("html")).toHaveAttribute("lang", "cs");
+  await expect(page).toHaveURL(/node=dublin/);
 });
 
 test("the contact form accepts email delivery when the backup fails", async ({ page }) => {

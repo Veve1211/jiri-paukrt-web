@@ -5,14 +5,12 @@ export type Lang = "en" | "cs";
 
 export interface LangValue {
   lang: Lang;
-  setLang: (l: Lang) => void;
   /** Pick the string for the current language. */
   t: (en: string, cs: string) => string;
 }
 
 export const LangContext = createContext<LangValue>({
   lang: "en",
-  setLang: () => {},
   t: (en) => en,
 });
 
