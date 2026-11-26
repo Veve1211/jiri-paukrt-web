@@ -34,7 +34,9 @@ describe("sitemap", () => {
 
   it("lists every project page", () => {
     for (const project of PROJECTS) {
-      expect(sitemap).toContain(`<loc>https://jiri-paukrt.vercel.app/projects/${project.slug}</loc>`);
+      expect(sitemap).toContain(
+        `<loc>https://jiri-paukrt.vercel.app/projects/${project.slug}</loc>`,
+      );
     }
   });
 

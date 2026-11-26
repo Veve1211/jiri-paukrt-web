@@ -125,9 +125,7 @@ test("server HTML keeps the Google Search Console verification tags in <head>", 
 test("server HTML includes the Seznam Webmaster tag in the homepage head", async ({ request }) => {
   const html = await (await request.get("/")).text();
   const head = html.slice(0, html.indexOf("</head>"));
-  expect(head).toMatch(
-    /<meta name="seznam-wmt" content="xhTtQpmWvW9uVGZRCyfxKoysTzTmFjkI"[^>]*>/,
-  );
+  expect(head).toMatch(/<meta name="seznam-wmt" content="xhTtQpmWvW9uVGZRCyfxKoysTzTmFjkI"[^>]*>/);
 
   const cv = await (await request.get("/cv")).text();
   expect(cv).not.toContain('name="seznam-wmt"');
