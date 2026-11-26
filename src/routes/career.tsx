@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Download, GraduationCap, Languages, Users } from "lucide-react";
 
@@ -7,24 +8,21 @@ import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/career")({
-  head: () => ({
-    meta: [
-      { title: "Career Timeline 1999–Present — Jiri Paukrt" },
+  head: ({ match }) =>
+    pageHead(
+      match,
       {
-        name: "description",
-        content:
+        title: "Career Timeline 1999–Present — Jiri Paukrt",
+        description:
           "From CityPlan in Prague (1999) through Jacobs Babtie in Leeds and Hyder Consulting in Melbourne to Principal Transportation Engineer at SYSTRA in Dublin since 2008.",
       },
-      { property: "og:title", content: "Career Timeline — Jiri Paukrt" },
       {
-        property: "og:description",
-        content:
-          "Prague → Leeds → Melbourne → Dublin: 27+ years of transport planning and modelling.",
+        title: "Kariéra v dopravním modelování — Jiří Paukrt",
+        description:
+          "Kariéra Jiřího Paukrta v dopravním plánování a modelování od Prahy přes Leeds a Melbourne až po SYSTRA v Dublinu.",
       },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+      "website",
+    ),
   component: CareerPage,
 });
 

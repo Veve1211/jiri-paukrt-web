@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowUpRight, MapPin } from "lucide-react";
 
@@ -9,24 +10,21 @@ import { PERSON } from "@/data/portfolio";
 import { useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Contact — Jiri Paukrt" },
+  head: ({ match }) =>
+    pageHead(
+      match,
       {
-        name: "description",
-        content:
+        title: "Contact — Jiri Paukrt",
+        description:
           "Get in touch with Jiri Paukrt, Principal Transportation Engineer at SYSTRA in Dublin, about demand modelling, microsimulation, major events or road safety.",
       },
-      { property: "og:title", content: "Contact — Jiri Paukrt" },
       {
-        property: "og:description",
-        content:
-          "Send a message or connect on LinkedIn. Works for SYSTRA in Dublin, based in the Czech Republic.",
+        title: "Kontakt — Jiří Paukrt",
+        description:
+          "Kontaktujte Jiřího Paukrta kvůli dopravnímu modelování, mikrosimulacím, velkým akcím nebo bezpečnosti dopravy.",
       },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+      "website",
+    ),
   component: ContactPage,
 });
 

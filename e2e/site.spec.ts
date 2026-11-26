@@ -131,13 +131,88 @@ test("server HTML includes the Seznam Webmaster tag in the homepage head", async
   expect(cv).not.toContain('name="seznam-wmt"');
 });
 
-test("every page names jiri-paukrt.vercel.app as the canonical address", async ({ request }) => {
-  for (const path of ["/", "/cv", `/projects/${PROJECTS[0].slug}`]) {
-    const html = await (await request.get(`${path}?lang=cs`)).text();
+test("all canonical pages have reciprocal hreflang and complete sharing cards in server HTML", async ({
+  request,
+}) => {
+  const origin = "https://jiri-paukrt.vercel.app";
+  const siteMap = await request.get("/sitemap.xml");
+  expect(siteMap.ok()).toBe(true);
+  const urls = Array.from((await siteMap.text()).matchAll(/<loc>([^<]+)<\/loc>/g), (m) => m[1]!);
+  expect(urls).toHaveLength(2 * (8 + PROJECTS.length));
+
+  for (const url of urls) {
+    const { pathname, search } = new URL(url);
+    const czech = search === "?lang=cs";
+    const enUrl = origin + pathname;
+    const csUrl = enUrl + "?lang=cs";
+    const response = await request.get(pathname + search);
+    expect(response.ok(), url).toBe(true);
+    const html = await response.text();
     const head = html.slice(0, html.indexOf("</head>"));
-    const canonical = head.match(/<link rel="canonical" href="([^"]+)"/g) ?? [];
-    expect(canonical, path).toEqual([
-      `<link rel="canonical" href="https://jiri-paukrt.vercel.app${path}"`,
+    expect(head, url).toContain(`<html lang="${czech ? "cs" : "en"}"`);
+    expect(head, url).toMatch(czech ? /<title>[^<]*Jiří Paukrt/ : /<title>[^<]*Jiri Paukrt/);
+    expect(head.match(/<link rel="canonical" href="([^"]+)"/g), url).toEqual([
+      `<link rel="canonical" href="${url}"`,
     ]);
+    for (const [lang, href] of [
+      ["en", enUrl],
+      ["cs", csUrl],
+      ["x-default", enUrl],
+    ]) {
+      expect(head, url).toContain(`rel="alternate" hrefLang="${lang}" href="${href}"`);
+    }
+    for (const property of ["title", "description", "image:alt", "type"]) {
+      expect(head, url).toMatch(new RegExp(`property="og:${property}" content="[^"]+"`));
+    }
+    expect(head, url).toContain(`property="og:url" content="${url}"`);
+    expect(head, url).toContain(`property="og:image" content="${origin}/og.png"`);
+    expect(head, url).toContain(`name="twitter:image" content="${origin}/og.png"`);
+
+    if (pathname === "/") {
+      const json = head.match(/<script type="application\/ld\+json">([^<]+)<\/script>/)?.[1];
+      expect(json, url).toBeDefined();
+      expect(JSON.parse(json!)).toMatchObject({
+        "@type": "ProfilePage",
+        inLanguage: czech ? "cs" : "en",
+        mainEntity: {
+          "@type": "Person",
+          name: "Jiří Paukrt",
+          alternateName: "Jiri Paukrt",
+          sameAs: ["https://www.linkedin.com/in/jiri-paukrt"],
+          worksFor: { name: "SYSTRA" },
+        },
+      });
+    }
   }
+});
+
+test("map and project filters keep the active language", async ({ page }) => {
+  await open(page, "/projects", "cs");
+  await page.locator('a[href*="domain=microsim"]').first().click();
+  await expect(page).toHaveURL(/lang=cs/);
+  await expect(page).toHaveURL(/domain=microsim/);
+  await page.getByRole("button", { name: "EN", exact: true }).click();
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await expect(page).toHaveURL(/domain=microsim/);
+});
+
+test("the contact form accepts email delivery when the backup fails", async ({ page }) => {
+  await page.route("**/rest/v1/contact_inquiries", (route) =>
+    route.fulfill({ status: 503, json: { message: "Test database unavailable" } }),
+  );
+  await page.route("https://api.web3forms.com/submit", (route) => {
+    expect(route.request().postDataJSON()).toMatchObject({
+      name: "Jan Novák",
+      email: "jan.novak@example.com",
+    });
+    return route.fulfill({ json: { success: true } });
+  });
+  await page.clock.install();
+  await open(page, "/contact");
+  await page.locator("#inq-name").fill("Jan Novák");
+  await page.locator("#inq-email").fill("jan.novak@example.com");
+  await page.locator("#inq-message").fill("I would like to ask about a regional transport model.");
+  await page.clock.fastForward(4_100);
+  await page.getByRole("button", { name: /Send message/ }).click();
+  await expect(page.getByText(/MSG-[A-F0-9]{8}/)).toBeVisible();
 });

@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { Download, Printer } from "lucide-react";
 
@@ -6,20 +7,21 @@ import { useContent } from "@/data/useContent";
 import { useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/cv")({
-  head: () => ({
-    meta: [
-      { title: "CV — Jiri Paukrt, Principal Transportation Engineer" },
+  head: ({ match }) =>
+    pageHead(
+      match,
       {
-        name: "description",
-        content:
+        title: "CV — Jiri Paukrt, Principal Transportation Engineer",
+        description:
           "Curriculum vitae of Jiri Paukrt: 27 years of travel demand modelling, traffic microsimulation and scheme evaluation in Ireland, the UK, Australia and Central Europe.",
       },
-      { property: "og:title", content: "CV — Jiri Paukrt" },
-      { property: "og:description", content: PERSON.summary },
-      { property: "og:type", content: "profile" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+      {
+        title: "Životopis — Ing. Jiří Paukrt, hlavní dopravní inženýr",
+        description:
+          "Profesní zkušenosti Jiřího Paukrta v dopravním modelování, mikrosimulacích a hodnocení projektů. Životopis ke stažení v PDF.",
+      },
+      "profile",
+    ),
   component: CvPage,
 });
 
@@ -63,7 +65,7 @@ function CvPage() {
             )}
           </p>
           <p className="mt-2 text-[12px] text-[#4a5a70]">
-            linkedin.com/in/jiri-paukrt · paukrt.lovable.app
+            linkedin.com/in/jiri-paukrt · jiri-paukrt.vercel.app
           </p>
         </header>
 
