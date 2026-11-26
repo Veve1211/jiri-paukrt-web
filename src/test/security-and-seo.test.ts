@@ -16,16 +16,19 @@ describe("security headers", () => {
     expect(res.headers.get("X-Frame-Options")).toBeNull();
   });
 
-  it("blocks framing on the published site and keeps status and body", async () => {
-    const res = withSecurityHeaders(
-      new Request("https://paukrt.lovable.app/cv"),
-      new Response("missing", { status: 404 }),
-    );
-    expect(res.headers.get("X-Frame-Options")).toBe("DENY");
-    expect(res.headers.get("Content-Security-Policy")).toContain("frame-ancestors 'none'");
-    expect(res.status).toBe(404);
-    expect(await res.text()).toBe("missing");
-  });
+  it.each(["paukrt.lovable.app", "jiri-paukrt.vercel.app"])(
+    "blocks framing on %s and keeps status and body",
+    async (host) => {
+      const res = withSecurityHeaders(
+        new Request(`https://${host}/cv`),
+        new Response("missing", { status: 404 }),
+      );
+      expect(res.headers.get("X-Frame-Options")).toBe("DENY");
+      expect(res.headers.get("Content-Security-Policy")).toContain("frame-ancestors 'none'");
+      expect(res.status).toBe(404);
+      expect(await res.text()).toBe("missing");
+    },
+  );
 });
 
 describe("sitemap", () => {

@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, BookOpen } from "lucide-react";
 
@@ -13,24 +14,21 @@ export const Route = createFileRoute("/projects/")({
     const raw = search["domain"];
     return isDomainKey(raw) ? { domain: raw } : {};
   },
-  head: () => ({
-    meta: [
-      { title: "Projects & Publications — Jiri Paukrt Transport Modelling" },
+  head: ({ match }) =>
+    pageHead(
+      match,
       {
-        name: "description",
-        content:
+        title: "Projects & Publications — Jiri Paukrt Transport Modelling",
+        description:
           "National demand models for Ireland's NTA, Commonwealth Games visitor demand, Sydney's Lane Cove Tunnel and 11 UK town microsimulations, plus papers and conference talks.",
       },
-      { property: "og:title", content: "Projects & Publications — Jiri Paukrt" },
       {
-        property: "og:description",
-        content:
-          "Filter projects by strategic models, microsimulation, major events and road safety.",
+        title: "Projekty a publikace z dopravního modelování — Jiří Paukrt",
+        description:
+          "Irské národní dopravní modely, simulace dopravy v britských městech a odborné publikace Jiřího Paukrta.",
       },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+      "website",
+    ),
   component: ProjectsPage,
 });
 

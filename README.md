@@ -1,6 +1,6 @@
 # Jiri Paukrt — osobní web (případová studie)
 
-Živě: **https://paukrt.lovable.app** · CV v PDF: [/Jiri-Paukrt-CV.pdf](https://paukrt.lovable.app/Jiri-Paukrt-CV.pdf)
+Živě: **https://jiri-paukrt.vercel.app** · CV v PDF: [/Jiri-Paukrt-CV.pdf](https://jiri-paukrt.vercel.app/Jiri-Paukrt-CV.pdf)
 
 Web-vizitka a online CV pro Ing. Jiřího Paukrta, Principal Transportation Engineer v SYSTRA Dublin (27 let dopravního modelování v Irsku, Velké Británii, Austrálii a ČR).
 
@@ -64,3 +64,23 @@ npx tsc --noEmit   # kontrola typů
 ## Bezpečnost
 
 Viz [`security_warnings.md`](security_warnings.md).
+
+## Vyhledávání a nasazení
+
+Anglická verze má čisté URL, česká verze používá `?lang=cs`. Obě se renderují na
+serveru, mají vlastní canonical a vzájemné `hreflang`. Sitemap obsahuje obě verze.
+Další parametry (např. filtr projektů) se do canonical nezapisují.
+
+Po úspěšném nasazení na produkci spusťte `bun run indexnow`. Příkaz ověří veřejný
+klíč na produkční doméně a odešle URL z nasazené sitemapy přes IndexNow.
+`bun run indexnow --dry-run` ověří soubory v repozitáři bez odeslání. V Google
+Search Console a Seznam Webmaster ponechte ověřovací značky a sitemapu.
+
+### Veřejná kopie na Lovable
+
+Preferované řešení je trvalé přesměrování 301 nebo 308 z veřejné domény
+`paukrt.lovable.app` na odpovídající cesty a query na `jiri-paukrt.vercel.app`,
+pokud ho Lovable umožňuje nastavit pro veřejný host. Zachovejte přístup k editoru
+a iframe náhledům. Dokud běží obě nasazení, publikujte na Lovable verzi s canonical
+odkazy na Vercel a ponechte ji přístupnou crawlerům, aby canonical přečetli.
+Po ověření přesměrování stačí vyhledávačům předkládat sitemapu na Vercelu.

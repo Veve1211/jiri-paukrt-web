@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, X } from "lucide-react";
 import { useState } from "react";
@@ -15,24 +16,21 @@ export const Route = createFileRoute("/network")({
     const node = typeof raw === "string" && getLocation(raw) ? raw : undefined;
     return node ? { node } : {};
   },
-  head: () => ({
-    meta: [
-      { title: "Project Map — Jiri Paukrt" },
+  head: ({ match }) =>
+    pageHead(
+      match,
       {
-        name: "description",
-        content:
+        title: "Project Map — Jiri Paukrt",
+        description:
           "Interactive map of Jiri Paukrt's transport modelling projects and career bases across Ireland, the UK, Australia and Central Europe.",
       },
-      { property: "og:title", content: "Project Map — Jiri Paukrt" },
       {
-        property: "og:description",
-        content:
-          "Where the models were built: national demand models, microsimulations, major events and road safety research.",
+        title: "Mapa dopravních projektů — Jiří Paukrt",
+        description:
+          "Interaktivní mapa projektů dopravního modelování v Irsku, Spojeném království, Austrálii a střední Evropě.",
       },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+      "website",
+    ),
   component: NetworkPage,
 });
 

@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { PageIntro } from "@/components/site/PageIntro";
@@ -5,22 +6,20 @@ import { PERSON } from "@/data/portfolio";
 import { useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/privacy")({
-  head: () => ({
-    meta: [
-      { title: "Privacy notice — Jiri Paukrt" },
+  head: ({ match }) =>
+    pageHead(
+      match,
       {
-        name: "description",
-        content: "How personal data sent through the contact form on this website is used.",
+        title: "Privacy notice — Jiri Paukrt",
+        description: "How personal data sent through the contact form on this website is used.",
       },
-      { property: "og:title", content: "Privacy notice — Jiri Paukrt" },
       {
-        property: "og:description",
-        content: "How personal data sent through the contact form is used.",
+        title: "Ochrana osobních údajů — Jiří Paukrt",
+        description:
+          "Jak se zpracovávají osobní údaje odeslané přes kontaktní formulář a jak uplatnit svá práva.",
       },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+      "website",
+    ),
   component: PrivacyPage,
 });
 

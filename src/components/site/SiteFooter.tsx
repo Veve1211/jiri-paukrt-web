@@ -46,9 +46,9 @@ export function SiteFooter() {
           <span className="telemetry text-[10px] text-dim">
             {t(`Based in the ${PERSON.home}`, "Žije v Česku")} · SYSTRA {PERSON.city}
           </span>
-          <a href="/privacy" className="telemetry text-[10px] text-dim hover:text-star">
+          <Link to="/privacy" className="telemetry text-[10px] text-dim hover:text-star">
             {t("Privacy notice", "Ochrana osobních údajů")}
-          </a>
+          </Link>
           <span className="telemetry text-[10px] text-dim">
             © {new Date().getFullYear()} {t(PERSON.name, "Jiří Paukrt")}
           </span>

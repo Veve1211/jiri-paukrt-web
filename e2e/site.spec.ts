@@ -11,7 +11,9 @@ const JOB_SEEKING =
   /open to (new )?(roles|opportunities|work)|available for (hire|work|new)|looking for (a )?(new )?(job|role|position)|job search|hledám (novou )?práci|hledám (nové )?uplatnění|k dispozici pro nové/i;
 
 async function open(page: Page, path: string, lang: "en" | "cs" = "en") {
-  await page.goto(`${path}?lang=${lang}`, { waitUntil: "networkidle" });
+  const url = new URL(path, "http://localhost");
+  url.searchParams.set("lang", lang);
+  await page.goto(url.pathname + url.search, { waitUntil: "networkidle" });
   await expect(page.locator("html")).toHaveAttribute("lang", lang);
 }
 
@@ -57,11 +59,11 @@ for (const path of PAGES) {
 
 test("the EN/CZ switch translates the menu and is remembered", async ({ page }) => {
   await page.goto("/", { waitUntil: "networkidle" });
-  await page.getByRole("button", { name: "CZ", exact: true }).click();
+  await page.getByRole("link", { name: "CZ", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("lang", "cs");
-  await expect(page.getByRole("button", { name: "CZ", exact: true })).toHaveAttribute(
-    "aria-pressed",
-    "true",
+  await expect(page.getByRole("link", { name: "CZ", exact: true })).toHaveAttribute(
+    "aria-current",
+    "page",
   );
   await page.reload({ waitUntil: "networkidle" });
   await expect(page.locator("html")).toHaveAttribute("lang", "cs");
@@ -69,18 +71,21 @@ test("the EN/CZ switch translates the menu and is remembered", async ({ page }) 
     const nav = page.getByRole("navigation", { name: "Hlavní menu" });
     for (const item of NAV) await expect(nav.getByRole("link", { name: item.cs })).toBeVisible();
   }
-  await page.getByRole("button", { name: "EN", exact: true }).click();
+  await page.getByRole("link", { name: "EN", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
 });
 
 test("the mobile menu opens and navigates", async ({ page }) => {
   test.skip(page.viewportSize()!.width >= 768, "the full menu shows from md (768 px)");
   await open(page, "/");
-  await page.getByRole("button", { name: "Open menu" }).click();
-  await page
-    .getByRole("navigation", { name: "Mobile menu" })
-    .getByRole("link", { name: "Projects" })
-    .click();
+  const menu = page.getByRole("navigation", { name: "Mobile menu" });
+  await expect(async () => {
+    if (!(await menu.isVisible())) {
+      await page.getByRole("button", { name: "Open menu" }).click();
+    }
+    await expect(menu).toBeVisible({ timeout: 750 });
+  }).toPass({ timeout: 10_000 });
+  await menu.getByRole("link", { name: "Projects" }).click();
   await expect(page).toHaveURL(/\/projects/);
   await expect(page.getByRole("navigation", { name: "Mobile menu" })).toBeHidden();
 });
@@ -131,13 +136,98 @@ test("server HTML includes the Seznam Webmaster tag in the homepage head", async
   expect(cv).not.toContain('name="seznam-wmt"');
 });
 
-test("every page names jiri-paukrt.vercel.app as the canonical address", async ({ request }) => {
-  for (const path of ["/", "/cv", `/projects/${PROJECTS[0].slug}`]) {
-    const html = await (await request.get(`${path}?lang=cs`)).text();
+test("all canonical pages have reciprocal hreflang and complete sharing cards in server HTML", async ({
+  request,
+}) => {
+  const origin = "https://jiri-paukrt.vercel.app";
+  const siteMap = await request.get("/sitemap.xml");
+  expect(siteMap.ok()).toBe(true);
+  const urls = Array.from((await siteMap.text()).matchAll(/<loc>([^<]+)<\/loc>/g), (m) => m[1]!);
+  expect(urls).toHaveLength(2 * (8 + PROJECTS.length));
+
+  for (const url of urls) {
+    const { pathname, search } = new URL(url);
+    const czech = search === "?lang=cs";
+    const enUrl = origin + pathname;
+    const csUrl = enUrl + "?lang=cs";
+    const response = await request.get(pathname + search);
+    expect(response.ok(), url).toBe(true);
+    const html = await response.text();
     const head = html.slice(0, html.indexOf("</head>"));
-    const canonical = head.match(/<link rel="canonical" href="([^"]+)"/g) ?? [];
-    expect(canonical, path).toEqual([
-      `<link rel="canonical" href="https://jiri-paukrt.vercel.app${path}"`,
+    expect(head, url).toContain(`<html lang="${czech ? "cs" : "en"}"`);
+    expect(head, url).toMatch(czech ? /<title>[^<]*Jiří Paukrt/ : /<title>[^<]*Jiri Paukrt/);
+    expect(head.match(/<link rel="canonical" href="([^"]+)"/g), url).toEqual([
+      `<link rel="canonical" href="${url}"`,
     ]);
+    for (const [lang, href] of [
+      ["en", enUrl],
+      ["cs", csUrl],
+      ["x-default", enUrl],
+    ]) {
+      expect(head, url).toContain(`rel="alternate" hrefLang="${lang}" href="${href}"`);
+    }
+    for (const property of ["title", "description", "image:alt", "type"]) {
+      expect(head, url).toMatch(new RegExp(`property="og:${property}" content="[^"]+"`));
+    }
+    expect(head, url).toContain(`property="og:url" content="${url}"`);
+    expect(head, url).toContain(`property="og:image" content="${origin}/og.png"`);
+    expect(head, url).toContain(`name="twitter:image" content="${origin}/og.png"`);
+
+    if (pathname === "/") {
+      const json = head.match(/<script type="application\/ld\+json">([^<]+)<\/script>/)?.[1];
+      expect(json, url).toBeDefined();
+      expect(JSON.parse(json!)).toMatchObject({
+        "@type": "ProfilePage",
+        inLanguage: czech ? "cs" : "en",
+        mainEntity: {
+          "@type": "Person",
+          name: "Jiří Paukrt",
+          alternateName: "Jiri Paukrt",
+          sameAs: ["https://www.linkedin.com/in/jiri-paukrt"],
+          worksFor: { name: "SYSTRA" },
+        },
+      });
+    }
   }
+});
+
+test("switching languages preserves project filters and map selections", async ({ page }) => {
+  await open(page, "/projects", "cs");
+  const filter = page
+    .getByRole("group", { name: "Filtrovat podle oboru" })
+    .locator('a[href*="domain=microsim"]');
+  await filter.click();
+  await expect(filter).toHaveAttribute("aria-current", "page");
+  await page.waitForLoadState("networkidle");
+  await expect(page).toHaveURL(/lang=cs/);
+  await expect(page).toHaveURL(/domain=microsim/);
+  await page.getByRole("link", { name: "EN", exact: true }).click();
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await expect(page).toHaveURL(/domain=microsim/);
+
+  await open(page, "/network?node=dublin", "en");
+  await page.getByRole("link", { name: "CZ", exact: true }).click();
+  await expect(page.locator("html")).toHaveAttribute("lang", "cs");
+  await expect(page).toHaveURL(/node=dublin/);
+});
+
+test("the contact form accepts email delivery when the backup fails", async ({ page }) => {
+  await page.route("**/rest/v1/contact_inquiries", (route) =>
+    route.fulfill({ status: 503, json: { message: "Test database unavailable" } }),
+  );
+  await page.route("https://api.web3forms.com/submit", (route) => {
+    expect(route.request().postDataJSON()).toMatchObject({
+      name: "Jan Novák",
+      email: "jan.novak@example.com",
+    });
+    return route.fulfill({ json: { success: true } });
+  });
+  await page.clock.install();
+  await open(page, "/contact");
+  await page.locator("#inq-name").fill("Jan Novák");
+  await page.locator("#inq-email").fill("jan.novak@example.com");
+  await page.locator("#inq-message").fill("I would like to ask about a regional transport model.");
+  await page.clock.fastForward(4_100);
+  await page.getByRole("button", { name: /Send message/ }).click();
+  await expect(page.getByText(/MSG-[A-F0-9]{8}/)).toBeVisible();
 });

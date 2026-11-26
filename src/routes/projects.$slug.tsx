@@ -1,3 +1,5 @@
+import { pageHead } from "@/lib/seo";
+import { PROJECTS_CS } from "@/data/portfolio.cs";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, MapPin } from "lucide-react";
 
@@ -36,25 +38,27 @@ export const Route = createFileRoute("/projects/$slug")({
     if (!project) throw notFound();
     return { project };
   },
-  head: ({ loaderData }) => {
+  head: ({ loaderData, match }) => {
     const p = loaderData?.project;
     if (!p)
       return {
         meta: [
-          { title: "Project not found — Jiri Paukrt" },
+          {
+            title:
+              match.search.lang === "cs"
+                ? "Projekt nenalezen — Jiří Paukrt"
+                : "Project not found — Jiri Paukrt",
+          },
           { name: "robots", content: "noindex" },
         ],
       };
-    return {
-      meta: [
-        { title: `${p.title} — Jiri Paukrt` },
-        { name: "description", content: p.summary },
-        { property: "og:title", content: `${p.title} — Jiri Paukrt` },
-        { property: "og:description", content: p.summary },
-        { property: "og:type", content: "article" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-    };
+    const cs = PROJECTS_CS[p.slug];
+    return pageHead(
+      match,
+      { title: `${p.title} — Jiri Paukrt`, description: p.summary },
+      { title: `${cs?.title ?? p.title} — Jiří Paukrt`, description: cs?.summary ?? p.summary },
+      "article",
+    );
   },
   notFoundComponent: ProjectNotFound,
   component: ProjectPage,

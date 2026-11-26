@@ -1,3 +1,4 @@
+import { pageHead, personProfile } from "@/lib/seo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpRight, BookOpen, GraduationCap } from "lucide-react";
 import type { ReactNode } from "react";
@@ -11,41 +12,36 @@ import { useLang } from "@/lib/i18n";
 import { spotlightMove } from "@/hooks/use-spotlight";
 import { cn } from "@/lib/utils";
 
-const imageAlt = "Jiri Paukrt, Ing. — Principal Transportation Engineer";
-
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Jiri Paukrt — Principal Transportation Engineer | Transport Modelling" },
+  head: ({ match }) => {
+    const head = pageHead(
+      match,
       {
-        name: "description",
-        content:
-          "Principal Transportation Engineer at SYSTRA in Dublin. 27+ years of travel demand modelling, traffic microsimulation and scheme evaluation across Ireland, the UK, Australia and Central Europe.",
+        title: "Jiri Paukrt | Principal Transportation Engineer | Transport Modelling",
+        description:
+          "Jiri Paukrt is a principal transportation modeller at SYSTRA, specialising in travel demand forecasting, traffic microsimulation and scheme evaluation.",
       },
-      { property: "og:title", content: "Jiri Paukrt — Principal Transportation Engineer" },
       {
-        property: "og:description",
-        content:
-          "Travel demand modelling, traffic microsimulation and scheme evaluation across Ireland, the UK, Australia and Central Europe.",
+        title: "Jiří Paukrt | Dopravní modelování a plánování dopravy",
+        description:
+          "Ing. Jiří Paukrt, hlavní dopravní inženýr v SYSTRA. Dopravní modelování, prognózy poptávky, mikrosimulace a hodnocení dopravních projektů.",
       },
-      { name: "seznam-wmt", content: "xhTtQpmWvW9uVGZRCyfxKoysTzTmFjkI" },
-      { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://jiri-paukrt.vercel.app/og.png" },
-      { property: "og:image:type", content: "image/png" },
-      { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "630" },
-      {
-        property: "og:image:alt",
-        content: imageAlt,
-      },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://jiri-paukrt.vercel.app/og.png" },
-      {
-        name: "twitter:image:alt",
-        content: imageAlt,
-      },
-    ],
-  }),
+      "profile",
+    );
+    return {
+      ...head,
+      meta: [...head.meta, { name: "seznam-wmt", content: "xhTtQpmWvW9uVGZRCyfxKoysTzTmFjkI" }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(personProfile(match.search.lang ?? "en")).replace(
+            /</g,
+            "\\u003c",
+          ),
+        },
+      ],
+    };
+  },
   component: Index,
 });
 

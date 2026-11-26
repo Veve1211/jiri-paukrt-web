@@ -4,48 +4,96 @@
     <loc>https://jiri-paukrt.vercel.app/</loc>
   </url>
   <url>
+    <loc>https://jiri-paukrt.vercel.app/?lang=cs</loc>
+  </url>
+  <url>
     <loc>https://jiri-paukrt.vercel.app/career</loc>
+  </url>
+  <url>
+    <loc>https://jiri-paukrt.vercel.app/career?lang=cs</loc>
   </url>
   <url>
     <loc>https://jiri-paukrt.vercel.app/projects</loc>
   </url>
   <url>
+    <loc>https://jiri-paukrt.vercel.app/projects?lang=cs</loc>
+  </url>
+  <url>
     <loc>https://jiri-paukrt.vercel.app/expertise</loc>
+  </url>
+  <url>
+    <loc>https://jiri-paukrt.vercel.app/expertise?lang=cs</loc>
   </url>
   <url>
     <loc>https://jiri-paukrt.vercel.app/network</loc>
   </url>
   <url>
+    <loc>https://jiri-paukrt.vercel.app/network?lang=cs</loc>
+  </url>
+  <url>
     <loc>https://jiri-paukrt.vercel.app/cv</loc>
+  </url>
+  <url>
+    <loc>https://jiri-paukrt.vercel.app/cv?lang=cs</loc>
   </url>
   <url>
     <loc>https://jiri-paukrt.vercel.app/contact</loc>
   </url>
   <url>
+    <loc>https://jiri-paukrt.vercel.app/contact?lang=cs</loc>
+  </url>
+  <url>
     <loc>https://jiri-paukrt.vercel.app/privacy</loc>
+  </url>
+  <url>
+    <loc>https://jiri-paukrt.vercel.app/privacy?lang=cs</loc>
   </url>
   <url>
     <loc>https://jiri-paukrt.vercel.app/projects/nta-national-demand-model</loc>
   </url>
   <url>
+    <loc>https://jiri-paukrt.vercel.app/projects/nta-national-demand-model?lang=cs</loc>
+  </url>
+  <url>
     <loc>https://jiri-paukrt.vercel.app/projects/nta-long-distance-model</loc>
+  </url>
+  <url>
+    <loc>https://jiri-paukrt.vercel.app/projects/nta-long-distance-model?lang=cs</loc>
   </url>
   <url>
     <loc>https://jiri-paukrt.vercel.app/projects/glasgow-m74-evaluation</loc>
   </url>
   <url>
+    <loc>https://jiri-paukrt.vercel.app/projects/glasgow-m74-evaluation?lang=cs</loc>
+  </url>
+  <url>
     <loc>https://jiri-paukrt.vercel.app/projects/road-safety-traffic-conflicts</loc>
+  </url>
+  <url>
+    <loc>https://jiri-paukrt.vercel.app/projects/road-safety-traffic-conflicts?lang=cs</loc>
   </url>
   <url>
     <loc>https://jiri-paukrt.vercel.app/projects/commonwealth-games</loc>
   </url>
   <url>
+    <loc>https://jiri-paukrt.vercel.app/projects/commonwealth-games?lang=cs</loc>
+  </url>
+  <url>
     <loc>https://jiri-paukrt.vercel.app/projects/sydney-lane-cove-tunnel</loc>
+  </url>
+  <url>
+    <loc>https://jiri-paukrt.vercel.app/projects/sydney-lane-cove-tunnel?lang=cs</loc>
   </url>
   <url>
     <loc>https://jiri-paukrt.vercel.app/projects/melbourne-dandenong</loc>
   </url>
   <url>
+    <loc>https://jiri-paukrt.vercel.app/projects/melbourne-dandenong?lang=cs</loc>
+  </url>
+  <url>
     <loc>https://jiri-paukrt.vercel.app/projects/uk-microsimulation-models</loc>
+  </url>
+  <url>
+    <loc>https://jiri-paukrt.vercel.app/projects/uk-microsimulation-models?lang=cs</loc>
   </url>
 </urlset>

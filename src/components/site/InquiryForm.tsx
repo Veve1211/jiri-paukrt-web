@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { CheckCircle2, Loader2, RotateCcw } from "lucide-react";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { z } from "zod";
@@ -203,11 +204,12 @@ export function InquiryForm({
     const [emailed, stored] = await Promise.all([
       fetch(WEB3FORMS_URL, {
         method: "POST",
+        signal: AbortSignal.timeout(12_000),
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
           access_key: WEB3FORMS_ACCESS_KEY,
           subject: `Website message: ${topicLabel}`,
-          from_name: "paukrt.lovable.app",
+          from_name: "Jiří Paukrt — website",
           name: parsed.data.name,
           email: parsed.data.email,
           organisation: parsed.data.organisation || "-",
@@ -219,17 +221,21 @@ export function InquiryForm({
       })
         .then(async (r) => r.ok && Boolean(((await r.json()) as { success?: boolean }).success))
         .catch(() => false),
-      Promise.resolve(
-        supabase.from("contact_inquiries").insert({
-          id,
-          name: parsed.data.name,
-          email: parsed.data.email,
-          organisation: parsed.data.organisation || null,
-          topic: parsed.data.topic,
-          message: parsed.data.message,
-          source: source ?? null,
-        }),
-      )
+      Promise.resolve()
+        .then(() =>
+          supabase
+            .from("contact_inquiries")
+            .insert({
+              id,
+              name: parsed.data.name,
+              email: parsed.data.email,
+              organisation: parsed.data.organisation || null,
+              topic: parsed.data.topic,
+              message: parsed.data.message,
+              source: source ?? null,
+            })
+            .abortSignal(AbortSignal.timeout(12_000)),
+        )
         .then(({ error }) => !error)
         .catch(() => false),
     ]);
@@ -385,9 +391,9 @@ export function InquiryForm({
           "Your details are used only to reply to your message.",
           "Vaše údaje použijeme jen k odpovědi na zprávu.",
         )}{" "}
-        <a href="/privacy" className="text-cyan underline underline-offset-2">
+        <Link to="/privacy" className="text-cyan underline underline-offset-2">
           {t("Privacy notice", "Ochrana osobních údajů")}
-        </a>
+        </Link>
       </p>
       <Button
         type="submit"

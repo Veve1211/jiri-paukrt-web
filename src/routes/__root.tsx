@@ -4,12 +4,13 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  retainSearchParams,
   useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { Toaster } from "@/components/ui/sonner";
@@ -18,8 +19,7 @@ import { SiteHeader } from "@/components/site/SiteHeader";
 import { BlueprintBackdrop } from "@/components/site/BlueprintBackdrop";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { LangProvider } from "@/components/site/LangProvider";
-import { useLang } from "@/lib/i18n";
-import { useContent } from "@/data/useContent";
+import { useLang, type Lang } from "@/lib/i18n";
 
 function NotFoundComponent() {
   const { t } = useLang();
@@ -92,29 +92,15 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    // Replace these placeholders with the app's name and description when first building the app.
-    // Each content route, / included, must still set its own head(). Never add og:image or
-    // twitter:image here: every page without its own would inherit the root's preview image.
+  validateSearch: (search: Record<string, unknown>): { lang?: Lang } =>
+    search["lang"] === "cs" || search["lang"] === "en" ? { lang: search["lang"] } : {},
+  search: { middlewares: [retainSearchParams(["lang"])] },
+  head: ({ match }) => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Jiri Paukrt — Principal Transportation Engineer" },
-      {
-        name: "description",
-        content:
-          "Jiri Paukrt, Principal Transportation Engineer at SYSTRA in Dublin: 27+ years of travel demand modelling, traffic microsimulation, scheme evaluation and road safety.",
-      },
-      { name: "author", content: "Jiri Paukrt" },
-      { property: "og:title", content: "Jiri Paukrt — Principal Transportation Engineer" },
-      {
-        property: "og:description",
-        content:
-          "27+ years of transport demand modelling, microsimulation and GIS across Ireland, the UK, Australia and Europe.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-      // Google Search Console ownership proof — keep permanently, removing it unverifies the site.
+      { title: match.search.lang === "cs" ? "Jiří Paukrt" : "Jiri Paukrt" },
+      { name: "author", content: "Jiří Paukrt" },
       {
         name: "google-site-verification",
         content: "Ctgx3MlIJJWdodU5RKD0QqkVdI_yZhYH0Ax9UxsskUY",
@@ -144,16 +130,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
-const CANONICAL_ORIGIN = "https://jiri-paukrt.vercel.app";
-
 function RootShell({ children }: { children: ReactNode }) {
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const canonicalPath = pathname.replace(/\/+$/, "") || "/";
+  const lang = useRouterState({ select: (s) => s.matches[0]?.search.lang }) ?? "en";
   return (
-    <html lang="en" className="dark">
+    <html lang={lang} className="dark">
       <head>
         <HeadContent />
-        <link rel="canonical" href={`${CANONICAL_ORIGIN}${canonicalPath}`} />
         {/* Google Search Console token for the Vercel address (jiri-paukrt-web-eytb.vercel.app) —
             keep permanently. Written here, not in head(): HeadContent keeps only one meta per name. */}
         <meta
@@ -184,57 +166,8 @@ function RootComponent() {
           </main>
           <SiteFooter />
         </div>
-        <CzechDocumentTitle />
         <Toaster theme="dark" position="bottom-right" />
       </LangProvider>
     </QueryClientProvider>
   );
-}
-
-const TITLE_CS: Record<string, string> = {
-  "/": "Ing. Jiří Paukrt — hlavní dopravní inženýr | Dopravní modelování",
-  "/career": "Kariéra 1999–dosud — Jiří Paukrt",
-  "/projects": "Projekty a publikace — Jiří Paukrt",
-  "/network": "Mapa projektů — Jiří Paukrt",
-  "/expertise": "Odbornost a nástroje — Jiří Paukrt",
-  "/contact": "Kontakt — Jiří Paukrt",
-  "/cv": "Životopis — Ing. Jiří Paukrt, hlavní dopravní inženýr",
-  "/privacy": "Ochrana osobních údajů — Jiří Paukrt",
-};
-
-/**
- * Page titles in <head> come from each route and are English (the server render).
- * In the Czech version the browser tab gets the Czech title instead.
- */
-function CzechDocumentTitle() {
-  const { lang } = useLang();
-  const { getProject } = useContent();
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const czechTitle = useRef<string | null>(null);
-  useEffect(() => {
-    if (lang !== "cs") {
-      // switching back to English: put the route's English title back
-      if (czechTitle.current && document.title === czechTitle.current) {
-        const el = document.querySelector("title");
-        if (el?.dataset["en"]) document.title = el.dataset["en"];
-      }
-      czechTitle.current = null;
-      return;
-    }
-    const path = pathname.replace(/\/$/, "") || "/";
-    const slug = path.startsWith("/projects/") ? path.slice("/projects/".length) : undefined;
-    const project = slug ? getProject(slug) : undefined;
-    const title = project
-      ? `${project.title} — Jiří Paukrt`
-      : (TITLE_CS[path] ?? "Stránka nenalezena — Jiří Paukrt");
-    // run after the router has written its own (English) title
-    const id = window.setTimeout(() => {
-      const el = document.querySelector("title");
-      if (el && document.title !== czechTitle.current) el.dataset["en"] = document.title;
-      document.title = title;
-      czechTitle.current = title;
-    }, 0);
-    return () => window.clearTimeout(id);
-  }, [lang, pathname, getProject]);
-  return null;
 }

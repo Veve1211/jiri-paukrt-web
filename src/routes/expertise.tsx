@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { CorridorSimulator } from "@/components/site/CorridorSimulator";
@@ -6,24 +7,21 @@ import { ToolJunction } from "@/components/site/ToolJunction";
 import { useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/expertise")({
-  head: () => ({
-    meta: [
-      { title: "Expertise & Tools — Jiri Paukrt" },
+  head: ({ match }) =>
+    pageHead(
+      match,
       {
-        name: "description",
-        content:
+        title: "Expertise & Tools — Jiri Paukrt",
+        description:
           "Strategic demand modelling, traffic microsimulation, appraisal, GIS and programming — plus an illustrative corridor simulator showing how speed and conflicts respond to demand.",
       },
-      { property: "og:title", content: "Expertise & Tools — Jiri Paukrt" },
       {
-        property: "og:description",
-        content:
-          "The modelling tools behind the projects, and a small corridor flow simulator to try.",
+        title: "Dopravní modelování a simulační nástroje — Jiří Paukrt",
+        description:
+          "Modelování dopravní poptávky, mikrosimulace, hodnocení projektů a GIS. Vyzkoušejte simulátor dopravy na koridoru.",
       },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+      "website",
+    ),
   component: ExpertisePage,
 });
 
