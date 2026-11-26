@@ -26,8 +26,9 @@ export const Route = createFileRoute("/")({
         content:
           "Travel demand modelling, traffic microsimulation and scheme evaluation across Ireland, the UK, Australia and Central Europe.",
       },
+      { name: "seznam-wmt", content: "xhTtQpmWvW9uVGZRCyfxKoysTzTmFjkI" },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://paukrt.lovable.app/og.png" },
+      { property: "og:image", content: "https://jiri-paukrt.vercel.app/og.png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       {
@@ -35,7 +36,7 @@ export const Route = createFileRoute("/")({
         content: "Jiri Paukrt, Ing. — Principal Transportation Engineer",
       },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://paukrt.lovable.app/og.png" },
+      { name: "twitter:image", content: "https://jiri-paukrt.vercel.app/og.png" },
     ],
   }),
   component: Index,
