@@ -34,11 +34,11 @@ describe("sitemap", () => {
 
   it("lists every project page", () => {
     for (const project of PROJECTS) {
-      expect(sitemap).toContain(`<loc>https://paukrt.lovable.app/projects/${project.slug}</loc>`);
+      expect(sitemap).toContain(`<loc>https://jiri-paukrt.vercel.app/projects/${project.slug}</loc>`);
     }
   });
 
   it("is linked from robots.txt", () => {
-    expect(robots).toContain("Sitemap: https://paukrt.lovable.app/sitemap.xml");
+    expect(robots).toContain("Sitemap: https://jiri-paukrt.vercel.app/sitemap.xml");
   });
 });
