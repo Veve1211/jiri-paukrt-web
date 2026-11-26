@@ -141,8 +141,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
-// The published address; copies of the site (e.g. on Vercel) point search engines here.
-const CANONICAL_ORIGIN = "https://paukrt.lovable.app";
+const CANONICAL_ORIGIN = "https://jiri-paukrt.vercel.app";
 
 function RootShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
